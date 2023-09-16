@@ -1,20 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { useState } from "react";
+
+
+import Button from './components/Button';
+
 
 export default function App() {
+
+  const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
+  
+  const PausePlay = () => {
+    if (pausePlayIcon == "caretright") {
+      setPausePlayIcon("pause")
+    }else{
+      setPausePlayIcon("caretright")
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Welcome to Beatle</Text>
+      <Text style={{ color: 'peru' }}>Welcome to Beatle!</Text>
+      <View style={styles.footerContainer}>
+        <Button image = {pausePlayIcon} onPress={PausePlay}/>
+      </View>
       <StatusBar style="auto" />
     </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'mistyrose',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: 'center',
   },
 });

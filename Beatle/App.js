@@ -22,7 +22,7 @@ export default function App() {
   {/*main app layout*/}
   return (
     <View style={styles.container}>
-      <Text style={{ color: 'peru' }}>Welcome to Beatle!</Text>
+      <Text style={{ color: '#f0f5f5' }}>Welcome to Beatle!</Text>
       <View style={styles.footerContainer}>
         <Button image = {pausePlayIcon} onPress={PausePlay}/>
       </View>
@@ -35,7 +35,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'mistyrose',
+    backgroundColor: '#0a0e0f',
     alignItems: 'center',
     justifyContent: 'center',
   },

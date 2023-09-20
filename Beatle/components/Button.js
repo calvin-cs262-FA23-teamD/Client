@@ -10,12 +10,11 @@ export default function Button({ label, image, onPress }) {
   return (
     <View style={styles.buttonContainer}>
       <Pressable 
-        style={[styles.button, { backgroundColor: "purple" }]}
+        style={[styles.button, { backgroundColor: "#1f2e2e" }]}
         onPress={onPress}
       >
+        <AntDesign name= {image} size={24} color="#ff6900" />
         {/*photo*/}
-        <AntDesign name= {image} size={24} color="peru" />
-        {/*text*/}
         <Text style={styles.buttonLabel}>{label}</Text>
       </Pressable>
     </View>
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
   },
   buttonLabel: {
-    color: 'peru',
+    color: '#ff6900',
     fontSize: 16,
   },
 });

@@ -2,14 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useState } from "react";
 
-
+//import other files
 import Button from './components/Button';
 
 
 export default function App() {
-
+  {/* hooks */}
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
   
+  {/* controls for hitting pause play button*/}
   const PausePlay = () => {
     if (pausePlayIcon == "caretright") {
       setPausePlayIcon("pause")
@@ -18,6 +19,7 @@ export default function App() {
     }
   }
 
+  {/*main app layout*/}
   return (
     <View style={styles.container}>
       <Text style={{ color: 'peru' }}>Welcome to Beatle!</Text>

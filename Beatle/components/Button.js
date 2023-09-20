@@ -1,6 +1,11 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
+
+// app icons
 import { AntDesign } from '@expo/vector-icons'; 
 
+
+//standard button function. inludes optional text and image
+// currently the color of this is hardcoded, but we should prbably change that at some point
 export default function Button({ label, image, onPress }) {
   return (
     <View style={styles.buttonContainer}>
@@ -8,13 +13,16 @@ export default function Button({ label, image, onPress }) {
         style={[styles.button, { backgroundColor: "purple" }]}
         onPress={onPress}
       >
+        {/*photo*/}
         <AntDesign name= {image} size={24} color="peru" />
+        {/*text*/}
         <Text style={styles.buttonLabel}>{label}</Text>
       </Pressable>
     </View>
   );
 }
 
+// style sheets
 const styles = StyleSheet.create({
   buttonContainer: {
     width: 320,

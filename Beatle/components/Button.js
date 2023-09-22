@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 //standard button function. inludes optional text and image
 // currently the color of this is hardcoded, but we should prbably change that at some point
 export default function Button({ label, image, onPress, w, h }) {
+
   return (
     <View style={[styles.buttonContainer, { width: w, height: h }]}>
       <Pressable

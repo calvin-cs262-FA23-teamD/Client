@@ -3,36 +3,47 @@ import { StyleSheet, View, Pressable, Text } from 'react-native';
 import Button from './Button';
 // app icons
 import { AntDesign } from '@expo/vector-icons';
+import { useState } from "react";
 
-export default function BoxyBox({}) {
-    return(
-        <View style={styles.boxyBoxes}>
-        <View style={styles.plusMinusButtons}>
-          <Button image={"caretup"} w={100} h={100} />
-          <Button image={"caretdown"} w={100} h={100} />
-        </View>
-        <View style={styles.plusMinusText}>
-          <Text style={{ color: '#000' }}>Random</Text>
-        </View>
+export default function BoxyBox({w, h, value, setValue, max=65, min=55}) {
+    // hooks
+
+  // this function will add or subtract 1 to the current value
+  const changeValue = (direction) => {
+    if (direction==true && value<max) {
+      setValue(value+1)
+    } else if (direction==false && value>min) {
+      setValue(value-1)
+    }
+  }  
+
+  return(
+      <View style={[styles.boxyBoxes, {width:w, height:h}]}>
+      <View style={styles.plusMinusButtons}>
+        <Button image={"caretup"} w={w/2} h={h/2} onPress={() => changeValue(true)}/>
+        <Button image={"caretdown"} w={w/2} h={h/2} onPress={() => changeValue(false)}/>
       </View>
-    )
+      <View style={styles.valueText}>
+        <Text style={{ color: '#f0f5f5', fontSize: w/5}}>{value.toString()}</Text>
+      </View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
     boxyBoxes: {
-        height: 200,
-        width: 200,
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#1f2e2e',
         flexDirection: 'row',
-        padding: 5
+        padding: 5,
+        border :10
       },
     plusMinusButtons: {
         alignItems: 'center',
         flex: 1
       },
-    plusMinusText: {
+    valueText: {
         alignItems: 'center',
-        flex: 1
+        flex: 1,
       },
 })

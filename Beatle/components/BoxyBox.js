@@ -18,13 +18,15 @@ export default function BoxyBox({w, h, value, setValue, max=65, min=55}) {
   }  
 
   return(
-      <View style={[styles.boxyBoxes, {width:w, height:h}]}>
+    <View style={[styles.boxyBoxes, { width: w, height: h, flexDirection: 'row', alignItems: 'center' }]}>
       <View style={styles.plusMinusButtons}>
-        <Button image={"caretup"} w={w/2} h={h/2} onPress={() => changeValue(true)}/>
-        <Button image={"caretdown"} w={w/2} h={h/2} onPress={() => changeValue(false)}/>
+        <Button image={"minus"} w={w/4} h={h} onPress={() => changeValue(false)}/>
       </View>
       <View style={styles.valueText}>
-        <Text style={{ color: '#f0f5f5', fontSize: w/5}}>{value.toString()}</Text>
+        <Text style={{ color: '#f0f5f5', fontSize: w/5 }}>{value.toString()}</Text>
+      </View>
+      <View style={styles.plusMinusButtons}>
+        <Button image={"plus"} w={w/4} h={h} onPress={() => changeValue(true)}/>
       </View>
     </View>
   )

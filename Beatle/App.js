@@ -22,11 +22,12 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useEffect } from 'react';
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
+
 
 /* Import component files */
 import Button from './components/Button';
@@ -44,6 +45,8 @@ export default function App() {
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
   const [tempo, setTempo] = useState(60)
   const [beat, setBeat] = useState(4)
+  const timer = useRef(null);
+  const [counter, setCounter] = useState(0);
   const [sound, setSound] = useState();
 
   /* Toggles pause and play button. */

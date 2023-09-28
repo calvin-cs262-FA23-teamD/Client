@@ -20,10 +20,8 @@
  */
 
 import * as React from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useState, useRef } from 'react';
-import { useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
@@ -36,59 +34,65 @@ import BoxyBox from './components/BoxyBox';
 /* Default sound */
 const DefaultClick = require('./assets/metronomesound.mp3');
 
-/* 1000 milliseconds = 1 second */
-const BPM = 1000;
-
 /* Main function */
 export default function App() {
   /* Hooks */
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
+
+  /*tempo stores the current tempo */
   const [tempo, setTempo] = useState(60)
   const [beat, setBeat] = useState(4)
-  const timer = useRef(null);
-  const [counter, setCounter] = useState(0);
   const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  let metronomeInterval;
 
   /* Toggles pause and play button. */
   const PausePlay = () => {
     if (pausePlayIcon == "caretright") {
       setPausePlayIcon("pause")
+      setIsPlaying(true)
       playSound()
     } else {
       setPausePlayIcon("caretright")
-      pauseSound()
+      clearInterval(metronomeInterval); // Stop the metronome loop
+      setIsPlaying(false);              // set isPLaying to false
     }
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(DefaultClick);
+    const {sound } = await Audio.Sound.createAsync(DefaultClick);
     setSound(sound);
     console.log('Playing sound');
     await sound.playAsync();
   }
 
-  /* Simply pauses sound. */
-  async function pauseSound() {
-    sound.pauseAsync();
-    sound.unloadAsync();
-  }
-
   /* The hook useEffect synchronizes a component with an external system. */
   /* setInterval() implements the BPM */
+
   useEffect(() => {
-    const interval = setInterval(() => {
-        sound.playAsync();
-    }, BPM);
-    return sound
-      ? () => {
-          console.log('Unloading sound');
-          sound.unloadAsync();
-          clearInterval(interval)
-        }
-      : undefined;
-  }, [sound]);
+
+    if (sound && isPlaying) {
+      // Calculate the interval based on the BPM
+
+      // Start the metronome loop
+      metronomeInterval = setInterval(() => {
+        playSound(); // Play the sound at the specified BPM interval
+      },500);
+    }
+
+    // Clean up when the component unmounts
+    return () => {
+      console.log('Unloading sound');
+      if (sound) {
+        sound.unloadAsync();
+      }
+      clearInterval(metronomeInterval);
+    };
+  }, [sound, isPlaying]);
+
 
   /* Main app layout. */
   return (

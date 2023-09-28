@@ -31,7 +31,7 @@ import Button from './components/Button';
 import BoxyBox from './components/BoxyBox';
 
 /* Default sound */
-const DefaultClick = require('./assets/shotgun.mp3');
+const DefaultClick = require('./assets/shotgun.mp3'); // :) enjoy!
 
 /* Main function */
 export default function App() {
@@ -81,6 +81,8 @@ export default function App() {
     }
 
     // Clean up when the component unmounts
+    // Is there a way to change this so it only unloads when it stops/is paused?
+    // I got the most slowdown when it kept having to load and unload the sound
     return () => {
       console.log('Unloading sound');
       if (sound) {

@@ -20,82 +20,87 @@
  */
 
 import * as React from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useState, useRef } from 'react';
-import { useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
-
 
 /* Import component files */
 import Button from './components/Button';
 import BoxyBox from './components/BoxyBox';
 
 /* Default sound */
-const DefaultClick = require('./assets/metronomesound.mp3');
-
-/* 1000 milliseconds = 1 second */
-const BPM = 1000;
+const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
 
 /* Main function */
 export default function App() {
   /* Hooks */
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
-  const [tempo, setTempo] = useState(60)
-  const [beat, setBeat] = useState(4)
-  const timer = useRef(null);
-  const [counter, setCounter] = useState(0);
-  const [sound, setSound] = useState();
+
+  /*tempo stores the current tempo */ 
+  //These were set as constant variables, i dunno if var will fix all the probs, but now we can change them
+  var [tempo, setTempo] = useState(60)
+  var [beat, setBeat] = useState(4)
+  var [sound, setSound] = useState();
+  var [isPlaying, setIsPlaying] = useState(false);
+
+  let metronomeInterval;
 
   /* Toggles pause and play button. */
   const PausePlay = () => {
     if (pausePlayIcon == "caretright") {
-      setPausePlayIcon("pause")
+      setIsPlaying(true)
       playSound()
     } else {
-      setPausePlayIcon("caretright")
-      pauseSound()
+      clearInterval(metronomeInterval); // Stop the metronome loop
+      setIsPlaying(false);              // set isPLaying to false
     }
+    setPausePlayIcon("caretright" ? "pause" : "caretright")
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(DefaultClick);
+    const {sound } = await Audio.Sound.createAsync(DefaultClick);
     setSound(sound);
     console.log('Playing sound');
     await sound.playAsync();
   }
 
-  /* Simply pauses sound. */
-  async function pauseSound() {
-    sound.pauseAsync();
-    sound.unloadAsync();
-  }
-
   /* The hook useEffect synchronizes a component with an external system. */
   /* setInterval() implements the BPM */
   useEffect(() => {
-    const interval = setInterval(() => {
-        sound.playAsync();
-    }, BPM);
-    return sound
-      ? () => {
-          console.log('Unloading sound');
-          sound.unloadAsync();
-          clearInterval(interval)
-        }
-      : undefined;
-  }, [sound]);
+
+    if (sound && isPlaying) {
+      let interval = (60 / tempo) * 1000;
+
+      // Start the metronome loop
+      metronomeInterval = setInterval(() => {
+        playSound(); // Play the sound at the specified BPM interval
+      }, interval); // Tempo value works in reverse rn, higher=slower
+    }
+
+    // Clean up when the component unmounts
+    // Is there a way to change this so it only unloads when it stops/is paused?
+    // I got the most slowdown when it kept having to load and unload the sound
+    return () => {
+      console.log('Unloading sound');
+      if (sound) {
+        sound.unloadAsync();
+      }
+      clearInterval(metronomeInterval);
+    };
+  }, [sound, isPlaying,tempo]);
 
   /* Main app layout. */
   return (
     <View style={styles.container}>
       <Text style={{ color: '#f0f5f5', fontWeight: 'bold', fontSize: 24, marginTop: 100 }}>Welcome to Beatle!</Text>
       <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
+      <Text> </Text> 
       <BoxyBox w={200} h={100} value={tempo} setValue={setTempo} min={20} max = {200}/>
+      <Text> </Text>
       <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max = {12}/>
     </View>
 

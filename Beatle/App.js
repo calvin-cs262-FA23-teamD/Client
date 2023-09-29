@@ -31,7 +31,7 @@ import Button from './components/Button';
 import BoxyBox from './components/BoxyBox';
 
 /* Default sound */
-const DefaultClick = require('./assets/shotgun.mp3'); // :) enjoy!
+const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
 
 /* Main function */
 export default function App() {
@@ -50,14 +50,13 @@ export default function App() {
   /* Toggles pause and play button. */
   const PausePlay = () => {
     if (pausePlayIcon == "caretright") {
-      setPausePlayIcon("pause")
       setIsPlaying(true)
       playSound()
     } else {
-      setPausePlayIcon("caretright")
       clearInterval(metronomeInterval); // Stop the metronome loop
       setIsPlaying(false);              // set isPLaying to false
     }
+    setPausePlayIcon("caretright" ? "pause" : "caretright")
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
@@ -74,10 +73,12 @@ export default function App() {
   useEffect(() => {
 
     if (sound && isPlaying) {
+      let interval = (60 / tempo) * 1000;
+
       // Start the metronome loop
       metronomeInterval = setInterval(() => {
         playSound(); // Play the sound at the specified BPM interval
-      }, (tempo*10)); // Tempo value works in reverse rn, higher=slower
+      }, interval); // Tempo value works in reverse rn, higher=slower
     }
 
     // Clean up when the component unmounts
@@ -90,7 +91,7 @@ export default function App() {
       }
       clearInterval(metronomeInterval);
     };
-  }, [sound, isPlaying]);
+  }, [sound, isPlaying,tempo]);
 
   /* Main app layout. */
   return (

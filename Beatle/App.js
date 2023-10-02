@@ -38,7 +38,7 @@ export default function App() {
   /* Hooks */
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
 
-  /*tempo stores the current tempo */ 
+  /*tempo stores the current tempo */
   //These were set as constant variables, i dunno if var will fix all the probs, but now we can change them
   var [tempo, setTempo] = useState(60)
   var [beat, setBeat] = useState(4)
@@ -62,7 +62,7 @@ export default function App() {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     console.log('Loading Sound');
-    const {sound } = await Audio.Sound.createAsync(DefaultClick);
+    const { sound } = await Audio.Sound.createAsync(DefaultClick);
     setSound(sound);
     console.log('Playing sound');
     await sound.playAsync();
@@ -91,17 +91,18 @@ export default function App() {
       }
       clearInterval(metronomeInterval);
     };
-  }, [sound, isPlaying,tempo]);
+  }, [sound, isPlaying, tempo]);
 
   /* Main app layout. */
   return (
     <View style={styles.container}>
+
       <Text style={{ color: '#f0f5f5', fontWeight: 'bold', fontSize: 24, marginTop: 100 }}>Welcome to Beatle!</Text>
       <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
-      <Text> </Text> 
-      <BoxyBox w={200} h={100} value={tempo} setValue={setTempo} min={20} max = {200}/>
       <Text> </Text>
-      <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max = {12}/>
+      <BoxyBox w={200} h={100} value={tempo} setValue={setTempo} min={20} max={200} />
+      <Text> </Text>
+      <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max={12} />
     </View>
 
   );

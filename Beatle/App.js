@@ -17,11 +17,14 @@
  *      https://www.tutorialspoint.com/how-to-call-a-function-repeatedly-every-5-seconds-in-javascript
  *      https://devtrium.com/posts/set-interval-react
  *      https://stackoverflow.com/questions/63570597/typeerror-func-apply-is-not-a-function
+ *      https://www.npmjs.com/package/react-native-dropdown-select-list
  */
 
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
+/* Import SelectList (Abigail) */
+import { SelectList } from 'react-native-dropdown-select-list';
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
@@ -33,10 +36,25 @@ import BoxyBox from './components/BoxyBox';
 /* Default sound */
 const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
 
+/* Second sound (Abigail) */
+const BackupClick = require('./assets/shotgun.mp3');
+
 /* Main function */
 export default function App() {
   /* Hooks */
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
+
+  // Test (Abigail)
+  const [selected, setSelected] = React.useState("");
+
+  // Create data "array" (Abigail)
+  const soundList = [
+    { key: '1', value: 'Default' },
+    { key: '2', value: 'Bass' },
+    { key: '3', value: 'Clap' },
+    { key: '4', value: 'Piano' },
+    { key: '5', value: 'Shotgun' },
+  ]
 
   /*tempo stores the current tempo */
   //These were set as constant variables, i dunno if var will fix all the probs, but now we can change them
@@ -62,7 +80,7 @@ export default function App() {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(DefaultClick);
+    const { sound } = await Audio.Sound.createAsync(BackupClick); // changed to shotgun
     setSound(sound);
     console.log('Playing sound');
     await sound.playAsync();
@@ -93,10 +111,10 @@ export default function App() {
     };
   }, [sound, isPlaying, tempo]);
 
-  /* Main app layout. */
+  /* Main app layout */
   return (
     <View style={styles.container}>
-
+      <SelectList setSelected={(val) => setSelected(val)} data={soundList} save="value" dropdownTextStyles={{ color: '#ff6900' }} placeholder="Sound" search='false' inputStyles={{ color: '#fff' }} />
       <Text style={{ color: '#f0f5f5', fontWeight: 'bold', fontSize: 24, marginTop: 100 }}>Welcome to Beatle!</Text>
       <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
       <Text> </Text>
@@ -104,11 +122,10 @@ export default function App() {
       <Text> </Text>
       <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max={12} />
     </View>
-
   );
 }
 
-/* StyleSheets. */
+/* StyleSheets */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

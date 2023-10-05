@@ -55,7 +55,6 @@ export default function App() {
     { key: '4', value: 'Piano' },
     { key: '5', value: 'Shotgun' },
   ]
-
   /*tempo stores the current tempo */
   //These were set as constant variables, i dunno if var will fix all the probs, but now we can change them
   var [tempo, setTempo] = useState(60)
@@ -80,7 +79,7 @@ export default function App() {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(BackupClick); // changed to shotgun
+    const { sound } = await Audio.Sound.createAsync(DefaultClick);
     setSound(sound);
     console.log('Playing sound');
     await sound.playAsync();

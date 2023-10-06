@@ -33,11 +33,11 @@ import { Audio } from 'expo-av';
 import Button from './components/Button';
 import BoxyBox from './components/BoxyBox';
 
-/* Default sound */
+/* Default sound (this code is no longer used) */
 const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
 const shotgun = require('./assets/shotgun.mp3');
 
-/* Second sound (Abigail) */
+/* Second sound (this code is no longer used) */
 const BackupClick = require('./assets/shotgun.mp3');
 
 /* Main function */
@@ -46,7 +46,7 @@ export default function App() {
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
 
   // Test (Abigail)
-  const [selected, setSelected] = React.useState("");
+  const [selected, setSelected] = React.useState("Default"); // Initialize selected state with default sound
 
   // Create data "array" (Abigail)
   const soundList = [
@@ -57,7 +57,7 @@ export default function App() {
     { key: '5', value: 'Shotgun' },
   ]
   /*tempo stores the current tempo */
-  //These were set as constant variables, i dunno if var will fix all the probs, but now we can change them
+  //These were set as constant variables, I dunno if var will fix all the probs, but now we can change them
   var [tempo, setTempo] = useState(60);
   var [beat, setBeat] = useState(4);
   var [count, setCount] = useState(0);
@@ -75,27 +75,48 @@ export default function App() {
       playSound()
     } else {
       setIsPlaying(false)
-      setPausePlayIcon("caretright"); 
+      setPausePlayIcon("caretright");
       clearInterval(metronomeInterval); // Stop the metronome loop
       setIsPlaying(false);              // set isPLaying to false
     }
   }
 
+  /* Redoing this function to see if it works to switch the sounds */
   /* Plays sound. The function is async playing an audio file is asynchronous. */
-  async function playSound() {
+  async function playSound(selectedSound) {
     console.log(count);
-    setCount((count+1)%beat);
+    setCount((count + 1) % beat);
+    // new
+    let soundFile;
 
-    if (count==0) {
-      const { sound } = await Audio.Sound.createAsync(shotgun);
+    switch (selected) {
+      case 'Bass':
+        soundFile = require('./assets/bass_c.mp3');
+        break;
+      case 'Clap':
+        soundFile = require('./assets/clap.mp3');
+        break;
+      case 'Piano':
+        soundFile = require('./assets/piano_c3.mp3');
+        break;
+      case 'Shotgun':
+        soundFile = require('./assets/shotgun.mp3');
+        break;
+      default:
+        soundFile = require('./assets/metronomesound.mp3'); // Default
+    }
+
+    if (count == 0) {
+      const { sound } = await Audio.Sound.createAsync(soundFile);
       setSound(sound);
       await sound.playAsync();
-    } else{
+    } else {
       const { sound } = await Audio.Sound.createAsync(DefaultClick);
       setSound(sound);
       await sound.replayAsync();
     }
   }
+
 
   /* The hook useEffect synchronizes a component with an external system. */
   /* setInterval() implements the BPM */
@@ -143,13 +164,13 @@ export default function App() {
         <View style={styles.sounds}>
           <View style={styles.boxed}>
             <Text style={styles.subtitle}> Sound</Text>
-            <SelectList setSelected={(val) => setSelected(val)} 
-                        data={soundList} save="value" 
-                        boxStyles={{backgroundColor: '#ff6900'}}
-                        dropdownTextStyles={{ color: '#ff6900'}} 
-                        placeholder="Sound" 
-                        search={false}
-                        style={styles.dropDown}
+            <SelectList setSelected={(val) => setSelected(val)}
+              data={soundList} save="value"
+              boxStyles={{ backgroundColor: '#ff6900' }}
+              dropdownTextStyles={{ color: '#ff6900' }}
+              placeholder="Sound"
+              search={false}
+              style={styles.dropDown}
             />
           </View>
         </View>
@@ -169,33 +190,34 @@ const styles = StyleSheet.create({
   header: {
     padding: 50,
   },
-  title:{ 
-    color: '#f0f5f5', 
-    fontWeight: 'bold', 
-    fontSize: 24, 
-    marginTop: 100 },
+  title: {
+    color: '#f0f5f5',
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginTop: 100
+  },
   updates: {
     flexDirection: "row",
     padding: 50,
     justifyContent: "center",
-    columnGap: 40 
-  }, 
+    columnGap: 40
+  },
   subtitle: {
-    color: '#f0f5f5', 
-    fontWeight: 'bold', 
+    color: '#f0f5f5',
+    fontWeight: 'bold',
     fontSize: 18,
     alignSelf: 'center'
   },
   counters: {
     justifyContent: 'space-between',
-    rowGap:20
+    rowGap: 20
   },
   boxed: {
-    rowGap:10,
+    rowGap: 10,
   },
   sounds: {
     justifyContent: 'flex-start',
   }
 
-  
+
 });

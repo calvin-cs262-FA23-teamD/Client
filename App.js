@@ -125,13 +125,35 @@ export default function App() {
   /* Main app layout */
   return (
     <View style={styles.container}>
-      <SelectList setSelected={(val) => setSelected(val)} data={soundList} save="value" dropdownTextStyles={{ color: '#ff6900' }} placeholder="Sound" search='false' inputStyles={{ color: '#fff' }} />
-      <Text style={{ color: '#f0f5f5', fontWeight: 'bold', fontSize: 24, marginTop: 100 }}>Welcome to Beatle!</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Beatle</Text>
+      </View>
       <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
-      <Text> </Text>
-      <BoxyBox w={200} h={100} value={tempo} setValue={setTempo} min={20} max={200} />
-      <Text> </Text>
-      <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+      <View style={styles.updates}>
+        <View style={styles.counters}>
+          <View style={styles.boxed}>
+            <Text style={styles.subtitle}> Tempo</Text>
+            <BoxyBox w={200} h={100} value={tempo} setValue={setTempo} min={20} max={200} />
+          </View>
+          <View style={styles.boxed}>
+            <Text style={styles.subtitle}> Beat</Text>
+            <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+          </View>
+        </View>
+        <View style={styles.sounds}>
+          <View style={styles.boxed}>
+            <Text style={styles.subtitle}> Sound</Text>
+            <SelectList setSelected={(val) => setSelected(val)} 
+                        data={soundList} save="value" 
+                        boxStyles={{backgroundColor: '#ff6900'}}
+                        dropdownTextStyles={{ color: '#ff6900'}} 
+                        placeholder="Sound" 
+                        search={false}
+                        style={styles.dropDown}
+            />
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
@@ -144,4 +166,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: {
+    padding: 50,
+  },
+  title:{ 
+    color: '#f0f5f5', 
+    fontWeight: 'bold', 
+    fontSize: 24, 
+    marginTop: 100 },
+  updates: {
+    flexDirection: "row",
+    padding: 50,
+    justifyContent: "center",
+    columnGap: 40 
+  }, 
+  subtitle: {
+    color: '#f0f5f5', 
+    fontWeight: 'bold', 
+    fontSize: 18,
+    alignSelf: 'center'
+  },
+  counters: {
+    justifyContent: 'space-between',
+    rowGap:20
+  },
+  boxed: {
+    rowGap:10,
+  },
+  sounds: {
+    justifyContent: 'flex-start',
+  }
+
+  
 });

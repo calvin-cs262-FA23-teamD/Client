@@ -32,6 +32,7 @@ import { Audio } from 'expo-av';
 /* Import component files */
 import Button from './components/Button';
 import BoxyBox from './components/BoxyBox';
+import { load } from 'mime';
 
 /* Default sound */
 const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
@@ -66,21 +67,26 @@ export default function App() {
 
   /* Toggles pause and play button. */
   const PausePlay = () => {
-    if (pausePlayIcon == "caretright") {
+    if (!isPlaying) {
+      setIsPlaying(true)
+      setPausePlayIcon("pause");
       setIsPlaying(true)
       playSound()
     } else {
+      setIsPlaying(false)
+      setPausePlayIcon("caretright"); 
       clearInterval(metronomeInterval); // Stop the metronome loop
       setIsPlaying(false);              // set isPLaying to false
     }
-    setPausePlayIcon("caretright" ? "pause" : "caretright")
   }
 
-  /* Plays sound. The function is async playing an audio file is asynchronous. */
-  async function playSound() {
+  async function loadSound() {
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(DefaultClick);
     setSound(sound);
+  }
+  /* Plays sound. The function is async playing an audio file is asynchronous. */
+  async function playSound() {
     console.log('Playing sound');
     await sound.playAsync();
   }
@@ -90,6 +96,8 @@ export default function App() {
   useEffect(() => {
 
     if (sound && isPlaying) {
+
+      loadSound();
       let interval = (60 / tempo) * 1000;
 
       // Start the metronome loop

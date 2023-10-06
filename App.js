@@ -32,10 +32,10 @@ import { Audio } from 'expo-av';
 /* Import component files */
 import Button from './components/Button';
 import BoxyBox from './components/BoxyBox';
-import { load } from 'mime';
 
 /* Default sound */
 const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
+const shotgun = require('./assets/shotgun.mp3');
 
 /* Second sound (Abigail) */
 const BackupClick = require('./assets/shotgun.mp3');
@@ -58,8 +58,9 @@ export default function App() {
   ]
   /*tempo stores the current tempo */
   //These were set as constant variables, i dunno if var will fix all the probs, but now we can change them
-  var [tempo, setTempo] = useState(60)
-  var [beat, setBeat] = useState(4)
+  var [tempo, setTempo] = useState(60);
+  var [beat, setBeat] = useState(4);
+  var [count, setCount] = useState(0);
   var [sound, setSound] = useState();
   var [isPlaying, setIsPlaying] = useState(false);
 
@@ -80,15 +81,20 @@ export default function App() {
     }
   }
 
-  async function loadSound() {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(DefaultClick);
-    setSound(sound);
-  }
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
-    console.log('Playing sound');
-    await sound.playAsync();
+    console.log(count);
+    setCount((count+1)%beat);
+
+    if (count==0) {
+      const { sound } = await Audio.Sound.createAsync(shotgun);
+      setSound(sound);
+      await sound.playAsync();
+    } else{
+      const { sound } = await Audio.Sound.createAsync(DefaultClick);
+      setSound(sound);
+      await sound.replayAsync();
+    }
   }
 
   /* The hook useEffect synchronizes a component with an external system. */
@@ -96,8 +102,6 @@ export default function App() {
   useEffect(() => {
 
     if (sound && isPlaying) {
-
-      loadSound();
       let interval = (60 / tempo) * 1000;
 
       // Start the metronome loop

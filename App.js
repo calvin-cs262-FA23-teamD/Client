@@ -43,6 +43,7 @@ const soundList = [
   { key: '4', value: 'Piano' },
   { key: '5', value: 'Shotgun' },
 ]
+//const metronome =new  AgoraRhythmPlayerConfig(beatsPerMinute=60, beatsPerMeasure=4);
 
 /* Main function */
 export default function App() {
@@ -52,33 +53,34 @@ export default function App() {
   const [soundFile, setSoundFile] = useState(require('./assets/metronomesound.mp3'));
 
   /*hooks*/
-  var [BPM, setBPM] = useState(60);     //Beats per minute
-  var [beat, setBeat] = useState(4);    // how many beats are in a measure
-  var [count, setCount] = useState(0);  // which beat of the measure are we on
-  var [sound, setSound] = useState();   // sound that is currently loaded
-  var [isPlaying, setIsPlaying] = useState(false);  // is the metronome currently playing
+  const [BPM, setBPM] = useState(60);     //Beats per minute
+  const [beat, setBeat] = useState(4);    // how many beats are in a measure
+  const [count, setCount] = useState(0);  // which beat of the measure are we on
+  const [measure, setMeasure] = useState(-1); // current measure
+  const [sound, setSound] = useState();   // sound that is currently loaded
+  const [isPlaying, setIsPlaying] = useState(false);  // is the metronome currently playing
 
-  let metronomeInterval;  // time between each beat
-
+  this.expected;
+  this.drift = 0;
+  this.date;
+  this.interval = 60/BPM * 1000
   /* Toggles pause and play button. */
   const PausePlay = () => {
     if (!isPlaying) {
       setIsPlaying(true)
       setPausePlayIcon("pause");
-      playSound()
     } else {
       setIsPlaying(false)
       setPausePlayIcon("caretright");
-      clearInterval(metronomeInterval); // Stop the metronome loop
+      setMeasure(measure => -1);
+      this.drift=0;
     }
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     // Play sound, accenting the down beat
-    console.log(count);
-    setCount((count + 1) % beat);
-    if (count == 0) {
+    if (measure == 0) {
       const { sound } = await Audio.Sound.createAsync(soundFile);
       setSound(sound);
       await sound.playAsync();
@@ -87,7 +89,14 @@ export default function App() {
       setSound(sound);
       await sound.replayAsync();
     }
-    console.log(isPlaying);
+    setMeasure(measure => (measure +1) % beat);
+    console.log(measure);
+    console.log("beat");
+    this.actual = Date.now();
+    console.log("date    ", this.actual);
+    console.log("expected", this.expected);
+    this.drift =(this.actual - this.expected) - this.interval;
+    console.log("drift ", this.drift);
   }
 
   /*update the accent beat sound*/
@@ -111,26 +120,43 @@ export default function App() {
   },[selectedSound]);
 
 
-  /* setInterval() implements the metronome playing at a sepecific BPM */
   useEffect(() => {
-
-    if (sound && isPlaying) {
-      let interval = (60 / BPM) * 1000;
-
-      // Start the metronome loop
-      metronomeInterval = setInterval(() => {
-        playSound(); // Play the sound at the specified BPM interval
-      }, interval); // BPM value works in reverse rn, higher=slower
+    if (isPlaying && measure >=0) {
+      this.expected = Date.now() + BPM;
+      console.log("drift before", this.drift);
+      setTimeout(playSound, this.interval- this.drift);
+      console.log("drift after", this.drift);
     }
+  }, [measure]);
+
+  useEffect(() => {
+    console.log(isPlaying);
+    if (isPlaying) {
+      setMeasure(measure => measure +1);
+    }
+  },[isPlaying]);
+
+
+  // /* setInterval() implements the metronome playing at a sepecific BPM */
+  // useEffect(() => {
+
+  //   if (sound && isPlaying) {
+  //     let interval = (60 / BPM) * 1000;
+
+  //     // Start the metronome loop
+  //     metronomeInterval = setInterval(() => {
+  //       playSound(); // Play the sound at the specified BPM interval
+  //     }, interval); // BPM value works in reverse rn, higher=slower
+  //   }
     
-    return () => {
-      console.log('Unloading sound');
-      if (sound) {
-        sound.unloadAsync();
-      }
-      clearInterval(metronomeInterval);
-    };
-  }, [sound, isPlaying, BPM]);
+  //   return () => {
+  //     console.log('Unloading sound');
+  //     if (sound) {
+  //       sound.unloadAsync();
+  //     }
+  //     clearInterval(metronomeInterval);
+  //   };
+  // }, [sound, isPlaying, BPM]);
 
   /* Main app layout */
   return (

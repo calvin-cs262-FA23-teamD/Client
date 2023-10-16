@@ -66,38 +66,42 @@ export default function App() {
   this.interval = 60/BPM * 1000
   /* Toggles pause and play button. */
   const PausePlay = () => {
-    if (!isPlaying) {
-      setIsPlaying(true)
-      setPausePlayIcon("pause");
-    } else {
-      setIsPlaying(false)
-      setPausePlayIcon("caretright");
-      setMeasure(measure => -1);
-      this.drift=0;
-    }
+    setIsPlaying( isPlaying => !isPlaying);
+    setPausePlayIcon(PausePlayIcon => (PausePlayIcon === "caretright" ? "pause" : "caretright"));
+    setMeasure(measure => -1);
+    this.drift=0;
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     // Play sound, accenting the down beat
-    if (measure == 0) {
-      const { sound } = await Audio.Sound.createAsync(soundFile);
-      setSound(sound);
-      await sound.playAsync();
-    } else {
-      const { sound } = await Audio.Sound.createAsync(DefaultClick);
-      setSound(sound);
-      await sound.replayAsync();
-    }
+    const { sound } = await Audio.Sound.createAsync((measure==0) ? soundFile : DefaultClick);
+    setSound(sound);
+    await sound.playAsync();
+    //await sound.unloadAsync();
+    
     setMeasure(measure => (measure +1) % beat);
     console.log(measure);
-    console.log("beat");
     this.actual = Date.now();
-    console.log("date    ", this.actual);
-    console.log("expected", this.expected);
-    this.drift =(this.actual - this.expected) - this.interval;
+    this.drift =(this.actual - this.expected);
     console.log("drift ", this.drift);
   }
+  
+  useEffect(() => {
+    if (isPlaying && measure >=0) {
+      this.expected = Date.now() + this.interval - this.drift;
+      console.log(this.interval);
+      console.log(this.interval - this.drift);
+      setTimeout(playSound, this.interval - this.drift);
+    }
+  }, [measure]);
+
+  useEffect(() => {
+    console.log(isPlaying);
+    if (isPlaying) {
+      setMeasure(measure => (measure +1) % beat);
+    }
+  },[isPlaying]);
 
   /*update the accent beat sound*/
   useEffect(() => {
@@ -118,45 +122,6 @@ export default function App() {
         setSoundFile(require('./assets/metronomesound.mp3')); // Default
     }
   },[selectedSound]);
-
-
-  useEffect(() => {
-    if (isPlaying && measure >=0) {
-      this.expected = Date.now() + BPM;
-      console.log("drift before", this.drift);
-      setTimeout(playSound, this.interval- this.drift);
-      console.log("drift after", this.drift);
-    }
-  }, [measure]);
-
-  useEffect(() => {
-    console.log(isPlaying);
-    if (isPlaying) {
-      setMeasure(measure => measure +1);
-    }
-  },[isPlaying]);
-
-
-  // /* setInterval() implements the metronome playing at a sepecific BPM */
-  // useEffect(() => {
-
-  //   if (sound && isPlaying) {
-  //     let interval = (60 / BPM) * 1000;
-
-  //     // Start the metronome loop
-  //     metronomeInterval = setInterval(() => {
-  //       playSound(); // Play the sound at the specified BPM interval
-  //     }, interval); // BPM value works in reverse rn, higher=slower
-  //   }
-    
-  //   return () => {
-  //     console.log('Unloading sound');
-  //     if (sound) {
-  //       sound.unloadAsync();
-  //     }
-  //     clearInterval(metronomeInterval);
-  //   };
-  // }, [sound, isPlaying, BPM]);
 
   /* Main app layout */
   return (

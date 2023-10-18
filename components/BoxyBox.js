@@ -34,6 +34,7 @@ export default function BoxyBox({ w, h, value, setValue, max = 65, min = 55 }) {
 
 const styles = StyleSheet.create({
   boxyBoxes: {
+    borderRadius: 20,
     alignItems: 'center',
     backgroundColor: '#1f2e2e',
     flexDirection: 'row',

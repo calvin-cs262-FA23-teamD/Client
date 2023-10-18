@@ -18,13 +18,14 @@
  *      https://devtrium.com/posts/set-interval-react
  *      https://stackoverflow.com/questions/63570597/typeerror-func-apply-is-not-a-function
  *      https://www.npmjs.com/package/react-native-dropdown-select-list
+ *      https://github.com/musicandcode/Metronome/blob/main/app.js
  */
 
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
-/* Import SelectList (Abigail) */
-import { SelectList } from 'react-native-dropdown-select-list';
+
+import { SelectList } from 'react-native-dropdown-select-list';  // dropdown list for selecting sound
 
 /* Import component files */
 import Button from './components/Button';
@@ -34,8 +35,7 @@ import BoxyBox from './components/BoxyBox';
 import { Audio } from 'expo-av';
 
 
-/* Default sound and list of possible sounds*/
-const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
+/* Default sound and list of possible selectedSounds*/
 const soundList = [
   { key: '1', value: 'Default' },
   { key: '2', value: 'Bass' },
@@ -43,83 +43,94 @@ const soundList = [
   { key: '4', value: 'Piano' },
   { key: '5', value: 'Shotgun' },
 ]
-//const metronome =new  AgoraRhythmPlayerConfig(beatsPerMinute=60, beatsPerMeasure=4);
+const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
+
+
 
 /* Main function */
 export default function App() {
   /* Hooks */
-  const [pausePlayIcon, setPausePlayIcon] = useState("caretright")
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [pausePlayIcon, setPausePlayIcon] = useState("caretright");
+
   const [selectedSound, setSelectedSound] = React.useState("Default"); // Initialize selected state with default sound
-  const [soundFile, setSoundFile] = useState(require('./assets/metronomesound.mp3'));
+  const [selectedSoundFile, setSelectedSoundFile] = useState(require('./assets/metronomesound.mp3')); // sound file of selected sound
+  const [sound, setSound] = useState();   // current loaded sound
 
-  /*hooks*/
-  const [BPM, setBPM] = useState(60);     //Beats per minute
-  const [beat, setBeat] = useState(4);    // how many beats are in a measure
-  const [count, setCount] = useState(0);  // which beat of the measure are we on
+  const [BPM, setBPM] = useState(60);     // beats per minute
+  const [beat, setBeat] = useState(4);    // beats per measure
   const [measure, setMeasure] = useState(-1); // current measure
-  const [sound, setSound] = useState();   // sound that is currently loaded
-  const [isPlaying, setIsPlaying] = useState(false);  // is the metronome currently playing
 
+  /* variables to make timer work */
   this.expected;
   this.drift = 0;
   this.date;
   this.interval = 60/BPM * 1000
-  /* Toggles pause and play button. */
+
+  /* Toggles pause and play */
   const PausePlay = () => {
     setIsPlaying( isPlaying => !isPlaying);
     setPausePlayIcon(PausePlayIcon => (PausePlayIcon === "caretright" ? "pause" : "caretright"));
-    setMeasure(measure => -1);
+    
+    setMeasure(-1);
     this.drift=0;
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
-    // Play sound, accenting the down beat
-    const { sound } = await Audio.Sound.createAsync((measure==0) ? soundFile : DefaultClick);
+    /* Play sound, accenting the down beat */
+    const { sound } = await Audio.Sound.createAsync((measure%beat==0) ? selectedSoundFile : DefaultClick);
     setSound(sound);
     await sound.playAsync();
-    //await sound.unloadAsync();
     
-    setMeasure(measure => (measure +1) % beat);
-    console.log(measure);
+    /* increment measure and calculate drift */ 
+    setMeasure(measure => (measure +1));
     this.actual = Date.now();
     this.drift =(this.actual - this.expected);
+    console.log(measure);
     console.log("drift ", this.drift);
   }
   
-  useEffect(() => {
-    if (isPlaying && measure >=0) {
-      this.expected = Date.now() + this.interval - this.drift;
-      console.log(this.interval);
-      console.log(this.interval - this.drift);
-      setTimeout(playSound, this.interval - this.drift);
-    }
-  }, [measure]);
-
+  /* start metronome by incrementing measure*/
   useEffect(() => {
     console.log(isPlaying);
     if (isPlaying) {
-      setMeasure(measure => (measure +1) % beat);
+      setMeasure(measure => (measure +1));
     }
   },[isPlaying]);
 
+  /* call playSound every interval, taking into account the drift */
+  useEffect(() => {
+    if (isPlaying && measure >=0) {
+      this.expected = Date.now() + this.interval - this.drift;
+      setTimeout(playSound, this.interval - this.drift);
+    }
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [measure]); // this function is called every time the measure updates. This allows the metronome to act recursively while also allowing for hook updates
+
+
+  
   /*update the accent beat sound*/
   useEffect(() => {
     switch (selectedSound) {
       case 'Bass':
-        setSoundFile(require('./assets/bass_c.mp3'));
+        setSelectedSoundFile(require('./assets/bass_c.mp3'));
         break;
       case 'Clap':
-        setSoundFile(require('./assets/clap.mp3'));
+        setSelectedSoundFile(require('./assets/clap.mp3'));
         break;
       case 'Piano':
-        setSoundFile(require('./assets/piano_c3.mp3'));
+        setSelectedSoundFile(require('./assets/piano_c3.mp3'));
         break;
       case 'Shotgun':
-        setSoundFile(require('./assets/shotgun.mp3'));
+        setSelectedSoundFile(require('./assets/shotgun.mp3'));
         break;
       default:
-        setSoundFile(require('./assets/metronomesound.mp3')); // Default
+        setSelectedSoundFile(require('./assets/metronomesound.mp3')); // Default
     }
   },[selectedSound]);
 

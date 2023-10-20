@@ -43,6 +43,8 @@ const soundList = [
   { key: '3', value: 'Drum' },
   { key: '4', value: 'Piano' },
   { key: '5', value: 'Shotgun' },
+  // Snap contributed by Abigail's friend Noah
+  { key: '6', value: 'Snap' },
 ]
 
 
@@ -65,56 +67,56 @@ export default function App() {
   this.expected;
   this.drift = 0;
   this.date;
-  this.interval = 60/BPM * 1000
+  this.interval = 60 / BPM * 1000
 
   /* Toggles pause and play */
   const PausePlay = () => {
-    setIsPlaying( isPlaying => !isPlaying);
+    setIsPlaying(isPlaying => !isPlaying);
     setPausePlayIcon(PausePlayIcon => (PausePlayIcon === "caretright" ? "pause" : "caretright"));
-    
+
     setMeasure(-1);
-    this.drift=0;
+    this.drift = 0;
   }
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync((measure%beat==0) ? accentSoundFile : selectedSoundFile);
+    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile);
     setSound(sound);
     await sound.playAsync();
-    
-    /* increment measure and calculate drift */ 
-    setMeasure(measure => (measure +1));
+
+    /* increment measure and calculate drift */
+    setMeasure(measure => (measure + 1));
     this.actual = Date.now();
-    this.drift =(this.actual - this.expected);
+    this.drift = (this.actual - this.expected);
     console.log(measure);
     console.log("drift ", this.drift);
   }
-  
+
   /* start metronome by incrementing measure*/
   useEffect(() => {
     console.log(isPlaying);
     if (isPlaying) {
-      setMeasure(measure => (measure +1));
+      setMeasure(measure => (measure + 1));
     }
-  },[isPlaying]);
+  }, [isPlaying]);
 
   /* call playSound every interval, taking into account the drift */
   useEffect(() => {
-    if (isPlaying && measure >=0) {
+    if (isPlaying && measure >= 0) {
       this.expected = Date.now() + this.interval - this.drift;
       setTimeout(playSound, this.interval - this.drift);
     }
     return sound
       ? () => {
-          sound.unloadAsync();
-        }
+        sound.unloadAsync();
+      }
       : undefined;
   }, [measure]); // this function is called every time the measure updates. This allows the metronome to act recursively while also allowing for hook updates
 
 
-  
-  /*update the accent beat sound*/
+
+  /*update the beat sound (paired)*/
   useEffect(() => {
     switch (selectedSound) {
       case 'Clap':
@@ -130,14 +132,18 @@ export default function App() {
         setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
         break;
       case 'Shotgun':
-        setSelectedSoundFile(require('./assets/sounds/shotgun/shotgun.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/shotgun/Shotgun.mp3'));
         setAccentSoundFile(require('./assets/sounds/shotgun/Shotgun2.mp3'));
+        break;
+      case 'Snap':
+        setSelectedSoundFile(require('./assets/sounds/snap/snap-click.mp3'));
+        setAccentSoundFile(require('./assets/sounds/snap/snap-accent.mp3'));
         break;
       default:
         setSelectedSoundFile(require('./assets/sounds/metronome/metronomesound.mp3')); // Default
         setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
     }
-  },[selectedSound]);
+  }, [selectedSound]);
 
   /* Main app layout */
   return (
@@ -145,7 +151,7 @@ export default function App() {
       <View style={styles.header}>
         <Text style={styles.title}>Beatle</Text>
       </View>
-      <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} /> 
+      <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
       <View style={styles.updates}>
         <View style={styles.counters}>
           <View style={styles.boxed}>

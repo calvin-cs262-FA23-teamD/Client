@@ -1,3 +1,4 @@
+
 /* Beatle -- App.js
  * 
  * (Emma) As of Tues. 9-26-23:
@@ -38,13 +39,11 @@ import { Audio } from 'expo-av';
 /* Default sound and list of possible selectedSounds*/
 const soundList = [
   { key: '1', value: 'Default' },
-  { key: '2', value: 'Bass' },
-  { key: '3', value: 'Clap' },
+  { key: '2', value: 'Clap' },
+  { key: '3', value: 'Drum' },
   { key: '4', value: 'Piano' },
   { key: '5', value: 'Shotgun' },
 ]
-const DefaultClick = require('./assets/metronomesound.mp3'); // :) enjoy!
-
 
 
 /* Main function */
@@ -54,7 +53,8 @@ export default function App() {
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright");
 
   const [selectedSound, setSelectedSound] = React.useState("Default"); // Initialize selected state with default sound
-  const [selectedSoundFile, setSelectedSoundFile] = useState(require('./assets/metronomesound.mp3')); // sound file of selected sound
+  const [selectedSoundFile, setSelectedSoundFile] = useState(require('./assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
+  const [accentSoundFile, setAccentSoundFile] = useState(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
   const [sound, setSound] = useState();   // current loaded sound
 
   const [BPM, setBPM] = useState(60);     // beats per minute
@@ -79,7 +79,7 @@ export default function App() {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync((measure%beat==0) ? selectedSoundFile : DefaultClick);
+    const { sound } = await Audio.Sound.createAsync((measure%beat==0) ? accentSoundFile : selectedSoundFile);
     setSound(sound);
     await sound.playAsync();
     
@@ -117,20 +117,25 @@ export default function App() {
   /*update the accent beat sound*/
   useEffect(() => {
     switch (selectedSound) {
-      case 'Bass':
-        setSelectedSoundFile(require('./assets/bass_c.mp3'));
-        break;
       case 'Clap':
-        setSelectedSoundFile(require('./assets/clap.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/clap/clap.mp3'));
+        setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+        break;
+      case 'Drum':
+        setSelectedSoundFile(require('./assets/sounds/drum/floor_tom.mp3'));
+        setAccentSoundFile(require('./assets/sounds/drum/snare_drum.mp3'));
         break;
       case 'Piano':
-        setSelectedSoundFile(require('./assets/piano_c3.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/piano/piano_c3.mp3'));
+        setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
         break;
       case 'Shotgun':
-        setSelectedSoundFile(require('./assets/shotgun.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/shotgun/shotgun.mp3'));
+        setAccentSoundFile(require('./assets/sounds/shotgun/Shotgun2.mp3'));
         break;
       default:
-        setSelectedSoundFile(require('./assets/metronomesound.mp3')); // Default
+        setSelectedSoundFile(require('./assets/sounds/metronome/metronomesound.mp3')); // Default
+        setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
     }
   },[selectedSound]);
 

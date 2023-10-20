@@ -1,3 +1,24 @@
+pages
+/* App.js */
+
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MetronomeScreen from './screens/Metronome';
+import TrackbuilderScreen from './screens/Trackbuilder';
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Metronome" screenOptions={{ headerShown: false}}>
+                <Stack.Screen name="Metronome" component={MetronomeScreen} />
+                <Stack.Screen name="Trackbuilder" component={TrackbuilderScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+
 
 /* Beatle -- App.js
  * 
@@ -179,47 +200,5 @@ export default function App() {
       </View>
     </View>
   );
+main
 }
-
-/* StyleSheets */
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0e0f',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    padding: 50,
-  },
-  title: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginTop: 100
-  },
-  updates: {
-    flexDirection: "row",
-    padding: 50,
-    justifyContent: "center",
-    columnGap: 40
-  },
-  subtitle: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 18,
-    alignSelf: 'center'
-  },
-  counters: {
-    justifyContent: 'space-between',
-    rowGap: 20
-  },
-  boxed: {
-    rowGap: 10,
-  },
-  sounds: {
-    justifyContent: 'flex-start',
-  }
-
-
-});

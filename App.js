@@ -120,16 +120,16 @@ export default function App() {
   useEffect(() => {
     switch (selectedSound) {
       case 'Clap':
-        setSelectedSoundFile(require('./assets/sounds/clap/clap.mp3'));
-        setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/clap/clap-click.mp3'));
+        setAccentSoundFile(require('./assets/sounds/clap/clap-accent.mp3'));
         break;
       case 'Drum':
-        setSelectedSoundFile(require('./assets/sounds/drum/floor_tom.mp3'));
-        setAccentSoundFile(require('./assets/sounds/drum/snare_drum.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/drum/floor_tom_louder.mp3'));
+        setAccentSoundFile(require('./assets/sounds/drum/snare_drum_louder.mp3'));
         break;
       case 'Piano':
-        setSelectedSoundFile(require('./assets/sounds/piano/piano_c3.mp3'));
-        setAccentSoundFile(require('./assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+        setSelectedSoundFile(require('./assets/sounds/piano/piano-click.mp3'));
+        setAccentSoundFile(require('./assets/sounds/piano/piano-accent.mp3'));
         break;
       case 'Shotgun':
         setSelectedSoundFile(require('./assets/sounds/shotgun/Shotgun.mp3'));

@@ -5,6 +5,9 @@ import Button from './Button';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from "react";
 
+import { stylesMain } from '../styles/styleMain';
+import { COLORS } from '../styles/colors';
+
 export default function BoxyBox({ w, h, value, setValue, max = 65, min = 55 }) {
   // hooks
 
@@ -18,35 +21,16 @@ export default function BoxyBox({ w, h, value, setValue, max = 65, min = 55 }) {
   }
 
   return (
-    <View style={[styles.boxyBoxes, { width: w, height: h, flexDirection: 'row', alignItems: 'center' }]}>
-      <View style={styles.plusMinusButtons}>
-        <Button image={"minus"} w={w / 4} h={h} onPress={() => changeValue(false)} />
+    <View style={[stylesMain.boxyBoxes, { width: w, height: h, flexDirection: 'row', alignItems: 'center' }]}>
+      <View style={stylesMain.plusMinusButtons}>
+        <Button image={"minus"} w={w / 2.7} h={h} onPress={() => changeValue(false)} />
       </View>
-      <View style={styles.valueText}>
-        <Text style={{ color: '#f0f5f5', fontSize: w / 6 }}>{value.toString()}</Text>
+      <View style={stylesMain.valueText}>
+        <Text style={{ color: COLORS.offWhite, fontSize: w / 6 }}>{value.toString()}</Text>
       </View>
-      <View style={styles.plusMinusButtons}>
-        <Button image={"plus"} w={w / 4} h={h} onPress={() => changeValue(true)} />
+      <View style={stylesMain.plusMinusButtons}>
+        <Button image={"plus"} w={w / 2.7} h={h} onPress={() => changeValue(true)} />
       </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  boxyBoxes: {
-    borderRadius: 20,
-    alignItems: 'center',
-    backgroundColor: '#1f2e2e',
-    flexDirection: 'row',
-    padding: 5,
-    border: 10
-  },
-  plusMinusButtons: {
-    alignItems: 'center',
-    flex: 1
-  },
-  valueText: {
-    alignItems: 'center',
-    flex: 1,
-  },
-})

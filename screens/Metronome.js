@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
-
 import { SelectList } from 'react-native-dropdown-select-list';  // dropdown list for selecting sound
 
 /* Import component files */
@@ -13,6 +12,9 @@ import BoxyBox from './../components/BoxyBox';
 /* Import sound ability */
 import { Audio } from 'expo-av';
 
+/* Import style code */
+import { stylesMain } from './../styles/styleMain';
+import { COLORS } from './../styles/colors';
 
 /* Default sound and list of possible selectedSounds*/
 const soundList = [
@@ -24,7 +26,6 @@ const soundList = [
   // Snap contributed by Abigail's friend Noah
   { key: '6', value: 'Snap' },
 ]
-
 
 /* Main function */
 export default function MetronomeScreen( {navigation} ) {
@@ -92,22 +93,20 @@ export default function MetronomeScreen( {navigation} ) {
       : undefined;
   }, [measure]); // this function is called every time the measure updates. This allows the metronome to act recursively while also allowing for hook updates
 
-
-
   /*update the beat sound (paired)*/
   useEffect(() => {
     switch (selectedSound) {
       case 'Clap':
-        setSelectedSoundFile(require('./../assets/sounds/clap/clap.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+        setSelectedSoundFile(require('./../assets/sounds/clap/clap-click.mp3'));
+        setAccentSoundFile(require('./../assets/sounds/clap/clap-accent.mp3'));
         break;
       case 'Drum':
-        setSelectedSoundFile(require('./../assets/sounds/drum/floor_tom.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/drum/snare_drum.mp3'));
+        setSelectedSoundFile(require('./../assets/sounds/drum/floor_tom_louder.mp3'));
+        setAccentSoundFile(require('./../assets/sounds/drum/snare_drum_louder.mp3'));
         break;
       case 'Piano':
-        setSelectedSoundFile(require('./../assets/sounds/piano/piano_c3.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+        setSelectedSoundFile(require('./../assets/sounds/piano/piano-click.mp3'));
+        setAccentSoundFile(require('./../assets/sounds/piano/piano-accent.mp3'));
         break;
       case 'Shotgun':
         setSelectedSoundFile(require('./../assets/sounds/shotgun/Shotgun.mp3'));
@@ -125,85 +124,46 @@ export default function MetronomeScreen( {navigation} ) {
 
   /* Main app layout */
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Beatle</Text>
+    <View style={stylesMain.container}>
+      <View style={stylesMain.header}>
+        <Text style={stylesMain.title}>Beatle</Text>
       </View>
-      <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
-      <View style={styles.updates}>
-        <View style={styles.counters}>
-          <View style={styles.boxed}>
-            <Text style={styles.subtitle}> Tempo</Text>
-            <BoxyBox w={200} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
+
+      <Button image={pausePlayIcon} onPress={PausePlay} w={325} h={100} />
+
+      <View style={stylesMain.updates}>
+        <View style={stylesMain.counters}>
+
+          <View style={stylesMain.boxed}>
+            <Text style={stylesMain.subtitle}>Tempo</Text>
+            <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
           </View>
-          <View style={styles.boxed}>
-            <Text style={styles.subtitle}> Beat</Text>
-            <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+
+          <View style={stylesMain.boxed}>
+            <Text style={stylesMain.subtitle}>Beat</Text>
+            <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
           </View>
+
         </View>
-        <View style={styles.sounds}>
-          <View style={styles.boxed}>
-            <Text style={styles.subtitle}> Sound</Text>
-            <SelectList setSelectedSound={(val) => setSelectedSound(val)}
+        <View style={stylesMain.sounds}>
+
+          <View style={stylesMain.boxed}>
+            <Text style={stylesMain.subtitle}>Sound</Text>
+            <SelectList setSelected={(val) => setSelectedSound(val)}
               data={soundList} save="value"
-              boxStyles={{ backgroundColor: '#ff6900' }}
-              dropdownTextStyles={{ color: '#ff6900' }}
+              boxStyles={{ backgroundColor: COLORS.orange }}
+              dropdownTextStyles={{ color: COLORS.orange }}
               placeholder="Sound"
               search={false}
-              style={styles.dropDown}
+              style={stylesMain.dropDown}
             />
+			<View style={stylesMain.updates}>
+				<Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
+			</View>
           </View>
-          <View style={styles.nav}>
-            <Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={80} h={50}></Button>
-          </View>
+
         </View>
       </View>
     </View>
   );
 }
-
-/* StyleSheets */
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0e0f',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    padding: 50,
-  },
-  title: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginTop: 100
-  },
-  updates: {
-    flexDirection: "row",
-    padding: 50,
-    justifyContent: "center",
-    columnGap: 25
-  },
-  subtitle: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 18,
-    alignSelf: 'center'
-  },
-  counters: {
-    justifyContent: 'space-between',
-    rowGap: 20
-  },
-  boxed: {
-    rowGap: 10,
-  },
-  sounds: {
-    justifyContent: 'flex-start',
-    rowGap: 110,
-  },
-  nav: {
-    justifyContent: 'flex-start',
-  }
-
-});

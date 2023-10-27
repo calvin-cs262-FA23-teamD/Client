@@ -25,7 +25,10 @@ export const stylesMain = StyleSheet.create({
       flexDirection: "column",
       padding: 10,
       justifyContent: "center",
-      alignSelf: 'center',
+<<<<<<< HEAD
+	  alignSelf: 'center',
+=======
+>>>>>>> 8b0978254685879c6a6ea87a75073d97b6e2b87b
       columnGap: 25,
     },
 

@@ -1,31 +1,9 @@
 
-/* Beatle -- App.js
- * 
- * (Emma) As of Tues. 9-26-23:
- *    ADDED SOUND! IT CLICKS AT 60 BPM!!!
- * 
- *    Major additions:
- *      expo-av
- *      new "plugin" in app.json
- *      new functions playSound() and pauseSound()
- *      useEffect >:C
- * 
- *    Some sources used: 
- *      https://docs.expo.dev/versions/latest/sdk/av/
- *      https://docs.expo.dev/versions/latest/sdk/audio/
- *      https://react.dev/reference/react/useEffect
- *      https://www.waldo.com/blog/sound-react-native-apps-101-tutorial-examples
- *      https://www.tutorialspoint.com/how-to-call-a-function-repeatedly-every-5-seconds-in-javascript
- *      https://devtrium.com/posts/set-interval-react
- *      https://stackoverflow.com/questions/63570597/typeerror-func-apply-is-not-a-function
- *      https://www.npmjs.com/package/react-native-dropdown-select-list
- *      https://github.com/musicandcode/Metronome/blob/main/app.js
- */
+/* Beatle -- App.js */
 
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
-
 import { SelectList } from 'react-native-dropdown-select-list';  // dropdown list for selecting sound
 
 /* Import component files */
@@ -35,6 +13,9 @@ import BoxyBox from './components/BoxyBox';
 /* Import sound ability */
 import { Audio } from 'expo-av';
 
+/* Import style code */
+import { stylesMain } from './styles/styleMain';
+import { COLORS } from './styles/colors';
 
 /* Default sound and list of possible selectedSounds*/
 const soundList = [
@@ -46,7 +27,6 @@ const soundList = [
   // Snap contributed by Abigail's friend Noah
   { key: '6', value: 'Snap' },
 ]
-
 
 /* Main function */
 export default function App() {
@@ -114,8 +94,6 @@ export default function App() {
       : undefined;
   }, [measure]); // this function is called every time the measure updates. This allows the metronome to act recursively while also allowing for hook updates
 
-
-
   /*update the beat sound (paired)*/
   useEffect(() => {
     switch (selectedSound) {
@@ -147,79 +125,43 @@ export default function App() {
 
   /* Main app layout */
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Beatle</Text>
+    <View style={stylesMain.container}>
+      <View style={stylesMain.header}>
+        <Text style={stylesMain.title}>Beatle</Text>
       </View>
-      <Button image={pausePlayIcon} onPress={PausePlay} w={250} h={100} />
-      <View style={styles.updates}>
-        <View style={styles.counters}>
-          <View style={styles.boxed}>
-            <Text style={styles.subtitle}> Tempo</Text>
-            <BoxyBox w={200} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
+
+      <Button image={pausePlayIcon} onPress={PausePlay} w={325} h={100} />
+
+      <View style={stylesMain.updates}>
+        <View style={stylesMain.counters}>
+
+          <View style={stylesMain.boxed}>
+            <Text style={stylesMain.subtitle}>Tempo</Text>
+            <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
           </View>
-          <View style={styles.boxed}>
-            <Text style={styles.subtitle}> Beat</Text>
-            <BoxyBox w={200} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+
+          <View style={stylesMain.boxed}>
+            <Text style={stylesMain.subtitle}>Beat</Text>
+            <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
           </View>
+
         </View>
-        <View style={styles.sounds}>
-          <View style={styles.boxed}>
-            <Text style={styles.subtitle}> Sound</Text>
+        <View style={stylesMain.sounds}>
+
+          <View style={stylesMain.boxed}>
+            <Text style={stylesMain.subtitle}>Sound</Text>
             <SelectList setSelected={(val) => setSelectedSound(val)}
               data={soundList} save="value"
-              boxStyles={{ backgroundColor: '#ff6900' }}
-              dropdownTextStyles={{ color: '#ff6900' }}
+              boxStyles={{ backgroundColor: COLORS.orange }}
+              dropdownTextStyles={{ color: COLORS.orange }}
               placeholder="Sound"
               search={false}
-              style={styles.dropDown}
+              style={stylesMain.dropDown}
             />
           </View>
+
         </View>
       </View>
     </View>
   );
 }
-
-/* StyleSheets */
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0e0f',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    padding: 50,
-  },
-  title: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginTop: 100
-  },
-  updates: {
-    flexDirection: "row",
-    padding: 50,
-    justifyContent: "center",
-    columnGap: 40
-  },
-  subtitle: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 18,
-    alignSelf: 'center'
-  },
-  counters: {
-    justifyContent: 'space-between',
-    rowGap: 20
-  },
-  boxed: {
-    rowGap: 10,
-  },
-  sounds: {
-    justifyContent: 'flex-start',
-  }
-
-
-});

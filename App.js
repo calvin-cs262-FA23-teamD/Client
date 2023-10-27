@@ -1,5 +1,25 @@
-
-/* Beatle -- App.js */
+/* Beatle -- App.js
+ * 
+ * (Emma) As of Tues. 9-26-23:
+ *    ADDED SOUND! IT CLICKS AT 60 BPM!!!
+ * 
+ *    Major additions:
+ *      expo-av
+ *      new "plugin" in app.json
+ *      new functions playSound() and pauseSound()
+ *      useEffect >:C
+ * 
+ *    Some sources used: 
+ *      https://docs.expo.dev/versions/latest/sdk/av/
+ *      https://docs.expo.dev/versions/latest/sdk/audio/
+ *      https://react.dev/reference/react/useEffect
+ *      https://www.waldo.com/blog/sound-react-native-apps-101-tutorial-examples
+ *      https://www.tutorialspoint.com/how-to-call-a-function-repeatedly-every-5-seconds-in-javascript
+ *      https://devtrium.com/posts/set-interval-react
+ *      https://stackoverflow.com/questions/63570597/typeerror-func-apply-is-not-a-function
+ *      https://www.npmjs.com/package/react-native-dropdown-select-list
+ *      https://github.com/musicandcode/Metronome/blob/main/app.js
+ */
 
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';

@@ -12,6 +12,8 @@ export const stylesMain = StyleSheet.create({
 
     header: {
       padding: 15,
+      width: '100%',
+      alignItems: 'center',
     },
 
     title: {
@@ -21,19 +23,18 @@ export const stylesMain = StyleSheet.create({
       marginTop: -65
     },
 
+    text: {
+      color: COLORS.offWhite,
+      fontWeight: 'bold',
+      fontSize: 20,
+    },
+
     updates: {
       flexDirection: "column",
       padding: 10,
       justifyContent: "center",
       alignSelf: 'center',
       columnGap: 25,
-    },
-
-    subtitle: {
-      color: COLORS.offWhite,
-      fontWeight: 'bold',
-      fontSize: 18,
-      alignSelf: 'center'
     },
 
     counters: {

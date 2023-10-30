@@ -135,12 +135,12 @@ export default function MetronomeScreen( {navigation} ) {
         <View style={stylesMain.counters}>
 
           <View style={stylesMain.boxed}>
-            <Text style={stylesMain.subtitle}>Tempo</Text>
+            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Tempo</Text>
             <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
           </View>
 
           <View style={stylesMain.boxed}>
-            <Text style={stylesMain.subtitle}>Beat</Text>
+            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Beat</Text>
             <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
           </View>
 
@@ -148,7 +148,7 @@ export default function MetronomeScreen( {navigation} ) {
         <View style={stylesMain.sounds}>
 
           <View style={stylesMain.boxed}>
-            <Text style={stylesMain.subtitle}>Sound</Text>
+            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Sound</Text>
             <SelectList setSelected={(val) => setSelectedSound(val)}
               data={soundList} save="value"
               boxStyles={{ backgroundColor: COLORS.orange }}

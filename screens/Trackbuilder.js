@@ -12,51 +12,51 @@ import { COLORS } from './../styles/colors';
 import { Modal } from "../components/MeasureModal"
 
 const measures = [
-    {
-      number: 1,
-      tempo: 100,
-      beat: 4,
-    },
-    {
-      number: 2,
-      tempo: 100,
-      beat: 4,
-    },
-    {
-      number: 3,
-      tempo: 100,
-      beat: 4,
-    },
-    {
-      number: 4,
-      tempo: 50,
-      beat: 3,
-    },
-    {
-      number: 5,
-      tempo: 50,
-      beat: 3,
-    },
-  ];
-  
-  const MeasureBox = ({ measure, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[{ backgroundColor }]}>
-      <View style={[styles.measureBlock, { flexDirection: 'column', }]}>
-        <View style={styles.measureMark}>
-          <Text style={[styles.text, { color: textColor, fontSize: 20 }]}>{measure.number}</Text>
-        </View>
-        <View style={styles.beats}>
-          <Text style={[styles.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
-        </View>
-        <View style={styles.tempo}>
-          <Text style={[styles.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
-        </View>
+  {
+    number: 1,
+    tempo: 100,
+    beat: 4,
+  },
+  {
+    number: 2,
+    tempo: 100,
+    beat: 4,
+  },
+  {
+    number: 3,
+    tempo: 100,
+    beat: 4,
+  },
+  {
+    number: 4,
+    tempo: 50,
+    beat: 3,
+  },
+  {
+    number: 5,
+    tempo: 50,
+    beat: 3,
+  },
+];
+
+const MeasureBox = ({ measure, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[{ backgroundColor }]}>
+    <View style={[styles.measureBlock, { flexDirection: 'column', }]}>
+      <View style={styles.measureMark}>
+        <Text style={[styles.text, { color: textColor, fontSize: 20 }]}>{measure.number}</Text>
       </View>
-    </TouchableOpacity>
-  );
+      <View style={styles.beats}>
+        <Text style={[styles.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
+      </View>
+      <View style={styles.tempo}>
+        <Text style={[styles.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
+      </View>
+    </View>
+  </TouchableOpacity>
+);
 
 export default function TrackbuilderScreen({ navigation }) {
-    const [selectedMeasure, setSelectedMeasure] = useState();
+  const [selectedMeasure, setSelectedMeasure] = useState();
   const [selectedBeat, setSelectedBeat] = useState();
   const [selectedTempo, setSelectedTempo] = useState();
 
@@ -118,11 +118,14 @@ export default function TrackbuilderScreen({ navigation }) {
   }
 
   return (
-    <View style={[stylesMain.container, {alignItems: 'flex-start'}]}>
-      <View style={{ flex: 3, width: '100%'}}>
-        <View style={{ flex: 1, marginTop: 50, alignItems: 'center'}}>
+    <View style={[stylesMain.container, { alignItems: 'flex-start' }]}>
+      <View style={{ flex: 3, width: '100%' }}>
+        <View style={{ flex: 1, marginTop: 50, alignItems: 'center' }}>
           <Text style={[styles.text, { marginTop: 10 }]}>Create Click Track</Text>
         </View>
+
+        <Button label={'Log In'} onPress={() => navigation.navigate('LogIn')} w={80} h={50}></Button>
+
         <View style={{ flex: 2, justifyContent: 'space-evenly' }}>
           <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
           <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
@@ -149,6 +152,7 @@ export default function TrackbuilderScreen({ navigation }) {
         </TouchableOpacity>
 
         <Button label={'Play'} onPress={() => navigation.navigate('Metronome')} w={80} h={50}></Button>
+
       </View>
 
       <Modal isVisible={isModalVisible}>
@@ -163,7 +167,7 @@ export default function TrackbuilderScreen({ navigation }) {
                 value={number}
                 keyboardType='numeric'
                 backgroundColor='#f0f5f5'
-                ></TextInput>
+              ></TextInput>
               <Text style={styles.text}>Tempo: {selectedTempo}</Text>
               <Text style={styles.text}>Beat: {selectedBeat}</Text>
             </View>

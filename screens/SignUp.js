@@ -1,37 +1,70 @@
 // SignUp.js
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 /* Import style code */
 import { stylesMain } from './../styles/styleMain';
 import { COLORS } from './../styles/colors';
 
 const SignUpScreen = ({ navigation }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [newUsername, setNewUsername] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
-    const handleSignUp = () => {
-        // Add your sign-up logic here
-        // Create a new user account, navigate to the next screen on success, show an error on failure
+    const handleSignUp = async () => {
+        // Store the new user credentials in AsyncStorage
+        await AsyncStorage.setItem('username', newUsername);
+        await AsyncStorage.setItem('password', newPassword);
+
+        /* Add code here making sure that newPassword 
+         * and confirmNewPassword are the same,
+         * else fail
+         * 
+         * 
+         */
+
+        // Navigate back to the login screen
+        navigation.navigate('LogIn');
     };
 
     return (
-        <View style={stylesMain.container}>
-            <Text>Sign Up Screen</Text>
+        <View style={backgroundColor = COLORS.offWhite}>
+            <Text>{/*Create an Account*/}</Text>
             <TextInput
-                placeholder="Username"
-                onChangeText={text => setUsername(text)}
-                value={username}
+                placeholder="New Username"
+                onChangeText={text => setNewUsername(text)}
+                value={newUsername}
+                style={{
+                    textAlign: 'center' // Center the text horizontally
+                }}
             />
             <TextInput
-                placeholder="Password"
-                onChangeText={text => setPassword(text)}
-                value={password}
+                placeholder="New Password"
+                onChangeText={text => setNewPassword(text)}
+                value={newPassword}
                 secureTextEntry
+                style={{
+                    textAlign: 'center' // Center the text horizontally
+                }}
             />
-            <Button title="Sign Up" onPress={handleSignUp} />
-        </View>
+            <TextInput
+                placeholder="Confirm New Password"
+                onChangeText={text => setConfirmNewPassword(text)}
+                value={confirmNewPassword}
+                secureTextEntry
+                style={{
+                    textAlign: 'center' // Center the text horizontally
+                }}
+            />
+            <TouchableOpacity style={[stylesMain.orangeButton, stylesMain.buttonText]}
+                //onPress={handleSignUp}
+                onPress={() => navigation.navigate('LogIn')}  //Navigates back to the 'LogIn' screen
+            >
+                <Text style={stylesMain.buttonText}>CREATE AN ACCOUNT</Text>
+            </TouchableOpacity>
+        </View >
     );
 };
 

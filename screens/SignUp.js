@@ -30,7 +30,7 @@ const SignUpScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={backgroundColor = COLORS.offWhite}>
+        <View style={backgroundColor = COLORS.offWhite, { marginTop: 50 }}>
             <Text>{/*Create an Account*/}</Text>
             <TextInput
                 placeholder="New Username"

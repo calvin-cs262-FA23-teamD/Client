@@ -57,6 +57,9 @@ export const stylesMain = StyleSheet.create({
     borderRadius: 5, // Add border radius for rounded corners
     padding: 10,
     marginTop: 5,
+    width: 250,
+    justifyContent: "center",
+    alignSelf: 'center',
   },
 
   buttonText: {

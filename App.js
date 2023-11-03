@@ -9,6 +9,10 @@ import TrackbuilderScreen from './screens/Trackbuilder';
 import LogInScreen from './screens/LogIn';
 import SignUpScreen from './screens/SignUp';
 
+import * as SplashScreen from 'expo-splash-screen';
+SplashScreen.preventAutoHideAsync();
+setTimeout(SplashScreen.hideAsync, 5000);
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {

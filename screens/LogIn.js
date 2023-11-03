@@ -30,17 +30,19 @@ const LogInScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={stylesMain.container, stylesMain.text}>
+        <View style={stylesMain.text, { backgroundColor: COLORS.offWhite, marginTop: 50 }}>
             <Text>{/*Login Screen*/}</Text>
             <TextInput
                 placeholder="Username"
                 onChangeText={text => setUsername(text)}
                 value={username}
+                textAlign='center'
             />
             <TextInput
                 placeholder="Password"
                 onChangeText={text => setPassword(text)}
                 value={password}
+                textAlign='center'
                 secureTextEntry
             />
             <TouchableOpacity style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
@@ -56,7 +58,7 @@ const LogInScreen = ({ navigation }) => {
                 <Text style={stylesMain.buttonText}>CREATE AN ACCOUNT</Text>
             </TouchableOpacity>
         </View >
-    );   
+    );
 };
 
 export default LogInScreen;

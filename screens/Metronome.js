@@ -158,7 +158,12 @@ export default function MetronomeScreen( {navigation} ) {
               style={stylesMain.dropDown}
             />
 			<View style={stylesMain.updates}>
-				<Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
+				<Button label={'New Track'} onPress={() => {
+          navigation.navigate('Trackbuilder');
+          if (isPlaying) {
+            PausePlay();
+          }
+        }} w={150} h={50}></Button>
 			</View>
           </View>
 

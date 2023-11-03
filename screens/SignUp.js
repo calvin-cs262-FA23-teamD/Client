@@ -44,7 +44,7 @@ const SignUpScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={stylesMain.text, { backgroundColor: '#1f2e2e', marginTop: 50, flex: 1 }}>
+        <View style={{ backgroundColor: '#1f2e2e', marginTop: 50, flex: 1 }}>
             <TextInput
                 marginTop={100}
                 placeholder="Email"

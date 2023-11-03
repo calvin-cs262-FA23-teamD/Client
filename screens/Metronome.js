@@ -60,7 +60,7 @@ export default function MetronomeScreen( {navigation} ) {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile);
+    const { sound } = updateSound()
     setSound(sound);
     await sound.playAsync();
 
@@ -70,6 +70,11 @@ export default function MetronomeScreen( {navigation} ) {
     this.drift = (this.actual - this.expected);
     console.log(measure);
     console.log("drift ", this.drift);
+  }
+
+  async function updateSound() {
+    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile);
+    return sound
   }
 
   /* start metronome by incrementing measure*/
@@ -120,6 +125,7 @@ export default function MetronomeScreen( {navigation} ) {
         setSelectedSoundFile(require('./../assets/sounds/metronome/metronomesound.mp3')); // Default
         setAccentSoundFile(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
     }
+    
   }, [selectedSound]);
 
   /* Main app layout */

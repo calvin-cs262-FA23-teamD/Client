@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 /* Import style code */
 import { stylesMain } from './../styles/styleMain';
@@ -30,24 +30,26 @@ const LogInScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={stylesMain.text, { backgroundColor: COLORS.offWhite, marginTop: 50 }}>
-            <Text>{/*Login Screen*/}</Text>
+        <View style={stylesMain.text, { backgroundColor: '#1f2e2e', flex: 1 }}>
             <TextInput
+                marginTop={100}
                 placeholder="Username"
+                placeholderTextColor='#aaa'
                 onChangeText={text => setUsername(text)}
                 value={username}
                 textAlign='center'
             />
             <TextInput
                 placeholder="Password"
+                placeholderTextColor='#aaa'
                 onChangeText={text => setPassword(text)}
                 value={password}
                 textAlign='center'
                 secureTextEntry
             />
             <TouchableOpacity style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
-                //onPress={handleLogin}
-                onPress={() => navigation.navigate('Trackbuilder')}  //Navigates back to the 'Trackbuilder' screen
+                onPress={handleLogin}
+                //onPress={() => navigation.navigate('Trackbuilder')}  //Navigates back to the 'Trackbuilder' screen
             >
                 <Text style={stylesMain.buttonText}>LOG IN</Text>
             </TouchableOpacity>

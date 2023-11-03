@@ -11,9 +11,18 @@ export const stylesMain = StyleSheet.create({
     },
 
     header: {
-      padding: 15,
       width: '100%',
       alignItems: 'center',
+      justifyContent: 'flex-end',
+      flex: 1,
+      backgroundColor:'red'
+    
+    },
+
+    body: {
+      flex:7,
+      justifyContent: 'center',
+      width: '100%',
     },
 
     title: {

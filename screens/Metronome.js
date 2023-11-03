@@ -28,7 +28,7 @@ const soundList = [
 ]
 
 /* Main function */
-export default function MetronomeScreen( {navigation} ) {
+export default function MetronomeScreen({ navigation }) {
   /* Hooks */
   const [isPlaying, setIsPlaying] = useState(false);
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright");
@@ -129,40 +129,41 @@ export default function MetronomeScreen( {navigation} ) {
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <Button image={pausePlayIcon} onPress={PausePlay} w={325} h={100} />
+      <View style={[stylesMain.body,{alignItems: 'center'}]}>
 
-      <View style={stylesMain.updates}>
-        <View style={stylesMain.counters}>
+        <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
+          <View style={stylesMain.counters}>
 
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Tempo</Text>
-            <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
+            <View style={stylesMain.boxed}>
+              <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
+              <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
+            </View>
+
+            <View style={stylesMain.boxed}>
+              <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
+              <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+            </View>
+
           </View>
+          <View style={stylesMain.sounds}>
 
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Beat</Text>
-            <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+            <View style={stylesMain.boxed}>
+              <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+              <SelectList setSelected={(val) => setSelectedSound(val)}
+                data={soundList} save="value"
+                boxStyles={{ backgroundColor: COLORS.orange }}
+                dropdownTextStyles={{ color: COLORS.orange }}
+                placeholder="Sound"
+                search={false}
+                style={stylesMain.dropDown}
+              />
+              <View style={stylesMain.updates}>
+                <Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
+              </View>
+            </View>
+
           </View>
-
-        </View>
-        <View style={stylesMain.sounds}>
-
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Sound</Text>
-            <SelectList setSelected={(val) => setSelectedSound(val)}
-              data={soundList} save="value"
-              boxStyles={{ backgroundColor: COLORS.orange }}
-              dropdownTextStyles={{ color: COLORS.orange }}
-              placeholder="Sound"
-              search={false}
-              style={stylesMain.dropDown}
-            />
-			<View style={stylesMain.updates}>
-				<Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
-			</View>
-          </View>
-
-        </View>
+       
       </View>
     </View>
   );

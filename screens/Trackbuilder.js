@@ -120,20 +120,21 @@ export default function TrackbuilderScreen({ navigation }) {
   return (
     <View style={[stylesMain.container, { alignItems: 'flex-start' }]}>
       <View style={{ flex: 3, width: '100%' }}>
-        <View style={{ flex: 1, marginTop: 50, alignItems: 'center' }}>
+        <View style={{ marginTop: 50, marginLeft: 260 }}>
+          <Button style={{ alignItems: 'right' }} label={'Log In'} onPress={() => navigation.navigate('LogIn')} w={80} h={50}></Button>
+        </View>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={[styles.text, { marginTop: 10 }]}>Create Click Track</Text>
         </View>
 
-        <Button label={'Log In'} onPress={() => navigation.navigate('LogIn')} w={80} h={50}></Button>
-
-        <View style={{ flex: 2, justifyContent: 'space-evenly' }}>
+        <View style={{ flex: 2, justifyContent: 'space-evenly', marginTop: 10 }}>
           <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
           <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
           <Text style={stylesMain.text}>Beat: {selectedBeat}</Text>
         </View>
       </View>
 
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 2, marginTop: 20 }}>
         <FlatList
           data={measures}
           renderItem={renderMeasure}
@@ -180,7 +181,7 @@ export default function TrackbuilderScreen({ navigation }) {
           {/* </View> */}
         </Modal.Container>
       </Modal>
-    </View>
+    </View >
   );
 }
 

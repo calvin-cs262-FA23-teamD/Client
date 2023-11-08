@@ -46,7 +46,7 @@ export default function MetronomeScreen({ navigation }) {
   this.expected;
   this.drift = 0;
   this.date;
-  this.interval = 60 / BPM * 1000
+  this.interval = 60 / BPM * 1000;
 
   /* Toggles pause and play */
   const PausePlay = () => {
@@ -60,7 +60,7 @@ export default function MetronomeScreen({ navigation }) {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile);
+    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile); // Is there a way to just create the sound once then call on it alone, instead of in a function creating a new instance of the sound each time?
     setSound(sound);
     await sound.playAsync();
 
@@ -70,6 +70,11 @@ export default function MetronomeScreen({ navigation }) {
     this.drift = (this.actual - this.expected);
     console.log(measure);
     console.log("drift ", this.drift);
+  }
+
+  async function updateSound() {
+    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile);
+    return sound
   }
 
   /* start metronome by incrementing measure*/
@@ -88,7 +93,7 @@ export default function MetronomeScreen({ navigation }) {
     }
     return sound
       ? () => {
-        sound.unloadAsync();
+        sound.unloadAsync(); // Unloads sound everytime, must figure out how to load into memory once and keep it there untill the metronome is stopped completely
       }
       : undefined;
   }, [measure]); // this function is called every time the measure updates. This allows the metronome to act recursively while also allowing for hook updates
@@ -120,6 +125,7 @@ export default function MetronomeScreen({ navigation }) {
         setSelectedSoundFile(require('./../assets/sounds/metronome/metronomesound.mp3')); // Default
         setAccentSoundFile(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
     }
+
   }, [selectedSound]);
 
   /* Main app layout */
@@ -129,41 +135,65 @@ export default function MetronomeScreen({ navigation }) {
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <View style={[stylesMain.body,{alignItems: 'center'}]}>
+      <View style={[stylesMain.body, { alignItems: 'center' }]}>
 
         <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-          <View style={stylesMain.counters}>
+        <View style={stylesMain.counters}>
 
-            <View style={stylesMain.boxed}>
-              <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
-              <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
-            </View>
-
-            <View style={stylesMain.boxed}>
-              <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
-              <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
-            </View>
-
+          <View style={stylesMain.boxed}>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
+            <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
           </View>
-          <View style={stylesMain.sounds}>
 
-            <View style={stylesMain.boxed}>
-              <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
-              <SelectList setSelected={(val) => setSelectedSound(val)}
-                data={soundList} save="value"
-                boxStyles={{ backgroundColor: COLORS.orange }}
-                dropdownTextStyles={{ color: COLORS.orange }}
-                placeholder="Sound"
-                search={false}
-                style={stylesMain.dropDown}
-              />
-              <View style={stylesMain.updates}>
-                <Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
-              </View>
-            </View>
-
+          <View style={stylesMain.boxed}>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
+            <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
           </View>
-       
+
+        </View>
+        <View style={stylesMain.sounds}>
+
+          <View style={stylesMain.boxed}>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+            <SelectList setSelected={(val) => setSelectedSound(val)}
+              data={soundList} save="value"
+              boxStyles={{ backgroundColor: COLORS.orange }}
+              dropdownTextStyles={{ color: COLORS.orange }}
+              placeholder="Sound"
+              search={false}
+              style={stylesMain.dropDown}
+            />
+            <View style={stylesMain.updates}>
+              <Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
+            </View>
+          </View>
+
+        </View>
+
+
+      </View>
+      <View style={stylesMain.sounds}>
+
+        <View style={stylesMain.boxed}>
+          <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+          <SelectList setSelected={(val) => setSelectedSound(val)}
+            data={soundList} save="value"
+            boxStyles={{ backgroundColor: COLORS.orange }}
+            dropdownTextStyles={{ color: COLORS.orange }}
+            placeholder="Sound"
+            search={false}
+            style={stylesMain.dropDown}
+          />
+          <View style={stylesMain.updates}>
+            <Button label={'New Track'} onPress={() => {
+              navigation.navigate('Trackbuilder');
+              if (isPlaying) {
+                PausePlay();
+              }
+            }} w={150} h={50}></Button>
+          </View>
+        </View>
+
       </View>
     </View>
   );

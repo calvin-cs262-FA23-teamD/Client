@@ -172,29 +172,6 @@ export default function MetronomeScreen({ navigation }) {
 
 
       </View>
-      <View style={stylesMain.sounds}>
-
-        <View style={stylesMain.boxed}>
-          <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
-          <SelectList setSelected={(val) => setSelectedSound(val)}
-            data={soundList} save="value"
-            boxStyles={{ backgroundColor: COLORS.orange }}
-            dropdownTextStyles={{ color: COLORS.orange }}
-            placeholder="Sound"
-            search={false}
-            style={stylesMain.dropDown}
-          />
-          <View style={stylesMain.updates}>
-            <Button label={'New Track'} onPress={() => {
-              navigation.navigate('Trackbuilder');
-              if (isPlaying) {
-                PausePlay();
-              }
-            }} w={150} h={50}></Button>
-          </View>
-        </View>
-
-      </View>
     </View>
   );
 }

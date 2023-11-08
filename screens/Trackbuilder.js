@@ -117,68 +117,6 @@ export default function TrackbuilderScreen({ navigation }) {
     }
   }
 
-  // return (
-  //   <View style={[stylesMain.container, {alignItems: 'flex-start'}]}>
-  //     <View style={{ flex: 3, width: '100%'}}>
-  //       <View style={{ flex: 1, marginTop: 50, alignItems: 'center'}}>
-  //         <Text style={[styles.text, { marginTop: 10 }]}>Create Click Track</Text>
-  //       </View>
-  //       <View style={{ flex: 2, justifyContent: 'space-evenly' }}>
-  //         <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
-  //         <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
-  //         <Text style={stylesMain.text}>Beat: {selectedBeat}</Text>
-  //       </View>
-  //     </View>
-
-  //     <View style={{ flex: 2 }}>
-  //       <FlatList
-  //         data={measures}
-  //         renderItem={renderMeasure}
-  //         keyExtractor={measure => measure.number}
-  //         extraData={selectedMeasure}
-  //         horizontal={true}
-  //       />
-  //     </View>
-
-  //     <View style={{ flex: 4, marginTop: 50, alignItems: 'flex-end' }}>
-  //       <TouchableOpacity style={styles.buttons} onPress={handleModal}>
-  //         <Text style={[styles.subtitle]}>Add </Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.buttons} onPress={deleteMeasure}>
-  //         <Text style={[styles.subtitle]}>Delete </Text>
-  //       </TouchableOpacity>
-
-  //       <Button label={'Play'} onPress={() => navigation.navigate('Metronome')} w={80} h={50}></Button>
-  //     </View>
-
-  //     <Modal isVisible={isModalVisible}>
-  //       <Modal.Container style={styles.addMeasure}>
-  //         {/* <View style={styles.addMeasure}> */}
-  //         <Modal.Body style={{ justifyContent: 'space-evenly', backgroundColor: 'red' }}>
-  //           <View style={styles.in}>
-  //             <Text style={styles.text}>Measure: {selectedMeasure}</Text>
-  //             <TextInput
-  //               style={styles.input}
-  //               onChange={onChangeNumber}
-  //               value={number}
-  //               keyboardType='numeric'
-  //               backgroundColor='#f0f5f5'
-  //               ></TextInput>
-  //             <Text style={styles.text}>Tempo: {selectedTempo}</Text>
-  //             <Text style={styles.text}>Beat: {selectedBeat}</Text>
-  //           </View>
-  //           <View styles={[{ backgroundColor: 'blue' }]}>
-  //             <TouchableOpacity style={styles.buttons} onPress={handleModal}>
-  //               <Text style={styles.text}>hello</Text>
-  //             </TouchableOpacity>
-  //           </View>
-  //         </Modal.Body>
-  //         {/* </View> */}
-  //       </Modal.Container>
-  //     </Modal>
-  //   </View>
-  // );
-
   return (
     <View style={stylesMain.container}>
       <View style={stylesMain.header}>

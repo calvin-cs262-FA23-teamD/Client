@@ -60,11 +60,7 @@ export default function MetronomeScreen( {navigation} ) {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-<<<<<<< HEAD
-    const { sound } = updateSound()
-=======
     const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile); // Is there a way to just create the sound once then call on it alone, instead of in a function creating a new instance of the sound each time?
->>>>>>> 7e701cd690151100123c1c823a9419e42fe6637b
     setSound(sound);
     await sound.playAsync();
 

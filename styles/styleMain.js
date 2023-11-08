@@ -14,13 +14,21 @@ export const stylesMain = StyleSheet.create({
       width: '100%',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      flex: 1,
+      flex :2,
+
     },
 
     body: {
-      flex:7,
+      flex:10,
       justifyContent: 'center',
       width: '100%',
+    },
+
+    footer: {
+      flex:.75,
+      width: '100%',
+      alignContent: 'flex-end',
+      justifyContent: 'center'
     },
 
   title: {

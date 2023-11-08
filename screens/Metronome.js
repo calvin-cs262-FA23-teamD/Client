@@ -131,6 +131,7 @@ export default function MetronomeScreen({ navigation }) {
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
+
       <View style={stylesMain.header}>
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
@@ -163,14 +164,15 @@ export default function MetronomeScreen({ navigation }) {
               search={false}
               style={stylesMain.dropDown}
             />
-            <View style={stylesMain.updates}>
-              <Button label={'New Track'} onPress={() => navigation.navigate('Trackbuilder')} w={150} h={50}></Button>
-            </View>
           </View>
 
         </View>
 
-
+        <View style={{ alignItems: 'flex-end', width: '100%', paddingVertical: 50, height: 5 }}>
+        </View>
+      </View>
+      <View style={stylesMain.footer}>
+        <Button label={'Trackbuilder'} onPress={() => navigation.navigate('Trackbuilder')} w={100} h={50}></Button>
       </View>
     </View>
   );

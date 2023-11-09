@@ -35,7 +35,7 @@ export default function MetronomeScreen({ navigation }) {
 
   const [selectedSound, setSelectedSound] = React.useState("Default"); // Initialize selected state with default sound
   const [selectedSoundFile, setSelectedSoundFile] = useState(require('./../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
-  const [accentSoundFile, setAccentSoundFile] = useState(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+  const [accentSoundFile, setAccentSoundFile] = useState(require('./../assets/sounds/metronome/metronomeaccent.mp3'));
   const [sound, setSound] = useState();   // current loaded sound
 
   const [BPM, setBPM] = useState(60);     // beats per minute
@@ -123,7 +123,7 @@ export default function MetronomeScreen({ navigation }) {
         break;
       default:
         setSelectedSoundFile(require('./../assets/sounds/metronome/metronomesound.mp3')); // Default
-        setAccentSoundFile(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
+        setAccentSoundFile(require('./../assets/sounds/metronome/metronomeaccent.mp3'));
     }
 
   }, [selectedSound]);

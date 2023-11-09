@@ -110,8 +110,8 @@ export default function MetronomeScreen({ navigation }) {
         setAccentSoundFile(require('./../assets/sounds/drum/snare_drum_louder.mp3'));
         break;
       case 'Piano':
-        setSelectedSoundFile(require('./../assets/sounds/piano/piano-click.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/piano/piano-accent.mp3'));
+        setSelectedSoundFile(require('./../assets/sounds/piano/pianoD.mp3'));
+        setAccentSoundFile(require('./../assets/sounds/piano/pianoG.mp3'));
         break;
       case 'Shotgun':
         setSelectedSoundFile(require('./../assets/sounds/shotgun/Shotgun.mp3'));

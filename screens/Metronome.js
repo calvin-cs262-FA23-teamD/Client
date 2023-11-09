@@ -28,7 +28,7 @@ const soundList = [
 ]
 
 /* Main function */
-export default function MetronomeScreen( {navigation} ) {
+export default function MetronomeScreen({ navigation }) {
   /* Hooks */
   const [isPlaying, setIsPlaying] = useState(false);
   const [pausePlayIcon, setPausePlayIcon] = useState("caretright");
@@ -125,28 +125,29 @@ export default function MetronomeScreen( {navigation} ) {
         setSelectedSoundFile(require('./../assets/sounds/metronome/metronomesound.mp3')); // Default
         setAccentSoundFile(require('./../assets/sounds/metronome/edit-metronome-accent-sound.mp3'));
     }
-    
+
   }, [selectedSound]);
 
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
+
       <View style={stylesMain.header}>
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <Button image={pausePlayIcon} onPress={PausePlay} w={325} h={100} />
+      <View style={[stylesMain.body, { alignItems: 'center' }]}>
 
-      <View style={stylesMain.updates}>
+        <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
         <View style={stylesMain.counters}>
 
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Tempo</Text>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
             <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
           </View>
 
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Beat</Text>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
             <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
           </View>
 
@@ -154,7 +155,7 @@ export default function MetronomeScreen( {navigation} ) {
         <View style={stylesMain.sounds}>
 
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, {alignSelf: 'center'}]}>Sound</Text>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
             <SelectList setSelected={(val) => setSelectedSound(val)}
               data={soundList} save="value"
               boxStyles={{ backgroundColor: COLORS.orange }}
@@ -163,17 +164,15 @@ export default function MetronomeScreen( {navigation} ) {
               search={false}
               style={stylesMain.dropDown}
             />
-			<View style={stylesMain.updates}>
-				<Button label={'New Track'} onPress={() => {
-          navigation.navigate('Trackbuilder');
-          if (isPlaying) {
-            PausePlay();
-          }
-        }} w={150} h={50}></Button>
-			</View>
           </View>
 
         </View>
+
+        <View style={{ alignItems: 'flex-end', width: '100%', paddingVertical: 50, height: 5 }}>
+        </View>
+      </View>
+      <View style={stylesMain.footer}>
+        <Button label={'Trackbuilder'} onPress={() => navigation.navigate('Trackbuilder')} w={100} h={50}></Button>
       </View>
     </View>
   );

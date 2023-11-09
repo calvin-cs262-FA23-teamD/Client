@@ -40,16 +40,16 @@ const measures = [
 ];
 
 const MeasureBox = ({ measure, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[{ backgroundColor }]}>
+  <TouchableOpacity onPress={onPress} style={[styles.measureBox, { backgroundColor: backgroundColor }]}>
     <View style={[styles.measureBlock, { flexDirection: 'column', }]}>
       <View style={styles.measureMark}>
-        <Text style={[styles.text, { color: textColor, fontSize: 20 }]}>{measure.number}</Text>
+        <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.number}</Text>
       </View>
       <View style={styles.beats}>
-        <Text style={[styles.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
+        <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
       </View>
       <View style={styles.tempo}>
-        <Text style={[styles.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
+        <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
       </View>
     </View>
   </TouchableOpacity>
@@ -118,79 +118,107 @@ export default function TrackbuilderScreen({ navigation }) {
   }
 
   return (
-    <View style={[stylesMain.container, { alignItems: 'flex-start' }]}>
-      <View style={{ flex: 3, width: '100%' }}>
-        <View style={{ marginTop: 50, marginLeft: 260 }}>
-          <Button style={{ alignItems: 'right' }} label={'Log In'} onPress={() => navigation.navigate('LogIn')} w={80} h={50}></Button>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={[styles.text, { marginTop: 10 }]}>Create Click Track</Text>
-        </View>
+    <View style={stylesMain.container}>
 
-        <View style={{ flex: 2, justifyContent: 'space-evenly', marginTop: 10 }}>
-          <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
-          <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
-          <Text style={stylesMain.text}>Beat: {selectedBeat}</Text>
-        </View>
+
+      <View style={stylesMain.header}>
+        <Text style={stylesMain.title}>Create Click Track</Text>
       </View>
 
-      <View style={{ flex: 2, marginTop: 20 }}>
-        <FlatList
-          data={measures}
-          renderItem={renderMeasure}
-          keyExtractor={measure => measure.number}
-          extraData={selectedMeasure}
-          horizontal={true}
-        />
+      <View style={[stylesMain.body, { alignContent: 'flex-start' }]}>
+        <View style={{ flex: 3, width: '100%' }}>
+          <View style={{ flex: 2, justifyContent: 'space-evenly' }}>
+            <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
+            <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
+            <Text style={stylesMain.text}>Beat: {selectedBeat}</Text>
+          </View>
+        </View>
+
+        <View style={{ flex: 2 }}>
+          <FlatList
+            data={measures}
+            renderItem={renderMeasure}
+            keyExtractor={measure => measure.number}
+            extraData={selectedMeasure}
+            horizontal={true}
+          />
+        </View>
+
+        <View style={{ flex: 4, marginTop: 50, alignItems: 'flex-end' }}>
+          <TouchableOpacity style={styles.buttons} onPress={handleModal}>
+            <Text style={[stylesMain.text]}>Add </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons} onPress={deleteMeasure}>
+            <Text style={[stylesMain.text]}>Delete </Text>
+          </TouchableOpacity>
+          <View style={{ marginTop: 50, marginLeft: 260 }}>
+            <Button style={{ alignItems: 'right' }} label={'Log In'} onPress={() => navigation.navigate('LogIn')} w={80} h={50}></Button>
+          </View>
+        </View>
       </View>
-
-      <View style={{ flex: 4, marginTop: 50, alignItems: 'flex-end' }}>
-        <TouchableOpacity style={styles.buttons} onPress={handleModal}>
-          <Text style={[styles.subtitle]}>Add </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttons} onPress={deleteMeasure}>
-          <Text style={[styles.subtitle]}>Delete </Text>
-        </TouchableOpacity>
-
-        <Button label={'Play'} onPress={() => navigation.navigate('Metronome')} w={80} h={50}></Button>
-
+      <View style={stylesMain.footer}>
+        <Button label={'Metronome'} onPress={() => navigation.navigate('Metronome')} w={100} h={50}></Button>
       </View>
 
       <Modal isVisible={isModalVisible}>
-        <Modal.Container style={styles.addMeasure}>
-          {/* <View style={styles.addMeasure}> */}
-          <Modal.Body style={{ justifyContent: 'space-evenly', backgroundColor: 'red' }}>
-            <View style={styles.in}>
-              <Text style={styles.text}>Measure: {selectedMeasure}</Text>
-              <TextInput
-                style={styles.input}
-                onChange={onChangeNumber}
-                value={number}
-                keyboardType='numeric'
-                backgroundColor='#f0f5f5'
-              ></TextInput>
-              <Text style={styles.text}>Tempo: {selectedTempo}</Text>
-              <Text style={styles.text}>Beat: {selectedBeat}</Text>
-            </View>
-            <View styles={[{ backgroundColor: 'blue' }]}>
-              <TouchableOpacity style={styles.buttons} onPress={handleModal}>
-                <Text style={styles.text}>hello</Text>
-              </TouchableOpacity>
+        <Modal.Container>
+          <Modal.Body>
+            <View style={{ height: 300 }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
+              </View>
+
+              <View style={{ flex: 4, backgroundColor: 'blue', padding: 10 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  {/* <Text style={styles.text}>Measure:  </Text>
+                <TextInput
+                  style={styles.input}
+                  onChange={onChangeNumber}
+                  value={number}
+                  keyboardType='numeric'
+                  backgroundColor='#f0f5f5'
+                ></TextInput>
+                </View> */}
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.text}>Tempo:  </Text>
+                  <TextInput
+                    style={styles.input}
+                    onChange={onChangeNumber}
+                    value={number}
+                    keyboardType='numeric'
+                    backgroundColor='#f0f5f5'
+                  ></TextInput>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.text}>Beat:  </Text>
+                  <TextInput
+                    style={styles.input}
+                    onChange={onChangeNumber}
+                    value={number}
+                    keyboardType='numeric'
+                    backgroundColor='#f0f5f5'
+                  ></TextInput>
+                </View>
+              </View>
+              <View style={{ flex: 1, backgroundColor: 'green' }}>
+                <TouchableOpacity style={styles.buttons} onPress={handleModal}>
+                  <Text style={styles.text}>hello</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </Modal.Body>
           {/* </View> */}
         </Modal.Container>
       </Modal>
-    </View >
+    </View>
   );
 }
 
 /* StyleSheets */
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0e0f',
-  },
 
   measureBlock: {
     flex: 1,
@@ -231,21 +259,11 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 
-  addMeasure: {
-    backgroundColor: '#1f2e2e',
-    flux: 1
-  },
-
-  text: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 24,
-  },
-  subtitle: {
-    color: '#f0f5f5',
-    fontWeight: 'bold',
-    fontSize: 18,
-    alignSelf: 'center'
+  measureBox: {
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderLeftColor: COLORS.background,
+    borderRightColor: COLORS.background
   },
 
 });

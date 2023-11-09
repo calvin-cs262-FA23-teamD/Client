@@ -10,11 +10,26 @@ export const stylesMain = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  header: {
-    padding: 15,
-    width: '100%',
-    alignItems: 'center',
-  },
+    header: {
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      flex :2,
+
+    },
+
+    body: {
+      flex:10,
+      justifyContent: 'center',
+      width: '100%',
+    },
+
+    footer: {
+      flex:.75,
+      width: '100%',
+      alignContent: 'flex-end',
+      justifyContent: 'center'
+    },
 
   title: {
     color: COLORS.offWhite,

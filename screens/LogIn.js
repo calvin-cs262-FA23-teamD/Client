@@ -34,10 +34,10 @@ const LogInScreen = ({ navigation }) => {
 
 
             <View style={stylesMain.header}>
-                <Text style={stylesMain.title}>Login</Text>
+                <Text style={stylesMain.title}>Log In</Text>
             </View>
 
-            <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', }]}>
+            <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', gap :12}]}>
                 {/* <TextInput
                 marginTop={100}
                 placeholder="Username"

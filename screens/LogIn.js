@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+//import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 /* Import style code */
 import { stylesMain } from './../styles/styleMain';
@@ -16,16 +16,17 @@ const LogInScreen = ({ navigation }) => {
         // Add login logic here
         // Check username and password, navigate to the next screen on success, show an error on failure
         // Retrieve user credentials from AsyncStorage
-        const storedUsername = await AsyncStorage.getItem('username');
-        const storedPassword = await AsyncStorage.getItem('password');
+        // const storedUsername = await AsyncStorage.getItem('username');
+        // const storedPassword = await AsyncStorage.getItem('password');
 
-        if (username === storedUsername && password === storedPassword) {
-            // Successful login, navigate to the next screen
-            navigation.navigate('Trackbuilder');
-        } else {
-            // Invalid credentials, show an error message
-            alert('Invalid credentials. Please try again.');
-        }
+        // if (username === storedUsername && password === storedPassword) {
+        //     // Successful login, navigate to the next screen
+        //     navigation.navigate('Trackbuilder');
+        // } else {
+        //     // Invalid credentials, show an error message
+        //     alert('Invalid credentials. Please try again.');
+        // }
+        null;
 
     };
 
@@ -99,8 +100,8 @@ const LogInScreen = ({ navigation }) => {
                 </View>
 
                 <TouchableOpacity style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
-                    onPress={handleLogin}
-                //onPress={() => navigation.navigate('Trackbuilder')}  //Navigates back to the 'Trackbuilder' screen
+                    //onPress={handleLogin}
+                onPress={() => navigation.navigate('Trackbuilder')}  //Navigates back to the 'Trackbuilder' screen
                 >
                     <Text style={stylesMain.buttonText}>LOG IN</Text>
                 </TouchableOpacity>

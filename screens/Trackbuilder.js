@@ -11,55 +11,75 @@ import { COLORS } from './../styles/colors';
 //import Modal from "react-native-modal";
 import { Modal } from "../components/MeasureModal"
 
-// hard coded list of measures
+{/* hard coded click track */}
 const measures = [
   {
     number: 1,
-    tempo: 52,
+    tempo: 168,
     beat: 3,
   },
   {
     number: 2,
-    tempo: 52,
+    tempo: 168,
     beat: 2,
   },
   {
     number: 3,
-    tempo: 52,
+    tempo: 168,
     beat: 2,
   },
   {
     number: 4,
-    tempo: 52,
-    beat: 2,
+    tempo: 168,
+    beat: 3,
   },
   {
     number: 5,
-    tempo: 52,
-    beat: 3,
+    tempo: 168,
+    beat: 2,
   },
   {
     number: 6,
-    tempo: 52,
-    beat: 3,
+    tempo: 168,
+    beat: 2,
   },
   {
     number: 7,
-    tempo: 52,
-    beat: 4,
+    tempo: 168,
+    beat: 3,
   },
   {
     number: 8,
-    tempo: 52,
+    tempo: 168,
+    beat: 3,
+  },
+  {
+    number: 9,
+    tempo: 168,
+    beat: 3,
+  },
+  {
+    number: 10,
+    tempo: 168,
+    beat: 3,
+  },
+  {
+    number: 11,
+    tempo: 168,
+    beat: 2,
+  },
+  {
+    number: 12,
+    tempo: 168,
     beat: 2,
   },
 ];
 
-// the orange squares in the flatlist, each representing a measure
+{/* The orange squares in the flatlist, each representing a measure */}
 const MeasureBox = ({ measure, onPress, MeasureBoxColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.measureBox, { backgroundColor: MeasureBoxColor, }]}>
     <View style={[ { flexDirection: 'column', flex: 1, width: 150, }]}>
-      {/*measure Number */}
+      {/*measure number */}
       <View style={[{flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingHorizontal: 15}]}>
         <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.number}</Text>
       </View>
@@ -169,7 +189,7 @@ export default function TrackbuilderScreen({ navigation }) {
       <View style={[stylesMain.body, { alignContent: 'flex-start' }]}>
         <View style={{ flex: 3, width: '100%' }}>
           <View style={{ flex: 2, justifyContent: 'space-evenly' }}>
-            <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
+            <Text style={stylesMain.text}>Measure Num: {selectedMeasure}</Text>
             <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
             <Text style={stylesMain.text}>Beats: {selectedBeat}</Text>
           </View>
@@ -221,7 +241,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
               <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
                 <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Measure: </Text>
+                  <Text style={stylesMain.text}>Measure Num: </Text>
                   <TextInput
                     onChangeText={text => setNewMeasureNum(text)}
                     value={newMeasureNum}

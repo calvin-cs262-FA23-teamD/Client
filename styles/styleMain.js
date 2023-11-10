@@ -10,6 +10,7 @@ export const stylesMain = StyleSheet.create({
     justifyContent: 'center',
   },
 
+<<<<<<< HEAD
     header: {
       width: '100%',
       alignItems: 'center',
@@ -17,21 +18,28 @@ export const stylesMain = StyleSheet.create({
       flex :1,
       padding:20
 
+=======
+  header: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 2,
+>>>>>>> 8f7e42d836de375c40673431fa7a12dc068c1ea4
 
-    },
+  },
 
-    body: {
-      flex:10,
-      justifyContent: 'center',
-      width: '100%',
-    },
+  body: {
+    flex: 10,
+    justifyContent: 'center',
+    width: '100%',
+  },
 
-    footer: {
-      flex:.75,
-      width: '100%',
-      alignContent: 'flex-end',
-      justifyContent: 'center'
-    },
+  footer: {
+    flex: .75,
+    width: '100%',
+    alignContent: 'flex-end',
+    justifyContent: 'center'
+  },
 
   title: {
     color: COLORS.offWhite,
@@ -70,7 +78,7 @@ export const stylesMain = StyleSheet.create({
 
   // for log in and sign up screens
   orangeButton: {
-    backgroundColor: 'orange', // Set the background color to orange
+    backgroundColor: '#ff6900', // Set the background color to orange
     borderRadius: 5, // Add border radius for rounded corners
     padding: 10,
     marginTop: 5,

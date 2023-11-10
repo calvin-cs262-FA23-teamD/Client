@@ -72,10 +72,6 @@ export default function MetronomeScreen({ navigation }) {
     console.log("drift ", this.drift);
   }
 
-  async function updateSound() {
-    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile);
-    return sound
-  }
 
   /* start metronome by incrementing measure*/
   useEffect(() => {

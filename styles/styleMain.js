@@ -14,7 +14,9 @@ export const stylesMain = StyleSheet.create({
       width: '100%',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      flex :2,
+      flex :1,
+      padding:20
+
 
     },
 

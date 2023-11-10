@@ -1,7 +1,7 @@
 /* Metronome.js */
 
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
 import { SelectList } from 'react-native-dropdown-select-list';  // dropdown list for selecting sound
 
@@ -168,7 +168,9 @@ export default function MetronomeScreen({ navigation }) {
         </View>
       </View>
       <View style={stylesMain.footer}>
-        <Button label={'Trackbuilder'} onPress={() => navigation.navigate('Trackbuilder')} w={100} h={50}></Button>
+        <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('Trackbuilder')}>
+          <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

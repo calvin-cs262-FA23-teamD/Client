@@ -10,11 +10,13 @@ export const stylesMain = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  header: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    flex: 2,
+    header: {
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      flex :1,
+      padding:20
+
 
   },
 
@@ -28,7 +30,8 @@ export const stylesMain = StyleSheet.create({
     flex: .75,
     width: '100%',
     alignContent: 'flex-end',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingBottom: 12
   },
 
   title: {
@@ -109,6 +112,20 @@ export const stylesMain = StyleSheet.create({
     fontSize: 16,
   },
 
+  // this is the main type of button in the trackbuilder
+  buttons: {
+    backgroundColor: '#1f2e2e',
+    borderRadius: 20,
+
+    marginHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 50,
+  },
   // BoxyBox (used for tempo and beat counters)
   boxyBoxes: {
     borderRadius: 25,

@@ -11,46 +11,69 @@ import { COLORS } from './../styles/colors';
 //import Modal from "react-native-modal";
 import { Modal } from "../components/MeasureModal"
 
+// hard coded list of measures
 const measures = [
   {
     number: 1,
-    tempo: 100,
-    beat: 4,
+    tempo: 52,
+    beat: 3,
   },
   {
     number: 2,
-    tempo: 100,
-    beat: 4,
+    tempo: 52,
+    beat: 2,
   },
   {
     number: 3,
-    tempo: 100,
-    beat: 4,
+    tempo: 52,
+    beat: 2,
   },
   {
     number: 4,
-    tempo: 50,
-    beat: 3,
+    tempo: 52,
+    beat: 2,
   },
   {
     number: 5,
-    tempo: 50,
+    tempo: 52,
     beat: 3,
+  },
+  {
+    number: 6,
+    tempo: 52,
+    beat: 3,
+  },
+  {
+    number: 7,
+    tempo: 52,
+    beat: 4,
+  },
+  {
+    number: 8,
+    tempo: 52,
+    beat: 2,
   },
 ];
 
-const MeasureBox = ({ measure, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.measureBox, { backgroundColor: backgroundColor }]}>
-    <View style={[styles.measureBlock, { flexDirection: 'column', }]}>
-      <View style={styles.measureMark}>
+// the orange squares in the flatlist, each representing a measure
+const MeasureBox = ({ measure, onPress, MeasureBoxColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.measureBox, { backgroundColor: MeasureBoxColor, }]}>
+    <View style={[ { flexDirection: 'column', flex: 1, width: 150, }]}>
+      {/*measure Number */}
+      <View style={[{flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingHorizontal: 15}]}>
         <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.number}</Text>
       </View>
-      <View style={styles.beats}>
+
+      {/*Beats per measure */}
+      <View style={[ { flex: 2, alignItems: 'center', justifyContent: 'center',}]}>
         <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
       </View>
-      <View style={styles.tempo}>
+
+      {/*Beats per minute */}
+      <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 15}}>
         <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
       </View>
+
     </View>
   </TouchableOpacity>
 );
@@ -60,11 +83,23 @@ export default function TrackbuilderScreen({ navigation }) {
   const [selectedBeat, setSelectedBeat] = useState();
   const [selectedTempo, setSelectedTempo] = useState();
 
-  const [number, onChangeNumber] = useState('');
+  //displaying a measure from the flatlist
+  const renderMeasure = ({ item }) => {
+    const MeasureBoxColor = item.number === selectedMeasure ? '#a23600' : '#ff6900';
+    const color = item.number === selectedMeasure ? '#f0f5f5' : '#0a0e0f';
 
-  [isModalVisible, setIsModalVisible] = useState(false);
-  const handleModal = () => setIsModalVisible(() => !isModalVisible);
+    return (
+      <MeasureBox
+        measure={item}
+        onPress={() => selectMeasure(item)}
+        MeasureBoxColor={MeasureBoxColor}
+        textColor={color}
+        styles={styles.measure}
+      />
+    );
+  };
 
+  // selecting a measure from the flatlist
   const selectMeasure = (item) => {
     if (selectedMeasure == item.number) {
       setSelectedMeasure(null);
@@ -77,37 +112,43 @@ export default function TrackbuilderScreen({ navigation }) {
     }
   }
 
-  const renderMeasure = ({ item }) => {
-    const backgroundColor = item.number === selectedMeasure ? '#a23600' : '#ff6900';
-    const color = item.number === selectedMeasure ? '#f0f5f5' : '#0a0e0f';
+  // hooks for handling adding a new measure
+  const [newMeasureNum, setNewMeasureNum] = useState('');
+  const [newTempo, setNewTempo] = useState('');
+  const [newBeat, setNewBeat] = useState('');
 
-    return (
-      <MeasureBox
-        measure={item}
-        onPress={() => selectMeasure(item)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-        styles={styles.measure}
-      />
-    );
-  };
+  //handle the popup screen for adding a new measure
+  [isModalVisible, setIsModalVisible] = useState(false);
+  const handleModal = () => {
+    if (isModalVisible) {
+      addMeasure();
+    }
+    setIsModalVisible(() => !isModalVisible);
+  }
 
+  // insert a new measure into the list of measures
   const addMeasure = () => {
-    const newMeasure = {
-      number: 2,  // Set the number to match its index + 1
-      tempo: 60,
-      beat: 5,
-    };
+    if (newTempo != "" && newBeat != "" && newMeasureNum != "") {
+      const newMeasure = {
+        //number: 2,  // Set the number to match its index + 1
+        number: newMeasureNum,
+        tempo: newTempo,
+        beat: newBeat,
+      };
 
-    // Insert the new measure as the third element in the array
-    measures.splice(newMeasure.number - 1, 0, newMeasure);
+      // Insert the new measure as the third element in the array
+      measures.splice(newMeasureNum-1, 0, newMeasure);
+      //console.log(measures);
 
-    // Update the 'number' property of each other object
-    for (let i = 0; i < measures.length; i++) {
-      measures[i].number = i + 1;
+      // Update the 'number' property of each other object
+      for (let i = 0; i < measures.length; i++) {
+        measures[i].number = i + 1;
+      }
     }
   }
 
+  const [deleteVisible, setDeleteVisible] = useState(false)
+  // delete selected measure from list of measures
   const deleteMeasure = () => {
     measures.splice(selectedMeasure - 1, 1);
 
@@ -130,8 +171,14 @@ export default function TrackbuilderScreen({ navigation }) {
           <View style={{ flex: 2, justifyContent: 'space-evenly' }}>
             <Text style={stylesMain.text}>Measure: {selectedMeasure}</Text>
             <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
-            <Text style={stylesMain.text}>Beat: {selectedBeat}</Text>
+            <Text style={stylesMain.text}>Beats: {selectedBeat}</Text>
           </View>
+        </View>
+
+        <View style={{ paddingBottom: 10, alignItems: 'flex-end' }}>
+          <TouchableOpacity style={stylesMain.buttons} onPress={handleModal}>
+            <Text style={[stylesMain.text]}>Add </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={{ flex: 2 }}>
@@ -144,68 +191,108 @@ export default function TrackbuilderScreen({ navigation }) {
           />
         </View>
 
-        <View style={{ flex: 4, marginTop: 50, alignItems: 'flex-end' }}>
-          <TouchableOpacity style={styles.buttons} onPress={handleModal}>
-            <Text style={[stylesMain.text]}>Add </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={deleteMeasure}>
-            <Text style={[stylesMain.text]}>Delete </Text>
-          </TouchableOpacity>
-          <View style={{ marginTop: 50, marginLeft: 260 }}>
-            <Button style={{ alignItems: 'right' }} label={'Log In'} onPress={() => navigation.navigate('LogIn')} w={80} h={50}></Button>
+        <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
+          <View style={{ alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2 }}>
+            <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={deleteMeasure}>
+              <Text style={[stylesMain.text]}>Delete </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2, width: '100%' }}>
+            <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('LogIn')}>
+              <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save Track </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
+
       <View style={stylesMain.footer}>
-        <Button label={'Metronome'} onPress={() => navigation.navigate('Metronome')} w={100} h={50}></Button>
+        <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('Metronome')}>
+          <Text style={[stylesMain.text, {}]}>Metronome </Text>
+        </TouchableOpacity>
       </View>
 
       <Modal isVisible={isModalVisible}>
         <Modal.Container>
           <Modal.Body>
-            <View style={{ height: 300 }}>
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ height: 200 }}>
+              <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
               </View>
 
-              <View style={{ flex: 4, backgroundColor: 'blue', padding: 10 }}>
+              <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
                 <View style={{ flexDirection: 'row' }}>
-                  {/* <Text style={styles.text}>Measure:  </Text>
-                <TextInput
-                  style={styles.input}
-                  onChange={onChangeNumber}
-                  value={number}
-                  keyboardType='numeric'
-                  backgroundColor='#f0f5f5'
-                ></TextInput>
-                </View> */}
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.text}>Tempo:  </Text>
+                  <Text style={stylesMain.text}>Measure: </Text>
                   <TextInput
-                    style={styles.input}
-                    onChange={onChangeNumber}
-                    value={number}
+                    onChangeText={text => setNewMeasureNum(text)}
+                    value={newMeasureNum}
+                    defaultValue='60'
+
                     keyboardType='numeric'
-                    backgroundColor='#f0f5f5'
+                    cursorColor={COLORS.orange}
+
+                    style={{ width: 50 }}
+                    backgroundColor={COLORS.buttonBackground}
+                    borderBottomWidth={2}
+                    borderBottomColor={COLORS.offWhite}
+
+                    color={COLORS.orange}
+                    fontSize={20}
+                    fontWeight='bold'
+                    textAlign='center'
                   ></TextInput>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.text}>Beat:  </Text>
+                  <Text style={stylesMain.text}>Tempo: </Text>
                   <TextInput
-                    style={styles.input}
-                    onChange={onChangeNumber}
-                    value={number}
+                    onChangeText={text => setNewTempo(text)}
+                    value={newTempo}
+                    defaultValue='60'
+
                     keyboardType='numeric'
-                    backgroundColor='#f0f5f5'
+                    cursorColor={COLORS.orange}
+
+                    style={{ width: 50 }}
+                    backgroundColor={COLORS.buttonBackground}
+                    borderBottomWidth={2}
+                    borderBottomColor={COLORS.offWhite}
+
+                    color={COLORS.orange}
+                    fontSize={20}
+                    fontWeight='bold'
+                    textAlign='center'
+                  ></TextInput>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={stylesMain.text}>Beat: </Text>
+                  <TextInput
+                    onChangeText={text => setNewBeat(text)}
+                    value={newBeat}
+                    defaultValue='4'
+
+                    keyboardType='numeric'
+                    cursorColor={COLORS.orange}
+
+                    style={{ width: 50 }}
+                    backgroundColor={COLORS.buttonBackground}
+                    borderBottomWidth={2}
+                    borderBottomColor={COLORS.offWhite}
+
+                    color={COLORS.orange}
+                    fontSize={20}
+                    fontWeight='bold'
+                    textAlign='center'
                   ></TextInput>
                 </View>
               </View>
-              <View style={{ flex: 1, backgroundColor: 'green' }}>
-                <TouchableOpacity style={styles.buttons} onPress={handleModal}>
-                  <Text style={styles.text}>hello</Text>
+              <View style={{
+                flex: 2, paddingBottom: 12,
+                alignItems: 'flex-end',
+                justifyContent: 'center'
+              }}>
+                <TouchableOpacity style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]} onPress={handleModal}>
+                  <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -219,45 +306,6 @@ export default function TrackbuilderScreen({ navigation }) {
 
 /* StyleSheets */
 const styles = StyleSheet.create({
-
-  measureBlock: {
-    flex: 1,
-    width: 200
-  },
-  measureMark: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    paddingHorizontal: 15
-  },
-  beats: {
-    flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tempo: {
-    flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    paddingHorizontal: 15
-  },
-  buttons: {
-    backgroundColor: '#1f2e2e',
-    borderRadius: 20,
-
-    marginHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 150,
-    height: 50,
-  },
-
-  bottom: {
-    flex: 4,
-  },
 
   measureBox: {
     borderLeftWidth: 1,

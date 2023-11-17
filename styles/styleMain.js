@@ -20,7 +20,7 @@ export const stylesMain = StyleSheet.create({
     color: COLORS.offWhite,
     fontWeight: 'bold',
     fontSize: 24,
-    marginTop: -65
+    marginTop: -5
   },
 
   text: {

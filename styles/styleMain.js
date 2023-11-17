@@ -10,12 +10,12 @@ export const stylesMain = StyleSheet.create({
     justifyContent: 'center',
   },
 
-    header: {
-      width: '100%',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      flex :1,
-      padding:20
+  header: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 1,
+    padding: 20,
   },
 
   body: {
@@ -25,18 +25,18 @@ export const stylesMain = StyleSheet.create({
   },
 
   footer: {
-    flex: .75,
+    flex: 0.75,
     width: '100%',
     alignContent: 'flex-end',
     justifyContent: 'center',
-    paddingBottom: 12
+    paddingBottom: 12,
   },
 
   title: {
     color: COLORS.offWhite,
     fontWeight: 'bold',
     fontSize: 24,
-    marginTop: -5
+    marginTop: -5,
   },
 
   text: {
@@ -46,9 +46,9 @@ export const stylesMain = StyleSheet.create({
   },
 
   updates: {
-    flexDirection: "column",
+    flexDirection: 'column',
     padding: 10,
-    justifyContent: "center",
+    justifyContent: 'center',
     alignSelf: 'center',
     columnGap: 25,
   },
@@ -75,7 +75,7 @@ export const stylesMain = StyleSheet.create({
     padding: 10,
     marginTop: 5,
     width: 250,
-    justifyContent: "center",
+    justifyContent: 'center',
     alignSelf: 'center',
   },
 
@@ -136,7 +136,7 @@ export const stylesMain = StyleSheet.create({
 
   plusMinusButtons: {
     alignItems: 'center',
-    flex: 1
+    flex: 1,
   },
 
   valueText: {

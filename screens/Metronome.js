@@ -158,7 +158,7 @@ export default function MetronomeScreen({ navigation }) {
               dropdownTextStyles={{ color: COLORS.orange }}
               placeholder="Default"
               search={false}
-              style={stylesMain.dropDown}
+              maxHeight={135}
             /> 
           </View>
 

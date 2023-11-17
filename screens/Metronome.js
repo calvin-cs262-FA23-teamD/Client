@@ -151,15 +151,15 @@ export default function MetronomeScreen({ navigation }) {
         <View style={stylesMain.sounds}>
 
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text> 
             <SelectList setSelected={(val) => setSelectedSound(val)}
               data={soundList} save="value"
               boxStyles={{ backgroundColor: COLORS.orange }}
               dropdownTextStyles={{ color: COLORS.orange }}
-              placeholder="Sound"
+              placeholder="Default"
               search={false}
               style={stylesMain.dropDown}
-            />
+            /> 
           </View>
 
         </View>
@@ -168,7 +168,7 @@ export default function MetronomeScreen({ navigation }) {
         </View>
       </View>
       <View style={stylesMain.footer}>
-        <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('Trackbuilder')}>
+        <TouchableOpacity style={[stylesMain.buttons, {width: 300, alignSelf: 'center', marginBottom: 10}]} onPress={() => navigation.navigate('Trackbuilder')}>
           <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
         </TouchableOpacity>
       </View>

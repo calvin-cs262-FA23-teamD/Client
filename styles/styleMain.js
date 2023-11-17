@@ -16,8 +16,6 @@ export const stylesMain = StyleSheet.create({
       justifyContent: 'flex-end',
       flex :1,
       padding:20
-
-
   },
 
   body: {
@@ -67,6 +65,7 @@ export const stylesMain = StyleSheet.create({
   sounds: {
     justifyContent: 'flex-start',
     marginTop: 25,
+    width: 300,
   },
 
   // for log in and sign up screens
@@ -116,11 +115,10 @@ export const stylesMain = StyleSheet.create({
   buttons: {
     backgroundColor: '#1f2e2e',
     borderRadius: 20,
-
     marginHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 3,
+    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,

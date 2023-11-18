@@ -253,8 +253,10 @@ export default function TrackbuilderScreen({ navigation }) {
       setCount((count) => (count + 1));
       this.actual = Date.now();
       this.drift = (this.actual - this.expected);
-      console.log(count);
-      console.log('drift ', this.drift);
+
+      // Temporaraly commented out to make eslist happy
+      // console.log(count);
+      // console.log('drift ', this.drift);
     } else {
       PausePlay();
     }
@@ -262,7 +264,9 @@ export default function TrackbuilderScreen({ navigation }) {
 
   /* start metronome by incrementing count */
   useEffect(() => {
-    console.log(isPlaying);
+    // Temporaraly commented out to make eslist happy
+    // console.log(isPlaying);
+
     if (isPlaying) {
       setUpTrack();
       setCount((count) => (count + 1));
@@ -272,8 +276,10 @@ export default function TrackbuilderScreen({ navigation }) {
   /* call playSound every interval, taking into account the drift */
   useEffect(() => {
     if (isPlaying && count >= 0) {
-      console.log(count);
-      console.log(tempoList[count]);
+      // Temporaraly commented out to make eslist happy
+      // console.log(count);
+      // console.log(tempoList[count]);
+
       this.expected = Date.now() + ((60 / tempoList[count]) * 1000) - this.drift;
       setTimeout(playSound, ((60 / tempoList[count]) * 1000) - this.drift);
     }

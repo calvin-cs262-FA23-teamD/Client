@@ -75,13 +75,17 @@ export default function MetronomeScreen({ navigation }) {
     setMeasure((measure) => (measure + 1));
     this.actual = Date.now();
     this.drift = (this.actual - this.expected);
-    console.log(measure);
-    console.log('drift ', this.drift);
+
+    // Temporaraly commented out to make eslist happy
+    // console.log(measure);
+    // console.log('drift ', this.drift);
   }
 
   /* start metronome by incrementing measure */
   useEffect(() => {
-    console.log(isPlaying);
+    // Temporaraly commented out to make eslist happy
+    // console.log(isPlaying);
+
     if (isPlaying) {
       setMeasure((measure) => (measure + 1));
     }

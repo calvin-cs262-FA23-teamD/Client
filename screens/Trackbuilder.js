@@ -227,7 +227,7 @@ export default function TrackbuilderScreen({ navigation }) {
   const [tempoList, setTempoList] = useState([]); // list of tempos for each beat
 
   /* variables to make timer work */
-  this.expected = 0;
+  this.expected;
   this.drift = 0;
 
   /* Toggles pause and play */

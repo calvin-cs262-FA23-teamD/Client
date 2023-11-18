@@ -1,14 +1,12 @@
-/* eslint-disable import/named */
-/* eslint-disable react/prop-types */
-/* eslint-disable global-require */
-/* eslint-disable react/no-this-in-sfc */
 /* eslint-disable no-shadow */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/no-this-in-sfc */
+/* eslint-disable global-require */
+/* eslint-disable react/prop-types */
 /* Metronome.js */
 
 import * as React from 'react';
-import {
-  Text, View, TouchableOpacity,
-} from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
@@ -16,6 +14,8 @@ import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list
 import { Audio } from 'expo-av';
 import Button from '../components/Button';
 import BoxyBox from '../components/BoxyBox';
+
+/* Import sound ability */
 
 /* Import style code */
 import { stylesMain } from '../styles/styleMain';
@@ -48,9 +48,9 @@ export default function MetronomeScreen({ navigation }) {
   const [measure, setMeasure] = useState(-1); // current measure
 
   /* variables to make timer work */
-  this.expected = 0;
+  this.expected;
   this.drift = 0;
-  this.date = 0;
+  this.date;
   this.interval = (60 / BPM) * 1000;
 
   /* Toggles pause and play */
@@ -154,7 +154,6 @@ export default function MetronomeScreen({ navigation }) {
 
         </View>
         <View style={stylesMain.sounds}>
-
           <View style={stylesMain.boxed}>
             <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
             <SelectList
@@ -168,18 +167,13 @@ export default function MetronomeScreen({ navigation }) {
               maxHeight={135}
             />
           </View>
-
         </View>
 
-        <View style={{
-          alignItems: 'flex-end', width: '100%', paddingVertical: 50, height: 5,
-        }}
-        />
-      </View>
-      <View style={stylesMain.footer}>
-        <TouchableOpacity style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]} onPress={() => navigation.navigate('Trackbuilder')}>
-          <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
-        </TouchableOpacity>
+        <View style={stylesMain.footer}>
+          <TouchableOpacity style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]} onPress={() => navigation.navigate('Trackbuilder')}>
+            <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

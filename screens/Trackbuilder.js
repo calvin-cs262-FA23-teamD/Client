@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/named */
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-props-no-multi-spaces */

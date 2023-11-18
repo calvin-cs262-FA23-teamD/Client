@@ -1,6 +1,8 @@
-import {
-  StyleSheet, View, Pressable, Text,
-} from 'react-native';
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/named */
+import { View, Pressable, Text } from 'react-native';
 
 // app icons
 import { AntDesign } from '@expo/vector-icons';

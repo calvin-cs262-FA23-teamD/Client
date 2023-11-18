@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/named */
 import { StyleSheet } from 'react-native';
 
 import { COLORS } from './colors';
@@ -119,8 +121,6 @@ export const stylesMain = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
     width: 150,
     height: 50,
   },

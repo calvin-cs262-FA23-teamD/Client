@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* App.js */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,7 +10,6 @@ import MetronomeScreen from './screens/Metronome';
 import TrackbuilderScreen from './screens/Trackbuilder';
 import LogInScreen from './screens/LogIn';
 import SignUpScreen from './screens/SignUp';
-import TrackSoundScreen from './screens/TrackSound';
 
 SplashScreen.preventAutoHideAsync();
 setTimeout(SplashScreen.hideAsync, 5000);
@@ -25,7 +25,6 @@ export default function App() {
         {/* Add new screens to the stack */}
         <Stack.Screen name="LogIn" component={LogInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="TrackSound" component={TrackSoundScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

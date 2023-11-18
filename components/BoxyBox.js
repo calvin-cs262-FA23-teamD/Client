@@ -1,10 +1,10 @@
-import {
-  StyleSheet, View, Pressable, Text,
-} from 'react-native';
+/* eslint-disable import/named */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 
-// app icons
-import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react';
+/* eslint-disable import/no-extraneous-dependencies */
+import { View, Text } from 'react-native';
+
 import Button from './Button';
 
 import { stylesMain } from '../styles/styleMain';
@@ -17,9 +17,9 @@ export default function BoxyBox({
 
   // this function will add or subtract 1 to the current value
   const changeValue = (direction) => {
-    if (direction == true && value < max) {
+    if (direction === true && value < max) {
       setValue(value + 1);
-    } else if (direction == false && value > min) {
+    } else if (direction === false && value > min) {
       setValue(value - 1);
     }
   };

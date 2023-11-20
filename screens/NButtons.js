@@ -1,26 +1,23 @@
+/* eslint-disable react/prop-types */
 /* Metronome.js */
 
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { SelectList } from 'react-native-dropdown-select-list';  // dropdown list for selecting sound
+import { Text, View, TouchableOpacity } from 'react-native';
 
 /* Import component files */
-import Button from './../components/Button';
-import BoxyBox from './../components/BoxyBox';
-import AccentButtons from './../components/AccentButtons';
+// import { AntDesign } from '@expo/vector-icons';
+import AccentButtons from '../components/AccentButtons';
 
 /* Import sound ability */
-import { Audio } from 'expo-av';
 
 /* Import style code */
-import { stylesMain } from './../styles/styleMain';
-import { COLORS } from './../styles/colors';
-import { AntDesign } from '@expo/vector-icons';
+import { stylesMain } from '../styles/styleMain';
+// eslint-disable-next-line no-unused-vars
+import { COLORS } from '../styles/colors';
 
 /* Main function */
 export default function ButtonsScreen({ navigation }) {
-  const numberOfButtons = 9
+  const numberOfButtons = 9;
 
   /* Main app layout */
   return (

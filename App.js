@@ -9,6 +9,7 @@ import TrackbuilderScreen from './screens/Trackbuilder';
 import LogInScreen from './screens/LogIn';
 import SignUpScreen from './screens/SignUp';
 import TrackSoundScreen from './screens/TrackSound';
+import NButtonsScreen from './screens/NButtons';
 
 import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
@@ -19,13 +20,14 @@ const Stack = createNativeStackNavigator();
 export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Metronome" screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="NButtons" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Metronome" component={MetronomeScreen} />
                 <Stack.Screen name="Trackbuilder" component={TrackbuilderScreen} />
                 {/* Add new screens to the stack */}
                 <Stack.Screen name="LogIn" component={LogInScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="TrackSound" component={TrackSoundScreen} />
+                <Stack.Screen name="NButtons" component={NButtonsScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

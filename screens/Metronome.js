@@ -8,6 +8,7 @@ import { SelectList } from 'react-native-dropdown-select-list';  // dropdown lis
 /* Import component files */
 import Button from './../components/Button';
 import BoxyBox from './../components/BoxyBox';
+import AccentButtons from './../components/AccentButtons';
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
@@ -124,6 +125,16 @@ export default function MetronomeScreen({ navigation }) {
 
   }, [selectedSound]);
 
+  const [buttonStates, setButtonStates] = useState(Array(beat).fill(0));
+
+  const toggleButtonState = useCallback((index) => {
+    setButtonStates((prevStates) => {
+      const newStates = [...prevStates];
+      newStates[index] = (newStates[index] + 1) % 3; // Cycle through 0, 1, 2
+      return newStates;
+    });
+  }, []);
+
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
@@ -145,6 +156,14 @@ export default function MetronomeScreen({ navigation }) {
           <View style={stylesMain.boxed}>
             <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
             <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
+          </View>
+
+          <View style={stylesMain.boxed}>
+          <AccentButtons
+        numButtons={beat}
+        buttonStates={buttonStates}
+        toggleButtonState={toggleButtonState}
+      />
           </View>
 
         </View>

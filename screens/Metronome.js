@@ -1,22 +1,27 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/no-this-in-sfc */
+/* eslint-disable global-require */
+/* eslint-disable react/prop-types */
 /* Metronome.js */
 
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useState, useRef, useEffect } from 'react';
-import { SelectList } from 'react-native-dropdown-select-list';  // dropdown list for selecting sound
+import { Text, View, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
 /* Import component files */
-import Button from './../components/Button';
-import BoxyBox from './../components/BoxyBox';
+import { Audio } from 'expo-av';
+import Button from '../components/Button';
+import BoxyBox from '../components/BoxyBox';
 
 /* Import sound ability */
-import { Audio } from 'expo-av';
 
 /* Import style code */
-import { stylesMain } from './../styles/styleMain';
-import { COLORS } from './../styles/colors';
+import { stylesMain } from '../styles/styleMain';
+import { COLORS } from '../styles/colors';
 
-/* Default sound and list of possible selectedSounds*/
+/* Default sound and list of possible selectedSounds */
 const soundList = [
   { key: '1', value: 'Default' },
   { key: '2', value: 'Clap' },
@@ -25,59 +30,68 @@ const soundList = [
   { key: '5', value: 'Shotgun' },
   // Snap contributed by Abigail's friend Noah
   { key: '6', value: 'Snap' },
-]
+];
 
 /* Main function */
 export default function MetronomeScreen({ navigation }) {
   /* Hooks */
   const [isPlaying, setIsPlaying] = useState(false);
-  const [pausePlayIcon, setPausePlayIcon] = useState("caretright");
+  const [pausePlayIcon, setPausePlayIcon] = useState('caretright');
 
-  const [selectedSound, setSelectedSound] = React.useState("Default"); // Initialize selected state with default sound
-  const [selectedSoundFile, setSelectedSoundFile] = useState(require('./../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
-  const [accentSoundFile, setAccentSoundFile] = useState(require('./../assets/sounds/metronome/metronomeaccent.mp3'));
-  const [sound, setSound] = useState();   // current loaded sound
+  const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
+  const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
+  const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+  const [sound, setSound] = useState(); // current loaded sound
 
-  const [BPM, setBPM] = useState(60);     // beats per minute
-  const [beat, setBeat] = useState(4);    // beats per measure
+  const [BPM, setBPM] = useState(60); // beats per minute
+  const [beat, setBeat] = useState(4); // beats per measure
   const [measure, setMeasure] = useState(-1); // current measure
 
   /* variables to make timer work */
   this.expected;
   this.drift = 0;
   this.date;
-  this.interval = 60 / BPM * 1000;
+  this.interval = (60 / BPM) * 1000;
 
   /* Toggles pause and play */
   const PausePlay = () => {
-    setIsPlaying(isPlaying => !isPlaying);
-    setPausePlayIcon(PausePlayIcon => (PausePlayIcon === "caretright" ? "pause" : "caretright"));
+    setIsPlaying((isPlaying) => !isPlaying);
+    setPausePlayIcon((PausePlayIcon) => (PausePlayIcon === 'caretright' ? 'pause' : 'caretright'));
 
     setMeasure(-1);
     this.drift = 0;
-  }
+  };
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync((measure % beat == 0) ? accentSoundFile : selectedSoundFile); // Is there a way to just create the sound once then call on it alone, instead of in a function creating a new instance of the sound each time?
+    const { sound } = await Audio.Sound.createAsync(
+      (measure % beat === 0) ? accentSoundFile : selectedSoundFile,
+    );
     setSound(sound);
     await sound.playAsync();
 
     /* increment measure and calculate drift */
-    setMeasure(measure => (measure + 1));
+    setMeasure((measure) => (measure + 1));
     this.actual = Date.now();
     this.drift = (this.actual - this.expected);
+    // <<<<<<< HEAD
+    //= ======
+
+    // Temporarally commented out to make eslint happy
     console.log(measure);
-    console.log("drift ", this.drift);
+    console.log('drift ', this.drift);
   }
 
-
-  /* start metronome by incrementing measure*/
+  /* start metronome by incrementing measure */
   useEffect(() => {
-    console.log(isPlaying);
+    // console.log(isPlaying);
+
+    // Temporaraly commented out to make eslist happy
+    // console.log(isPlaying);
+
     if (isPlaying) {
-      setMeasure(measure => (measure + 1));
+      setMeasure((measure) => (measure + 1));
     }
   }, [isPlaying]);
 
@@ -89,39 +103,38 @@ export default function MetronomeScreen({ navigation }) {
     }
     return sound
       ? () => {
-        sound.unloadAsync(); // Unloads sound everytime, must figure out how to load into memory once and keep it there untill the metronome is stopped completely
+        sound.unloadAsync();
       }
       : undefined;
-  }, [measure]); // this function is called every time the measure updates. This allows the metronome to act recursively while also allowing for hook updates
+  }, [measure]);
 
-  /*update the beat sound (paired)*/
+  /* update the beat sound (paired) */
   useEffect(() => {
     switch (selectedSound) {
       case 'Clap':
-        setSelectedSoundFile(require('./../assets/sounds/clap/clap-click.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/clap/clap-accent.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
+        setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
         break;
       case 'Drum':
-        setSelectedSoundFile(require('./../assets/sounds/drum/floor_tom_louder.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/drum/snare_drum_louder.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
+        setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));
         break;
       case 'Piano':
-        setSelectedSoundFile(require('./../assets/sounds/piano/pianoD.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/piano/pianoG.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/piano/pianoD.mp3'));
+        setAccentSoundFile(require('../assets/sounds/piano/pianoG.mp3'));
         break;
       case 'Shotgun':
-        setSelectedSoundFile(require('./../assets/sounds/shotgun/Shotgun.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/shotgun/Shotgun2.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/shotgun/Shotgun.mp3'));
+        setAccentSoundFile(require('../assets/sounds/shotgun/Shotgun2.mp3'));
         break;
       case 'Snap':
-        setSelectedSoundFile(require('./../assets/sounds/snap/snap-click.mp3'));
-        setAccentSoundFile(require('./../assets/sounds/snap/snap-accent.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/snap/snap-click.mp3'));
+        setAccentSoundFile(require('../assets/sounds/snap/snap-accent.mp3'));
         break;
       default:
-        setSelectedSoundFile(require('./../assets/sounds/metronome/metronomesound.mp3')); // Default
-        setAccentSoundFile(require('./../assets/sounds/metronome/metronomeaccent.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/metronome/metronomesound.mp3')); // Default
+        setAccentSoundFile(require('../assets/sounds/metronome/metronomeaccent.mp3'));
     }
-
   }, [selectedSound]);
 
   /* Main app layout */
@@ -149,28 +162,26 @@ export default function MetronomeScreen({ navigation }) {
 
         </View>
         <View style={stylesMain.sounds}>
-
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text> 
-            <SelectList setSelected={(val) => setSelectedSound(val)}
-              data={soundList} save="value"
+            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+            <SelectList
+              setSelected={(val) => setSelectedSound(val)}
+              data={soundList}
+              save="value"
               boxStyles={{ backgroundColor: COLORS.orange }}
               dropdownTextStyles={{ color: COLORS.orange }}
               placeholder="Default"
               search={false}
               maxHeight={135}
-            /> 
+            />
           </View>
-
         </View>
 
-        <View style={{ alignItems: 'flex-end', width: '100%', paddingVertical: 50, height: 5 }}>
+        <View style={stylesMain.footer}>
+          <TouchableOpacity style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]} onPress={() => navigation.navigate('Trackbuilder')}>
+            <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={stylesMain.footer}>
-        <TouchableOpacity style={[stylesMain.buttons, {width: 300, alignSelf: 'center', marginBottom: 10}]} onPress={() => navigation.navigate('Trackbuilder')}>
-          <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

@@ -17,7 +17,7 @@ import { COLORS } from '../styles/colors';
 
 /* Main function */
 export default function ButtonsScreen({ navigation }) {
-  const numberOfButtons = 9;
+  const numberOfButtons = 5;
 
   /* Main app layout */
   return (

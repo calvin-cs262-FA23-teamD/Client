@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/no-this-in-sfc */
@@ -8,7 +9,7 @@
 
 import * as React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
 /* Import component files */
@@ -76,8 +77,6 @@ export default function MetronomeScreen({ navigation }) {
     setMeasure((measure) => (measure + 1));
     this.actual = Date.now();
     this.drift = (this.actual - this.expected);
-    // <<<<<<< HEAD
-    //= ======
 
     // Temporarally commented out to make eslint happy
     console.log(measure);
@@ -86,8 +85,6 @@ export default function MetronomeScreen({ navigation }) {
 
   /* start metronome by incrementing measure */
   useEffect(() => {
-    // console.log(isPlaying);
-
     // Temporaraly commented out to make eslist happy
     // console.log(isPlaying);
 
@@ -138,15 +135,16 @@ export default function MetronomeScreen({ navigation }) {
     }
   }, [selectedSound]);
 
-  const [buttonStates, setButtonStates] = useState(Array(beat).fill(0));
+  // const [buttonStates, setButtonStates] = useState(Array(beat).fill(1));
 
-  const toggleButtonState = useCallback((index) => {
-    setButtonStates((prevStates) => {
-      const newStates = [...prevStates];
-      newStates[index] = (newStates[index] + 1) % 3; // Cycle through 0, 1, 2
-      return newStates;
-    });
-  }, []);
+  // const toggleButtonState = (index) => {
+  //   setButtonStates((prevStates) => {
+  //     const newStates = [...prevStates];
+  //     newStates[index] = (newStates[index] + 1) % 3; // Cycle through 0, 1, 2
+  //     console.log(newStates);
+  //     return newStates;
+  //   });
+  // };
 
   /* Main app layout */
   return (
@@ -172,11 +170,7 @@ export default function MetronomeScreen({ navigation }) {
           </View>
 
           <View style={stylesMain.boxed}>
-            <AccentButtons
-              numButtons={beat}
-              buttonStates={buttonStates}
-              toggleButtonState={toggleButtonState}
-            />
+            <AccentButtons numButtons={beat} />
           </View>
 
         </View>

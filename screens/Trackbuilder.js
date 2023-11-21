@@ -16,7 +16,7 @@ import * as React from 'react';
 import {
   StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /* Import component files */
 import { AntDesign } from '@expo/vector-icons';
@@ -163,12 +163,15 @@ export default function TrackbuilderScreen({ navigation }) {
   };
 
   /* delete selected measure from list of measures */
+  const flatListRef = useRef(null);
   const deleteMeasure = () => {
+    console.log(selectedMeasure);
     measures.splice(selectedMeasure - 1, 1);
     // Update the 'number' property of the remaining measures
     for (let i = 0; i < measures.length; i++) {
       measures[i].number = i + 1;
     }
+    flatListRef.current.forceUpdate();
   };
 
   /* The following code implements the clicking metronome which plays
@@ -324,6 +327,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
         <View style={{ flex: 2 }}>
           <FlatList
+            ref={flatListRef}
             data={measures}
             renderItem={renderMeasure}
             keyExtractor={(measure) => measure.number}
@@ -350,7 +354,15 @@ export default function TrackbuilderScreen({ navigation }) {
       </View>
 
       <View style={stylesMain.footer}>
-        <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('Metronome')}>
+        <TouchableOpacity
+          style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+          onPress={() => {
+            if (isPlaying) {
+              PausePlay();
+            }
+            navigation.navigate('Metronome');
+          }}
+        >
           <Text style={[stylesMain.text, {}]}>Metronome </Text>
         </TouchableOpacity>
       </View>

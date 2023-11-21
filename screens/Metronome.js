@@ -196,7 +196,15 @@ export default function MetronomeScreen({ navigation }) {
         </View>
 
         <View style={stylesMain.footer}>
-          <TouchableOpacity style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]} onPress={() => navigation.navigate('Trackbuilder')}>
+          <TouchableOpacity
+            style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+            onPress={() => {
+              if (isPlaying) {
+                PausePlay();
+              }
+              navigation.navigate('Trackbuilder');
+            }}
+          >
             <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
           </TouchableOpacity>
         </View>

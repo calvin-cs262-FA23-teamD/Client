@@ -5,6 +5,7 @@
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable global-require */
 /* eslint-disable react/prop-types */
+/* eslint-disable no-use-before-define */
 /* Metronome.js */
 
 import * as React from 'react';
@@ -12,12 +13,13 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
+/* Import sound ability */
+import { Audio } from 'expo-av';
+
 /* Import component files */
 import Button from '../components/Button';
 import BoxyBox from '../components/BoxyBox';
 import AccentButtons from '../components/AccentButtons';
-
-/* Import sound ability */
 
 /* Import style code */
 import { stylesMain } from '../styles/styleMain';
@@ -55,6 +57,8 @@ export default function MetronomeScreen({ navigation }) {
   this.date;
   this.interval = (60 / BPM) * 1000;
 
+  this.beatSound;
+
   /* Toggles pause and play */
   const PausePlay = () => {
     setIsPlaying((isPlaying) => !isPlaying);
@@ -67,9 +71,13 @@ export default function MetronomeScreen({ navigation }) {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync(
-      (measure % beat === 0) ? accentSoundFile : selectedSoundFile,
-    );
+    this.beatSound = buttonStates[measure % beat];
+    // When adding in silence, replace the last "selectSoundFile"
+    // eslint-disable-next-line no-nested-ternary, max-len
+    const soundFile = (this.beatSound === 1) ? accentSoundFile : (
+      this.beatSound === 2) ? selectedSoundFile : selectedSoundFile;
+
+    const { sound } = await Audio.Sound.createAsync(soundFile);
     setSound(sound);
     await sound.playAsync();
 
@@ -135,16 +143,9 @@ export default function MetronomeScreen({ navigation }) {
     }
   }, [selectedSound]);
 
-  // const [buttonStates, setButtonStates] = useState(Array(beat).fill(1));
-
-  // const toggleButtonState = (index) => {
-  //   setButtonStates((prevStates) => {
-  //     const newStates = [...prevStates];
-  //     newStates[index] = (newStates[index] + 1) % 3; // Cycle through 0, 1, 2
-  //     console.log(newStates);
-  //     return newStates;
-  //   });
-  // };
+  const [buttonStates, setButtonStates] = useState(
+    Array.from({ length: beat }, () => 0), // Set the default state to display numbers
+  );
 
   /* Main app layout */
   return (
@@ -170,7 +171,11 @@ export default function MetronomeScreen({ navigation }) {
           </View>
 
           <View style={stylesMain.boxed}>
-            <AccentButtons numButtons={beat} />
+            <AccentButtons
+              numButtons={beat}
+              buttonStates={buttonStates}
+              setButtonStates={setButtonStates}
+            />
           </View>
 
         </View>

@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-plusplus */
@@ -7,7 +8,7 @@ import * as React from 'react';
 import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 /* Import component files */
 import { AntDesign } from '@expo/vector-icons';
@@ -16,11 +17,10 @@ import { AntDesign } from '@expo/vector-icons';
 import { stylesMain } from '../styles/styleMain';
 import { COLORS } from '../styles/colors';
 
-const generateButtons = (numButtons) => {
-  const [buttonStates, setButtonStates] = useState(
-    Array.from({ length: numButtons }, () => 0), // Set the default state to display numbers
-  );
-  {/* I need to make it so that whenever you change the number of beats, you remake the buttons*/ }
+const generateButtons = (numButtons, buttonStates, setButtonStates) => {
+  // const [buttonStates, setButtonStates] = useState(
+  //   Array.from({ length: numButtons }, () => 0), // Set the default state to display numbers
+  // );
 
   const toggleButtonState = useCallback((index) => {
     setButtonStates((prevStates) => {
@@ -29,6 +29,11 @@ const generateButtons = (numButtons) => {
       return newStates;
     });
   }, []); // Memoize the function
+
+  // Watch for changes in numButtons and update buttonStates
+  useEffect(() => {
+    setButtonStates(Array(numButtons).fill(0));
+  }, [numButtons]);
 
   console.log('quantity:', numButtons);
   console.log('buttonStates:', buttonStates);
@@ -40,11 +45,6 @@ const generateButtons = (numButtons) => {
 
   const rows = Math.ceil(numButtons / maxButtonsPerRow);
   const buttonsPerRow = Math.ceil(numButtons / rows);
-
-  // Watch for changes in numButtons and update buttonStates
-  useEffect(() => {
-    setButtonStates(Array(numButtons).fill(0));
-  }, [numButtons]);
 
   for (let i = 0; i < rows; i++) {
     const rowButtons = [];
@@ -100,14 +100,13 @@ const generateButtons = (numButtons) => {
     );
   }
 
-
   return buttons;
 };
 
-export default function AccentButtons({ numButtons }) {
+export default function AccentButtons({ numButtons, buttonStates, setButtonStates }) {
   return (
     <View style={[{ alignItems: 'center' }]}>
-      {generateButtons(numButtons)}
+      {generateButtons(numButtons, buttonStates, setButtonStates)}
     </View>
   );
 }

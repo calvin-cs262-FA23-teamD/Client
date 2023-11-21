@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/prop-types */

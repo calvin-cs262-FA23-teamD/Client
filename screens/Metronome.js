@@ -155,7 +155,7 @@ export default function MetronomeScreen({ navigation }) {
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <View style={[stylesMain.body, { alignItems: 'center'}]}>
+      <View style={[stylesMain.body, { alignItems: 'center' }]}>
 
         <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
         <View style={[stylesMain.counters]}>

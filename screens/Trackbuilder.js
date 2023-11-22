@@ -165,7 +165,6 @@ export default function TrackbuilderScreen({ navigation }) {
   /* delete selected measure from list of measures */
   const flatListRef = useRef(null);
   const deleteMeasure = () => {
-    console.log(selectedMeasure);
     if (selectedMeasure != null) {
       measures.splice(selectedMeasure - 1, 1);
       // Update the 'number' property of the remaining measures

@@ -155,10 +155,10 @@ export default function MetronomeScreen({ navigation }) {
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <View style={[stylesMain.body, { alignItems: 'center' }]}>
+      <View style={[stylesMain.body, { alignItems: 'center'}]}>
 
         <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-        <View style={stylesMain.counters}>
+        <View style={[stylesMain.counters]}>
 
           <View style={stylesMain.boxed}>
             <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
@@ -170,11 +170,12 @@ export default function MetronomeScreen({ navigation }) {
             <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
           </View>
 
-          <View style={stylesMain.boxed}>
+          <View style={[stylesMain.boxed, { width: '100%', justifyContent: 'flex-end' }]}>
             <AccentButtons
               numButtons={beat}
               buttonStates={buttonStates}
               setButtonStates={setButtonStates}
+              buttonSize={40}
             />
           </View>
 

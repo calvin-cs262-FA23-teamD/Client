@@ -58,6 +58,8 @@ export const stylesMain = StyleSheet.create({
   counters: {
     justifyContent: 'space-between',
     rowGap: 15,
+    width: '100%',
+    alignItems: 'center',
   },
 
   boxed: {

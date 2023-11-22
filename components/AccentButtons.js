@@ -5,9 +5,7 @@
 /* Metronome.js */
 
 import * as React from 'react';
-import {
-  StyleSheet, Text, View, TouchableOpacity,
-} from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { useCallback, useEffect } from 'react';
 
 /* Import component files */
@@ -17,7 +15,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { stylesMain } from '../styles/styleMain';
 import { COLORS } from '../styles/colors';
 
-const generateButtons = (numButtons, buttonStates, setButtonStates) => {
+const generateButtons = (numButtons, buttonStates, setButtonStates, buttonSize) => {
   // const [buttonStates, setButtonStates] = useState(
   //   Array.from({ length: numButtons }, () => 0), // Set the default state to display numbers
   // );
@@ -34,10 +32,6 @@ const generateButtons = (numButtons, buttonStates, setButtonStates) => {
   useEffect(() => {
     setButtonStates(Array(numButtons).fill(0).map((_, index) => (index === 0 ? 1 : 0)));
   }, [numButtons]);
-
-  console.log('quantity:', numButtons);
-  console.log('buttonStates:', buttonStates);
-  console.log('toggleButtonState:', toggleButtonState);
 
   const buttons = [];
   const maxButtonsPerRow = 6;
@@ -84,7 +78,17 @@ const generateButtons = (numButtons, buttonStates, setButtonStates) => {
         rowButtons.push(
           <TouchableOpacity
             key={buttonNumber}
-            style={[styles.button, j > 0 && { marginLeft: buttonSpacing }]}
+            style={[
+              j > 0 && { marginLeft: buttonSpacing },
+              {
+                width: buttonSize,
+                height: buttonSize,
+                borderRadius: 20,
+                backgroundColor: COLORS.orange,
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+            ]}
             onPress={() => toggleButtonState(buttonIndex)}
           >
             {buttonContent}
@@ -94,7 +98,8 @@ const generateButtons = (numButtons, buttonStates, setButtonStates) => {
     }
 
     buttons.push(
-      <View key={i} style={styles.row}>
+      // eslint-disable-next-line object-curly-newline
+      <View key={i} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
         {rowButtons}
       </View>,
     );
@@ -103,32 +108,11 @@ const generateButtons = (numButtons, buttonStates, setButtonStates) => {
   return buttons;
 };
 
-export default function AccentButtons({ numButtons, buttonStates, setButtonStates }) {
+// eslint-disable-next-line object-curly-newline
+export default function AccentButtons({ numButtons, buttonStates, setButtonStates, buttonSize }) {
   return (
     <View style={[{ alignItems: 'center' }]}>
-      {generateButtons(numButtons, buttonStates, setButtonStates)}
+      {generateButtons(numButtons, buttonStates, setButtonStates, buttonSize)}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'space-between',
-    marginVertical: 10,
-  },
-  button: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: COLORS.orange,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

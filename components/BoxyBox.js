@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable import/named */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/prop-types */
@@ -26,17 +27,19 @@ export default function BoxyBox({
 
   return (
     <View style={[stylesMain.boxyBoxes, {
-      width: w, height: h, flexDirection: 'row', alignItems: 'center',
     }]}
     >
-      <View style={stylesMain.plusMinusButtons}>
-        <Button image="minus" w={w / 2.7} h={h} onPress={() => changeValue(false)} />
-      </View>
-      <View style={stylesMain.valueText}>
-        <Text style={{ color: COLORS.offWhite, fontSize: w / 6 }}>{value.toString()}</Text>
-      </View>
-      <View style={stylesMain.plusMinusButtons}>
-        <Button image="plus" w={w / 2.7} h={h} onPress={() => changeValue(true)} />
+      {/* <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text> */}
+      <View style={{ width: w, height: h, alignItems: 'center', flexDirection: 'row' }}>
+        <View style={stylesMain.plusMinusButtons}>
+          <Button image="minus" w={w / 2.7} h={h} onPress={() => changeValue(false)} />
+        </View>
+        <View style={stylesMain.valueText}>
+          <Text style={{ color: COLORS.offWhite, fontSize: w / 6 }}>{value.toString()}</Text>
+        </View>
+        <View style={stylesMain.plusMinusButtons}>
+          <Button image="plus" w={w / 2.7} h={h} onPress={() => changeValue(true)} />
+        </View>
       </View>
     </View>
   );

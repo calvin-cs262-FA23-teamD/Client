@@ -55,21 +55,15 @@ export const stylesMain = StyleSheet.create({
     columnGap: 25,
   },
 
-  counters: {
+  subView: {
     justifyContent: 'space-between',
-    rowGap: 15,
+    rowGap: 7,
     width: '100%',
     alignItems: 'center',
   },
 
   boxed: {
-    rowGap: 15,
-  },
-
-  sounds: {
-    justifyContent: 'flex-start',
-    marginTop: 25,
-    width: 300,
+    rowGap: 7,
   },
 
   // for log in and sign up screens
@@ -131,7 +125,6 @@ export const stylesMain = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     backgroundColor: COLORS.buttonBackground,
-    flexDirection: 'row',
     padding: 5,
     border: 10,
   },

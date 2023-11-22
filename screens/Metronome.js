@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable react/jsx-max-props-per-line */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-expressions */
@@ -18,8 +19,7 @@ import { Audio } from 'expo-av';
 
 /* Import component files */
 import Button from '../components/Button';
-import BoxyBox from '../components/BoxyBox';
-import AccentButtons from '../components/AccentButtons';
+import Counters from '../components/Counters';
 
 /* Import style code */
 import { stylesMain } from '../styles/styleMain';
@@ -157,41 +157,29 @@ export default function MetronomeScreen({ navigation }) {
 
       <View style={[stylesMain.body, { alignItems: 'center' }]}>
 
-        <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-        <View style={[stylesMain.counters]}>
-
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
-            <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
-          </View>
-
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
-            <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
-          </View>
-
-          <View style={[stylesMain.boxed, { width: '100%', justifyContent: 'flex-end' }]}>
-            <AccentButtons
-              numButtons={beat}
-              buttonStates={buttonStates}
-              setButtonStates={setButtonStates}
-              buttonSize={40}
-            />
-          </View>
-
+        <View style={[stylesMain.subView, { padding: 7 }]}>
+          <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
         </View>
-        <View style={stylesMain.sounds}>
+
+        <Counters
+          width={300}
+          beat={beat} setBeat={setBeat}
+          BPM={BPM} setBPM={setBPM}
+          buttonStates={buttonStates} setButtonStates={setButtonStates}
+        />
+
+        <View style={[stylesMain.subView]}>
           <View style={stylesMain.boxed}>
             <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
             <SelectList
               setSelected={(val) => setSelectedSound(val)}
               data={soundList}
               save="value"
-              boxStyles={{ backgroundColor: COLORS.orange }}
+              boxStyles={{ backgroundColor: COLORS.orange, width: 300 }}
               dropdownTextStyles={{ color: COLORS.orange }}
               placeholder="Default"
               search={false}
-              maxHeight={135}
+              maxHeight={100}
             />
           </View>
         </View>

@@ -32,7 +32,7 @@ const generateButtons = (numButtons, buttonStates, setButtonStates) => {
 
   // Watch for changes in numButtons and update buttonStates
   useEffect(() => {
-    setButtonStates(Array(numButtons).fill(0));
+    setButtonStates(Array(numButtons).fill(0).map((_, index) => (index === 0 ? 1 : 0)));
   }, [numButtons]);
 
   console.log('quantity:', numButtons);

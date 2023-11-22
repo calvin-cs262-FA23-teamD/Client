@@ -166,12 +166,14 @@ export default function TrackbuilderScreen({ navigation }) {
   const flatListRef = useRef(null);
   const deleteMeasure = () => {
     console.log(selectedMeasure);
-    measures.splice(selectedMeasure - 1, 1);
-    // Update the 'number' property of the remaining measures
-    for (let i = 0; i < measures.length; i++) {
-      measures[i].number = i + 1;
+    if (selectedMeasure != null) {
+      measures.splice(selectedMeasure - 1, 1);
+      // Update the 'number' property of the remaining measures
+      for (let i = 0; i < measures.length; i++) {
+        measures[i].number = i + 1;
+      }
+      flatListRef.current.forceUpdate();
     }
-    flatListRef.current.forceUpdate();
   };
 
   /* The following code implements the clicking metronome which plays

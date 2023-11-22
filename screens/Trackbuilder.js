@@ -18,13 +18,14 @@ import {
 } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 
-/* Import component files */
 import { AntDesign } from '@expo/vector-icons';
 
 /* Import component files */
 import { Audio } from 'expo-av';
-import Button from '../components/Button';
 import { Modal } from '../components/MeasureModal.tsx';
+
+/* Import component files */
+import PausePlayButton from '../components/PausePlayButton';
 
 /* Import style files */
 import { stylesMain } from '../styles/styleMain';
@@ -310,14 +311,8 @@ export default function TrackbuilderScreen({ navigation }) {
       </View>
 
       <View style={[stylesMain.body, {}]}>
-        <View style={{ flex: 3, width: '100%' }}>
-          <View style={{ flex: 2, justifyContent: 'space-evenly', alignItems: 'center' }}>
-            {/* <Text style={stylesMain.text}>Measure Num: {selectedMeasure}</Text>
-            <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
-            <Text style={stylesMain.text}>Beats: {selectedBeat}</Text> */}
-            <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-
-          </View>
+        <View style={{ flex: 3, width: '100%', justifyContent: 'center' }}>
+          <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
         </View>
 
         <View style={{ paddingBottom: 10, alignItems: 'flex-end' }}>

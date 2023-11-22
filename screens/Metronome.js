@@ -18,7 +18,7 @@ import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list
 import { Audio } from 'expo-av';
 
 /* Import component files */
-import Button from '../components/Button';
+import PausePlayButton from '../components/PausePlayButton';
 import Counters from '../components/Counters';
 
 /* Import style code */
@@ -157,9 +157,7 @@ export default function MetronomeScreen({ navigation }) {
 
       <View style={[stylesMain.body, { alignItems: 'center' }]}>
 
-        <View style={[stylesMain.subView, { padding: 7 }]}>
-          <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-        </View>
+        <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
 
         <Counters
           width={300}

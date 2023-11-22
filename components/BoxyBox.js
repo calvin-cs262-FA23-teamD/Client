@@ -4,9 +4,10 @@
 /* eslint-disable react/prop-types */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
-import Button from './Button';
+// app icons
+import { AntDesign } from '@expo/vector-icons';
 
 import { stylesMain } from '../styles/styleMain';
 import { COLORS } from '../styles/colors';
@@ -31,15 +32,29 @@ export default function BoxyBox({
     >
       {/* <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text> */}
       <View style={{ width: w, height: h, alignItems: 'center', flexDirection: 'row' }}>
+
         <View style={stylesMain.plusMinusButtons}>
-          <Button image="minus" w={w / 2.7} h={h} onPress={() => changeValue(false)} />
+          <TouchableOpacity
+            style={[stylesMain.buttonContainer, { width: w / 2.7, height: h }]}
+            onPress={() => changeValue(false)}
+          >
+            <AntDesign name="minus" size={24} color={COLORS.orange} />
+          </TouchableOpacity>
         </View>
+
         <View style={stylesMain.valueText}>
           <Text style={{ color: COLORS.offWhite, fontSize: w / 6 }}>{value.toString()}</Text>
         </View>
+
         <View style={stylesMain.plusMinusButtons}>
-          <Button image="plus" w={w / 2.7} h={h} onPress={() => changeValue(true)} />
+          <TouchableOpacity
+            style={[stylesMain.buttonContainer, { width: w / 2.7, height: h }]}
+            onPress={() => changeValue(true)}
+          >
+            <AntDesign name="plus" size={24} color={COLORS.orange} />
+          </TouchableOpacity>
         </View>
+
       </View>
     </View>
   );

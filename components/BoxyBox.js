@@ -4,7 +4,7 @@
 /* eslint-disable react/prop-types */
 
 /* eslint-disable import/no-extraneous-dependencies */
-/*import { View, Text } from 'react-native'; */
+/*import { View, Text } from 'react-native';
 
 // app icons
 import { AntDesign } from '@expo/vector-icons';

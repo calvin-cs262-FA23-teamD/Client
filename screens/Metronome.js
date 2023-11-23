@@ -1,8 +1,12 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable react/jsx-max-props-per-line */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable global-require */
 /* eslint-disable react/prop-types */
+/* eslint-disable no-use-before-define */
 /* Metronome.js */
 
 import * as React from 'react';
@@ -10,12 +14,12 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
-/* Import component files */
-import { Audio } from 'expo-av';
-import Button from '../components/Button';
-import BoxyBox from '../components/BoxyBox';
-
 /* Import sound ability */
+import { Audio } from 'expo-av';
+
+/* Import component files */
+import PausePlayButton from '../components/PausePlayButton';
+import Counters from '../components/Counters';
 
 /* Import style code */
 import { stylesMain } from '../styles/styleMain';
@@ -53,6 +57,8 @@ export default function MetronomeScreen({ navigation }) {
   this.date;
   this.interval = (60 / BPM) * 1000;
 
+  this.beatSound;
+
   /* Toggles pause and play */
   const PausePlay = () => {
     setIsPlaying((isPlaying) => !isPlaying);
@@ -65,9 +71,13 @@ export default function MetronomeScreen({ navigation }) {
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    const { sound } = await Audio.Sound.createAsync(
-      (measure % beat === 0) ? accentSoundFile : selectedSoundFile,
-    );
+    this.beatSound = buttonStates[measure % beat];
+    // When adding in silence, replace the last "selectSoundFile"
+    // eslint-disable-next-line no-nested-ternary, max-len
+    const soundFile = (this.beatSound === 1) ? accentSoundFile : (
+      this.beatSound === 2) ? selectedSoundFile : selectedSoundFile;
+
+    const { sound } = await Audio.Sound.createAsync(soundFile);
     setSound(sound);
     await sound.playAsync();
 
@@ -75,8 +85,6 @@ export default function MetronomeScreen({ navigation }) {
     setMeasure((measure) => (measure + 1));
     this.actual = Date.now();
     this.drift = (this.actual - this.expected);
-    // <<<<<<< HEAD
-    //= ======
 
     // Temporarally commented out to make eslint happy
     console.log(measure);
@@ -85,8 +93,6 @@ export default function MetronomeScreen({ navigation }) {
 
   /* start metronome by incrementing measure */
   useEffect(() => {
-    // console.log(isPlaying);
-
     // Temporaraly commented out to make eslist happy
     // console.log(isPlaying);
 
@@ -137,6 +143,10 @@ export default function MetronomeScreen({ navigation }) {
     }
   }, [selectedSound]);
 
+  const [buttonStates, setButtonStates] = useState(
+    Array.from({ length: beat }, () => 0), // Set the default state to display numbers
+  );
+
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
@@ -147,38 +157,41 @@ export default function MetronomeScreen({ navigation }) {
 
       <View style={[stylesMain.body, { alignItems: 'center' }]}>
 
-        <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-        <View style={stylesMain.counters}>
+        <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
 
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
-            <BoxyBox w={300} h={100} value={BPM} setValue={setBPM} min={20} max={200} />
-          </View>
+        <Counters
+          width={300}
+          beat={beat} setBeat={setBeat}
+          BPM={BPM} setBPM={setBPM}
+          buttonStates={buttonStates} setButtonStates={setButtonStates}
+        />
 
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Beat</Text>
-            <BoxyBox w={300} h={100} value={beat} setValue={setBeat} min={1} max={12} />
-          </View>
-
-        </View>
-        <View style={stylesMain.sounds}>
+        <View style={[stylesMain.subView]}>
           <View style={stylesMain.boxed}>
             <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
             <SelectList
               setSelected={(val) => setSelectedSound(val)}
               data={soundList}
               save="value"
-              boxStyles={{ backgroundColor: COLORS.orange }}
+              boxStyles={{ backgroundColor: COLORS.orange, width: 300 }}
               dropdownTextStyles={{ color: COLORS.orange }}
               placeholder="Default"
               search={false}
-              maxHeight={135}
+              maxHeight={100}
             />
           </View>
         </View>
 
         <View style={stylesMain.footer}>
-          <TouchableOpacity style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]} onPress={() => navigation.navigate('Trackbuilder')}>
+          <TouchableOpacity
+            style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+            onPress={() => {
+              if (isPlaying) {
+                PausePlay();
+              }
+              navigation.navigate('Trackbuilder');
+            }}
+          >
             <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
           </TouchableOpacity>
         </View>

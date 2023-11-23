@@ -30,7 +30,7 @@ export default function BoxyBox({
     <View style={[stylesMain.boxyBoxes, {
     }]}
     >
-      {/* <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text> */}
+      {/* <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text> *//*}
       <View style={{ width: w, height: h, alignItems: 'center', flexDirection: 'row' }}>
 
         <View style={stylesMain.plusMinusButtons}>

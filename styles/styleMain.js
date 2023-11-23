@@ -129,10 +129,10 @@ export const stylesMain = StyleSheet.create({
     border: 10,
   },
 
-  plusMinusButtons: {
+  /*plusMinusButtons: {
     alignItems: 'center',
     flex: 1,
-  },
+  },*/
 
   valueText: {
     alignItems: 'center',

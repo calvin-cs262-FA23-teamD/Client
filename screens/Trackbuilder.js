@@ -1,7 +1,8 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable react/jsx-props-no-multi-spaces */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable import/named */
 /* eslint-disable import/extensions */
-/* eslint-disable react/jsx-props-no-multi-spaces */
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable no-shadow */
@@ -15,12 +16,16 @@ import * as React from 'react';
 import {
   StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+import { AntDesign } from '@expo/vector-icons';
 
 /* Import component files */
 import { Audio } from 'expo-av';
-import Button from '../components/Button';
 import { Modal } from '../components/MeasureModal.tsx';
+
+/* Import component files */
+import PausePlayButton from '../components/PausePlayButton';
 
 /* Import style files */
 import { stylesMain } from '../styles/styleMain';
@@ -46,46 +51,6 @@ const measures = [
   {
     number: 4,
     tempo: 52,
-    beat: 2,
-  },
-  {
-    number: 5,
-    tempo: 52,
-    beat: 3,
-  },
-  {
-    number: 6,
-    tempo: 52,
-    beat: 3,
-  },
-  {
-    number: 7,
-    tempo: 52,
-    beat: 4,
-  },
-  {
-    number: 8,
-    tempo: 52,
-    beat: 2,
-  },
-  {
-    number: 9,
-    tempo: 96,
-    beat: 2,
-  },
-  {
-    number: 10,
-    tempo: 96,
-    beat: 2,
-  },
-  {
-    number: 11,
-    tempo: 96,
-    beat: 2,
-  },
-  {
-    number: 12,
-    tempo: 96,
     beat: 2,
   },
 ];
@@ -199,11 +164,15 @@ export default function TrackbuilderScreen({ navigation }) {
   };
 
   /* delete selected measure from list of measures */
+  const flatListRef = useRef(null);
   const deleteMeasure = () => {
-    measures.splice(selectedMeasure - 1, 1);
-    // Update the 'number' property of the remaining measures
-    for (let i = 0; i < measures.length; i++) {
-      measures[i].number = i + 1;
+    if (selectedMeasure != null) {
+      measures.splice(selectedMeasure - 1, 1);
+      // Update the 'number' property of the remaining measures
+      for (let i = 0; i < measures.length; i++) {
+        measures[i].number = i + 1;
+      }
+      flatListRef.current.forceUpdate();
     }
   };
 
@@ -342,14 +311,8 @@ export default function TrackbuilderScreen({ navigation }) {
       </View>
 
       <View style={[stylesMain.body, {}]}>
-        <View style={{ flex: 3, width: '100%' }}>
-          <View style={{ flex: 2, justifyContent: 'space-evenly', alignItems: 'center' }}>
-            {/* <Text style={stylesMain.text}>Measure Num: {selectedMeasure}</Text>
-            <Text style={stylesMain.text}>Tempo: {selectedTempo}</Text>
-            <Text style={stylesMain.text}>Beats: {selectedBeat}</Text> */}
-            <Button image={pausePlayIcon} onPress={PausePlay} w={300} h={100} />
-
-          </View>
+        <View style={{ flex: 3, width: '100%', justifyContent: 'center' }}>
+          <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
         </View>
 
         <View style={{ paddingBottom: 10, alignItems: 'flex-end' }}>
@@ -360,6 +323,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
         <View style={{ flex: 2 }}>
           <FlatList
+            ref={flatListRef}
             data={measures}
             renderItem={renderMeasure}
             keyExtractor={(measure) => measure.number}
@@ -386,7 +350,15 @@ export default function TrackbuilderScreen({ navigation }) {
       </View>
 
       <View style={stylesMain.footer}>
-        <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('Metronome')}>
+        <TouchableOpacity
+          style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+          onPress={() => {
+            if (isPlaying) {
+              PausePlay();
+            }
+            navigation.navigate('Metronome');
+          }}
+        >
           <Text style={[stylesMain.text, {}]}>Metronome </Text>
         </TouchableOpacity>
       </View>
@@ -394,7 +366,7 @@ export default function TrackbuilderScreen({ navigation }) {
       <Modal isVisible={isModalVisible}>
         <Modal.Container>
           <Modal.Body>
-            <View style={{ height: 200 }}>
+            <View style={{ height: 250 }}>
               <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
               </View>
@@ -469,16 +441,28 @@ export default function TrackbuilderScreen({ navigation }) {
               <View style={{
                 flex: 2,
                 paddingBottom: 12,
-                alignItems: 'flex-end',
-                justifyContent: 'center',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                flexDirection: 'row',
               }}
               >
-                <TouchableOpacity
-                  style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
-                  onPress={handleModal}
-                >
-                  <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>
-                </TouchableOpacity>
+                <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                  <TouchableOpacity
+                    style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+                    onPress={() => setIsModalVisible(() => !isModalVisible)}
+                  >
+                    <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                  <TouchableOpacity
+                    style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
+                    onPress={handleModal}
+                  >
+                    <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>
+                  </TouchableOpacity>
+                </View>
+
               </View>
             </View>
           </Modal.Body>

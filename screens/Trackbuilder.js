@@ -38,6 +38,7 @@ import { Modal } from '../components/MeasureModal.tsx';
 
 /* Import component files */
 import PausePlayButton from '../components/PausePlayButton';
+//import MeasureBox from '../components/MeasureBox.js';
 
 /* Import style files */
 import { stylesMain } from '../styles/styleMain';
@@ -86,52 +87,52 @@ export default function TrackbuilderScreen({ navigation }) {
   /* displaying a measure from the flatlist */
   const renderMeasure = ({ item, drag, isActive }) => {
 
+    const MeasureBoxColor = item.number === selectedMeasure ? '#a23600' : COLORS.orange;
+    const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
+
     /* The orange squares in the flatlist, each representing a measure */
     function MeasureBox({
       measure, onPress, MeasureBoxColor, textColor
-    }) {
+      }) {
       return (
-        <TouchableOpacity
-            onPress={onPress}
-            onLongPress={drag}
-            disabled={isActive}
-            style={[styles.measureBox, { backgroundColor: MeasureBoxColor }]}
+          <TouchableOpacity
+              onPress={onPress}
+              onLongPress={drag}
+              disabled={isActive}
+              style={[styles.measureBox, { backgroundColor: MeasureBoxColor }]}
           >
-            <View style={[{ flexDirection: 'row', width: 150 }]}>
+              <View style={[{ flexDirection: 'row', width: 150 }]}>
               {/* measure number */}
               <View style={[{
-                alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
+                  alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
               }]}
               >
-                <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
+                  <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
                   {measure.number}
-                </Text>
+                  </Text>
               </View>
 
               {/* Beats per measure */}
               <View style={[{alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
-                <Text style={
+                  <Text style={
                   [stylesMain.text, { color: textColor, fontSize: 50 }]
                   }>{measure.beat}</Text>
               </View>
 
               {/* Beats per minute */}
               <View style={{
-                alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
+                  alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
               }}
               >
-                <Text style={
+                  <Text style={
                   [stylesMain.text, { color: textColor, fontSize: 20 }]
                   }>{measure.tempo} BPM</Text>
               </View>
 
-            </View>
-        </TouchableOpacity>
+              </View>
+          </TouchableOpacity>
       );
     }
-
-    const MeasureBoxColor = item.number === selectedMeasure ? '#a23600' : COLORS.orange;
-    const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
 
     return (
       <ScaleDecorator>

@@ -9,7 +9,7 @@ import BoxyBox from './BoxyBox';
 import AccentButtons from './AccentButtons';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 
 export default function Counters({
   width,
@@ -20,11 +20,11 @@ export default function Counters({
   return (
     <View style={[stylesMain.subView, {}]}>
       <View style={stylesMain.boxed}>
-        <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Tempo</Text>
+        <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Tempo</Text>
         <BoxyBox w={width} h={width / 3} value={BPM} setValue={setBPM} min={20} max={200} />
       </View>
       <View style={stylesMain.boxed}>
-        <Text style={[stylesMain.text, { alignSelf: 'center' }]}>  Beat </Text>
+        <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>  Beat </Text>
         <BoxyBox w={width} h={width / 3} value={beat} setValue={setBeat} min={1} max={12} />
       </View>
       <View style={[stylesMain.boxed, { width: '100%', justifyContent: 'flex-end' }]}>

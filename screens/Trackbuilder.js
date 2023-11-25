@@ -41,7 +41,7 @@ import PausePlayButton from '../components/PausePlayButton';
 //import MeasureBox from '../components/MeasureBox.js';
 
 /* Import style files */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain.js';
 import { COLORS } from '../styles/colors';
 
 export default function TrackbuilderScreen({ navigation }) {

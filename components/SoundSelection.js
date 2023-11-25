@@ -8,7 +8,7 @@ import { Text, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
 /* Default sound and list of possible selectedSounds */

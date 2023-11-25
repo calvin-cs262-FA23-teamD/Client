@@ -6,7 +6,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
 export default function PausePlayButton({ onPress, pausePlayIcon, width }) {

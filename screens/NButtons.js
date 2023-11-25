@@ -11,7 +11,7 @@ import AccentButtons from '../components/AccentButtons';
 /* Import sound ability */
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 
 /* Main function */
 export default function ButtonsScreen({ navigation }) {

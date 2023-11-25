@@ -6,18 +6,72 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { View, Text, TouchableOpacity } from 'react-native';
 
+// import from react (new)
+import React, { useState, useEffect } from 'react';
+
 // app icons
 import { AntDesign } from '@expo/vector-icons';
 
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
+// export BoxyBox
 export default function BoxyBox({
   w, h, value, setValue, max = 65, min = 55,
 }) {
-  // hooks
+
+  // for continuous incrementing/decrementing (new)
+  const [incrementing, setIncrementing] = useState(false);
+  const [decrementing, setDecrementing] = useState(false);
+
+  // useEffect for continuous press (new)
+  useEffect(() => {
+    let interval;
+
+    const handleIncrement = () => {
+      if (value < max) {
+        setValue((prevValue) => prevValue + 1);
+      }
+    };
+
+    const handleDecrement = () => {
+      if (value > min) {
+        setValue((prevValue) => prevValue - 1);
+      }
+    };
+
+    if (incrementing) {
+      interval = setInterval(handleIncrement, 100);
+    }
+
+    if (decrementing) {
+      interval = setInterval(handleDecrement, 100);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [value, max, min, incrementing, decrementing]);
+
+  // when you hold down the button, takes the direction (+/-) (new)
+  const handlePressIn = (direction) => {
+    if (direction === 'increase' && value < max) {
+      setIncrementing(true);
+      setDecrementing(false);
+    } else if (direction === 'decrease' && value > min) {
+      setDecrementing(true);
+      setIncrementing(false);
+    }
+  };
+
+  // as soon as you let go of button (new)
+  const handlePressOut = () => {
+    setIncrementing(false);
+    setDecrementing(false);
+  };
 
   // this function will add or subtract 1 to the current value
+  // normal single tap, keep this
   const changeValue = (direction) => {
     if (direction === true && value < max) {
       setValue(value + 1);
@@ -36,7 +90,12 @@ export default function BoxyBox({
         <View style={stylesMain.plusMinusButtons}>
           <TouchableOpacity
             style={[stylesMain.buttonContainer, { width: w / 2.7, height: h }]}
+            // on single tap
             onPress={() => changeValue(false)}
+            // hold down minus button (new)
+            onPressIn={() => handlePressIn('decrease')}
+            // release minus button (new)
+            onPressOut={handlePressOut}
           >
             <AntDesign name="minus" size={24} color={COLORS.orange} />
           </TouchableOpacity>
@@ -49,7 +108,12 @@ export default function BoxyBox({
         <View style={stylesMain.plusMinusButtons}>
           <TouchableOpacity
             style={[stylesMain.buttonContainer, { width: w / 2.7, height: h }]}
+            // on single tap
             onPress={() => changeValue(true)}
+            // hold down plus button (new)
+            onPressIn={() => handlePressIn('increase')}
+            // release plus button (new)
+            onPressOut={handlePressOut}
           >
             <AntDesign name="plus" size={24} color={COLORS.orange} />
           </TouchableOpacity>

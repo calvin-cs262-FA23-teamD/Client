@@ -6,7 +6,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { View, Text, TouchableOpacity } from 'react-native';
 
-// import from react (new)
+// import from react
 import React, { useState, useEffect } from 'react';
 
 // app icons
@@ -20,11 +20,11 @@ export default function BoxyBox({
   w, h, value, setValue, max = 65, min = 55,
 }) {
 
-  // for continuous incrementing/decrementing (new)
+  // for continuous incrementing/decrementing
   const [incrementing, setIncrementing] = useState(false);
   const [decrementing, setDecrementing] = useState(false);
 
-  // useEffect for continuous press (new)
+  // useEffect for continuous press
   useEffect(() => {
     let interval;
 
@@ -40,12 +40,29 @@ export default function BoxyBox({
       }
     };
 
+    // Clear the interval when incrementing or decrementing becomes false (new)
+    const clearIntervalIfNecessary = () => {
+      if (!incrementing && !decrementing) {
+        clearInterval(interval);
+      }
+    };
+
     if (incrementing) {
-      interval = setInterval(handleIncrement, 100);
+      //interval = setInterval(handleIncrement, 100);
+      // new way to handle, calls clearInterval after every inc/dec (new)
+      interval = setInterval(() => {
+        handleIncrement();
+        clearIntervalIfNecessary();
+      }, 100);
     }
 
     if (decrementing) {
-      interval = setInterval(handleDecrement, 100);
+      //interval = setInterval(handleDecrement, 100);
+      // new way to handle, calls clearInterval after every inc/dec (new)
+      interval = setInterval(() => {
+        handleDecrement();
+        clearIntervalIfNecessary();
+      }, 100);
     }
 
     return () => {
@@ -53,7 +70,7 @@ export default function BoxyBox({
     };
   }, [value, max, min, incrementing, decrementing]);
 
-  // when you hold down the button, takes the direction (+/-) (new)
+  // when you hold down the button, takes the direction (+/-)
   const handlePressIn = (direction) => {
     if (direction === 'increase' && value < max) {
       setIncrementing(true);
@@ -64,7 +81,7 @@ export default function BoxyBox({
     }
   };
 
-  // as soon as you let go of button (new)
+  // as soon as you let go of button
   const handlePressOut = () => {
     setIncrementing(false);
     setDecrementing(false);
@@ -92,9 +109,9 @@ export default function BoxyBox({
             style={[stylesMain.buttonContainer, { width: w / 2.7, height: h }]}
             // on single tap
             onPress={() => changeValue(false)}
-            // hold down minus button (new)
+            // hold down minus button
             onPressIn={() => handlePressIn('decrease')}
-            // release minus button (new)
+            // release minus button
             onPressOut={handlePressOut}
           >
             <AntDesign name="minus" size={24} color={COLORS.orange} />
@@ -110,9 +127,9 @@ export default function BoxyBox({
             style={[stylesMain.buttonContainer, { width: w / 2.7, height: h }]}
             // on single tap
             onPress={() => changeValue(true)}
-            // hold down plus button (new)
+            // hold down plus button
             onPressIn={() => handlePressIn('increase')}
-            // release plus button (new)
+            // release plus button
             onPressOut={handlePressOut}
           >
             <AntDesign name="plus" size={24} color={COLORS.orange} />

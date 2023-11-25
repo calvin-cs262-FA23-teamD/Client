@@ -94,7 +94,7 @@ export default function MetronomeScreen({ navigation }) {
 
   /* start metronome by incrementing measure */
   useEffect(() => {
-    // Temporaraly commented out to make eslist happy
+    // Temporaraly commented out to make eslint happy
     // console.log(isPlaying);
 
     if (isPlaying) {

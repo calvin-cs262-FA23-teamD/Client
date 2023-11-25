@@ -10,7 +10,7 @@ import {
 // import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
 function LogInScreen({ navigation }) {
@@ -104,7 +104,7 @@ function LogInScreen({ navigation }) {
 
         <TouchableOpacity
           style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
-                    // onPress={handleLogin}
+          // onPress={handleLogin}
           onPress={() => navigation.navigate('Trackbuilder')}
         >
           <Text style={stylesMain.buttonText}>LOG IN</Text>

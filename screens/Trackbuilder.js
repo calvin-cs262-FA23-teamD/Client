@@ -28,7 +28,7 @@ import { Modal } from '../components/MeasureModal.tsx';
 import PausePlayButton from '../components/PausePlayButton';
 
 /* Import style files */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain.js';
 import { COLORS } from '../styles/colors';
 
 /* hard coded click track */

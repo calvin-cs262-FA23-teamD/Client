@@ -9,7 +9,7 @@ import BoxyBox from './BoxyBox';
 import AccentButtons from './AccentButtons';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 
 export default function Counters({
   width,

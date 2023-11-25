@@ -12,7 +12,7 @@ import { useCallback, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
 const generateButtons = (numButtons, buttonStates, setButtonStates, buttonSize) => {

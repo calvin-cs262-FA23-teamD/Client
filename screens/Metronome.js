@@ -22,7 +22,7 @@ import PausePlayButton from '../components/PausePlayButton';
 import Counters from '../components/Counters';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
 /* Default sound and list of possible selectedSounds */

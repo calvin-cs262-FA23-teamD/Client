@@ -14,9 +14,9 @@
 /* Import react components */
 import * as React from 'react';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
+  StyleSheet, Text, View, TouchableOpacity, TextInput,
 } from 'react-native';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react'; /* removed useRef */
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -24,12 +24,12 @@ import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, {
+/* import Animated, {
   useSharedValue,
   withTiming,
   useAnimatedStyle,
   Easing,
-} from 'react-native-reanimated';
+} from 'react-native-reanimated'; */
 
 
 /* Import component files */
@@ -88,7 +88,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
     /* The orange squares in the flatlist, each representing a measure */
     function MeasureBox({
-      measure, onPress, onLongPress, disabled, MeasureBoxColor, textColor
+      measure, onPress, MeasureBoxColor, textColor
     }) {
       return (
         <TouchableOpacity
@@ -110,7 +110,9 @@ export default function TrackbuilderScreen({ navigation }) {
 
               {/* Beats per measure */}
               <View style={[{alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
-                <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
+                <Text style={
+                  [stylesMain.text, { color: textColor, fontSize: 50 }]
+                  }>{measure.beat}</Text>
               </View>
 
               {/* Beats per minute */}
@@ -118,7 +120,9 @@ export default function TrackbuilderScreen({ navigation }) {
                 alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
               }}
               >
-                <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo} BPM</Text>
+                <Text style={
+                  [stylesMain.text, { color: textColor, fontSize: 20 }]
+                  }>{measure.tempo} BPM</Text>
               </View>
 
             </View>
@@ -193,8 +197,10 @@ export default function TrackbuilderScreen({ navigation }) {
 
   // eslint-disable-next-line no-unused-vars
   const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
-  const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
-  const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+  const [selectedSoundFile, setSelectedSoundFile] = useState(
+    require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
+  const [accentSoundFile, setAccentSoundFile] = useState(
+    require('../assets/sounds/metronome/metronomeaccent.mp3'));
   const [sound, setSound] = useState(); // current loaded sound
 
   const [count, setCount] = useState(-1); // current beat

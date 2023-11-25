@@ -28,6 +28,7 @@ import { COLORS } from '../styles/colors';
 /* Default sound and list of possible selectedSounds */
 const soundList = [
   { key: '1', value: 'Default' },
+  // Clap contributed by Abigail's friend Angela
   { key: '2', value: 'Clap' },
   { key: '3', value: 'Drum' },
   { key: '4', value: 'Piano' },
@@ -155,7 +156,7 @@ export default function MetronomeScreen({ navigation }) {
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <View style={[stylesMain.body, { alignItems: 'center' }]}>
+      <View style={[stylesMain.body, { alignItems: 'center', marginTop: -20 }]}>
 
         <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
 
@@ -168,7 +169,7 @@ export default function MetronomeScreen({ navigation }) {
 
         <View style={[stylesMain.subView]}>
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+            <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Sound</Text>
             <SelectList
               setSelected={(val) => setSelectedSound(val)}
               data={soundList}

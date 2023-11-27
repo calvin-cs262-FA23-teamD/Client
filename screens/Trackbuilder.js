@@ -18,7 +18,10 @@ import * as React from 'react';
 import {
   StyleSheet, Text, View, TouchableOpacity, TextInput,
 } from 'react-native';
+
 import { useState, useEffect } from 'react';
+
+/* removed useRef */
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -31,9 +34,10 @@ import { Modal } from '../components/MeasureModal.tsx';
 
 /* Import component files */
 import PausePlayButton from '../components/PausePlayButton';
+// import MeasureBox from '../components/MeasureBox.js';
 
 /* Import style files */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain.js';
 import { COLORS } from '../styles/colors';
 
 export default function TrackbuilderScreen({ navigation }) {
@@ -124,9 +128,6 @@ export default function TrackbuilderScreen({ navigation }) {
       );
     }
 
-    const MeasureBoxColor = item.number === selectedMeasure ? '#a23600' : COLORS.orange;
-    const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
-
     return (
       <ScaleDecorator>
         <MeasureBox
@@ -134,7 +135,9 @@ export default function TrackbuilderScreen({ navigation }) {
           onPress={() => selectMeasure(item)}
           onLongPress={drag}
           disabled={isActive}
+          // eslint-disable-next-line no-undef
           MeasureBoxColor={MeasureBoxColor}
+          // eslint-disable-next-line no-undef
           textColor={color}
           styles={styles.measure}
         />
@@ -191,8 +194,12 @@ export default function TrackbuilderScreen({ navigation }) {
 
   // eslint-disable-next-line no-unused-vars
   const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
-  const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
-  const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+  const [selectedSoundFile, setSelectedSoundFile] = useState(
+    require('../assets/sounds/metronome/metronomesound.mp3'),
+  ); // sound file of selected sound
+  const [accentSoundFile, setAccentSoundFile] = useState(
+    require('../assets/sounds/metronome/metronomeaccent.mp3'),
+  );
   const [sound, setSound] = useState(); // current loaded sound
 
   const [count, setCount] = useState(-1); // current beat

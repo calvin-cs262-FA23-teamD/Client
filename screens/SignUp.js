@@ -9,7 +9,7 @@ import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 /* Import style code */
 // eslint-disable-next-line import/named
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 // eslint-disable-next-line import/named, no-unused-vars
 import { COLORS } from '../styles/colors';
 

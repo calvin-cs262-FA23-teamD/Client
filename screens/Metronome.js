@@ -22,18 +22,19 @@ import PausePlayButton from '../components/PausePlayButton';
 import Counters from '../components/Counters';
 
 /* Import style code */
-import { stylesMain } from '../styles/styleMain';
+import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
 
 /* Default sound and list of possible selectedSounds */
 const soundList = [
   { key: '1', value: 'Default' },
-  { key: '2', value: 'Clap' },
-  { key: '3', value: 'Drum' },
-  { key: '4', value: 'Piano' },
-  { key: '5', value: 'Shotgun' },
+  // Clap contributed by Abigail's friend Angela (removed)
+  // { key: '2', value: 'Clap' },
+  { key: '2', value: 'Drum' },
+  { key: '3', value: 'Piano' },
+  { key: '4', value: 'Shotgun' },
   // Snap contributed by Abigail's friend Noah
-  { key: '6', value: 'Snap' },
+  { key: '5', value: 'Snap' },
 ];
 
 /* Main function */
@@ -93,7 +94,7 @@ export default function MetronomeScreen({ navigation }) {
 
   /* start metronome by incrementing measure */
   useEffect(() => {
-    // Temporaraly commented out to make eslist happy
+    // Temporaraly commented out to make eslint happy
     // console.log(isPlaying);
 
     if (isPlaying) {
@@ -117,10 +118,10 @@ export default function MetronomeScreen({ navigation }) {
   /* update the beat sound (paired) */
   useEffect(() => {
     switch (selectedSound) {
-      case 'Clap':
+      /* case 'Clap':
         setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
         setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-        break;
+        break; */
       case 'Drum':
         setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
         setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));
@@ -155,7 +156,7 @@ export default function MetronomeScreen({ navigation }) {
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <View style={[stylesMain.body, { alignItems: 'center' }]}>
+      <View style={[stylesMain.body, { alignItems: 'center', marginTop: -20 }]}>
 
         <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
 
@@ -168,7 +169,7 @@ export default function MetronomeScreen({ navigation }) {
 
         <View style={[stylesMain.subView]}>
           <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center' }]}>Sound</Text>
+            <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Sound</Text>
             <SelectList
               setSelected={(val) => setSelectedSound(val)}
               data={soundList}

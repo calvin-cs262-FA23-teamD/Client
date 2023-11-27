@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-multi-spaces */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable import/named */
@@ -14,23 +16,14 @@
 /* Import react components */
 import * as React from 'react';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
+  StyleSheet, Text, View, TouchableOpacity, TextInput,
 } from 'react-native';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import { AntDesign } from '@expo/vector-icons';
 
-import DraggableFlatList, {
-  ScaleDecorator,
-} from 'react-native-draggable-flatlist';
+import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  Easing,
-} from 'react-native-reanimated';
-
 
 /* Import component files */
 import { Audio } from 'expo-av';
@@ -85,43 +78,48 @@ export default function TrackbuilderScreen({ navigation }) {
 
   /* displaying a measure from the flatlist */
   const renderMeasure = ({ item, drag, isActive }) => {
-
     /* The orange squares in the flatlist, each representing a measure */
     function MeasureBox({
-      measure, onPress, onLongPress, disabled, MeasureBoxColor, textColor
+      measure, onPress, MeasureBoxColor, textColor,
     }) {
       return (
         <TouchableOpacity
-            onPress={onPress}
-            onLongPress={drag}
-            disabled={isActive}
-            style={[styles.measureBox, { backgroundColor: MeasureBoxColor }]}
-          >
-            <View style={[{ flexDirection: 'row', width: 150 }]}>
-              {/* measure number */}
-              <View style={[{
-                alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
-              }]}
-              >
-                <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
-                  {measure.number}
-                </Text>
-              </View>
-
-              {/* Beats per measure */}
-              <View style={[{alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
-                <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
-              </View>
-
-              {/* Beats per minute */}
-              <View style={{
-                alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
-              }}
-              >
-                <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo} BPM</Text>
-              </View>
-
+          onPress={onPress}
+          onLongPress={drag}
+          disabled={isActive}
+          style={[styles.measureBox, { backgroundColor: MeasureBoxColor }]}
+        >
+          <View style={[{ flexDirection: 'row', width: 150 }]}>
+            {/* measure number */}
+            <View style={[{
+              alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
+            }]}
+            >
+              <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
+                {measure.number}
+              </Text>
             </View>
+
+            {/* Beats per measure */}
+            <View style={[{ alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
+              <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>
+                {measure.beat}
+              </Text>
+            </View>
+
+            {/* Beats per minute */}
+            <View style={{
+              alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
+            }}
+            >
+              <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
+                {measure.tempo}
+                {' '}
+                BPM
+              </Text>
+            </View>
+
+          </View>
         </TouchableOpacity>
       );
     }
@@ -170,16 +168,16 @@ export default function TrackbuilderScreen({ navigation }) {
       };
 
       // add in measure
-      setMeasures(measures => [...measures, newMeasure]);
+      setMeasures((measures) => [...measures, newMeasure]);
     }
   };
 
   /* delete selected measure from list of measures */
-  //const flatListRef = useRef(null);
+  // const flatListRef = useRef(null);
   const deleteMeasure = () => {
     if (selectedMeasure != null) {
-      setMeasures(measures.filter(m => m.number !== (selectedMeasure)));      
-      //flatListRef.current.forceUpdate();
+      setMeasures(measures.filter((m) => m.number !== (selectedMeasure)));
+      // flatListRef.current.forceUpdate();
     }
   };
 
@@ -310,7 +308,7 @@ export default function TrackbuilderScreen({ navigation }) {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1}}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={stylesMain.container}>
 
         <View style={stylesMain.header}>
@@ -330,7 +328,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
           <View style={{ flex: 10 }}>
             <DraggableFlatList
-              //ref={flatListRef}
+              // ref={flatListRef}
               data={measures}
               renderItem={renderMeasure}
               onDragEnd={({ data }) => setMeasures(data)}

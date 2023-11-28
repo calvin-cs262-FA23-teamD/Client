@@ -14,11 +14,9 @@
 /* Import react components */
 import * as React from 'react';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
+  StyleSheet, Text, View, FlatList, TouchableOpacity,
 } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
-
-import { AntDesign } from '@expo/vector-icons';
 
 /* Import component files */
 import { Audio } from 'expo-av';
@@ -26,6 +24,7 @@ import { Modal } from '../components/MeasureModal.tsx';
 
 /* Import component files */
 import PausePlayButton from '../components/PausePlayButton';
+import AddMeasure from '../components/AddMeasure.js';
 
 /* Import style files */
 import { stylesMain } from '../styles/stylesMain.js';
@@ -197,15 +196,16 @@ export default function TrackbuilderScreen({ navigation }) {
   const [tempoList, setTempoList] = useState([]); // list of tempos for each beat
 
   /* variables to make timer work */
-  this.expected;
-  this.drift = 0;
+  let expected;
+  let drift = 0;
+  let actual;
 
   /* Toggles pause and play */
   const PausePlay = () => {
     setIsPlaying((isPlaying) => !isPlaying);
     setPausePlayIcon((PausePlayIcon) => (PausePlayIcon === 'caretright' ? 'pause' : 'caretright'));
     setCount(-1);
-    this.drift = 0;
+    drift = 0;
   };
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
@@ -220,12 +220,12 @@ export default function TrackbuilderScreen({ navigation }) {
 
       // increment to next count and calculate drift
       setCount((count) => (count + 1));
-      this.actual = Date.now();
-      this.drift = (this.actual - this.expected);
+      actual = Date.now();
+      drift = (actual - expected);
 
       // Temporaraly commented out to make eslist happy
       // console.log(count);
-      // console.log('drift ', this.drift);
+      // console.log('drift ', drift);
     } else {
       PausePlay();
     }
@@ -249,8 +249,8 @@ export default function TrackbuilderScreen({ navigation }) {
       // console.log(count);
       // console.log(tempoList[count]);
 
-      this.expected = Date.now() + ((60 / tempoList[count]) * 1000) - this.drift;
-      setTimeout(playSound, ((60 / tempoList[count]) * 1000) - this.drift);
+      expected = Date.now() + ((60 / tempoList[count]) * 1000) - drift;
+      setTimeout(playSound, ((60 / tempoList[count]) * 1000) - drift);
     }
     return sound
       ? () => {
@@ -366,105 +366,17 @@ export default function TrackbuilderScreen({ navigation }) {
       <Modal isVisible={isModalVisible}>
         <Modal.Container>
           <Modal.Body>
-            <View style={{ height: 250 }}>
-              <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
-              </View>
-
-              <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Measure Num: </Text>
-                  <TextInput
-                    onChangeText={(text) => setNewMeasureNum(text)}
-                    value={newMeasureNum}
-                    defaultValue="60"
-
-                    keyboardType="numeric"
-                    cursorColor={COLORS.orange}
-
-                    style={{ width: 50 }}
-                    backgroundColor={COLORS.buttonBackground}
-                    borderBottomWidth={2}
-                    borderBottomColor={COLORS.offWhite}
-
-                    color={COLORS.orange}
-                    fontSize={20}
-                    fontWeight="bold"
-                    textAlign="center"
-                  />
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Tempo: </Text>
-                  <TextInput
-                    onChangeText={(text) => setNewTempo(text)}
-                    value={newTempo}
-                    defaultValue="60"
-
-                    keyboardType="numeric"
-                    cursorColor={COLORS.orange}
-
-                    style={{ width: 50 }}
-                    backgroundColor={COLORS.buttonBackground}
-                    borderBottomWidth={2}
-                    borderBottomColor={COLORS.offWhite}
-
-                    color={COLORS.orange}
-                    fontSize={20}
-                    fontWeight="bold"
-                    textAlign="center"
-                  />
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Beat: </Text>
-                  <TextInput
-                    onChangeText={(text) => setNewBeat(text)}
-                    value={newBeat}
-                    defaultValue="4"
-
-                    keyboardType="numeric"
-                    cursorColor={COLORS.orange}
-
-                    style={{ width: 50 }}
-                    backgroundColor={COLORS.buttonBackground}
-                    borderBottomWidth={2}
-                    borderBottomColor={COLORS.offWhite}
-
-                    color={COLORS.orange}
-                    fontSize={20}
-                    fontWeight="bold"
-                    textAlign="center"
-                  />
-                </View>
-              </View>
-              <View style={{
-                flex: 2,
-                paddingBottom: 12,
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                flexDirection: 'row',
-              }}
-              >
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-                  <TouchableOpacity
-                    style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
-                    onPress={() => setIsModalVisible(() => !isModalVisible)}
-                  >
-                    <AntDesign name="arrowleft" size={24} color={COLORS.background} />
-                  </TouchableOpacity>
-                </View>
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-                  <TouchableOpacity
-                    style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
-                    onPress={handleModal}
-                  >
-                    <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>
-                  </TouchableOpacity>
-                </View>
-
-              </View>
-            </View>
+            <AddMeasure
+              newMeasureNum={newMeasureNum}
+              setNewMeasureNum={setNewMeasureNum}
+              newTempo={newTempo}
+              setNewTempo={setNewTempo}
+              newBeat={newBeat}
+              setNewBeat={setNewBeat}
+              isModalVisible={isModalVisible}
+              setIsModalVisible={setIsModalVisible}
+              handleModal={handleModal}
+            />
           </Modal.Body>
           {/* </View> */}
         </Modal.Container>

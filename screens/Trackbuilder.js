@@ -325,7 +325,7 @@ export default function TrackbuilderScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={{ maxHeight: 300}}>
+        <View style={{ maxHeight: 300 }}>
           <FlatList
             ref={flatListRef}
             data={measures}

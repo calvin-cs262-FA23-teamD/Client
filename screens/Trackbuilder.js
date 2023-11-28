@@ -34,23 +34,18 @@ import { COLORS } from '../styles/colors';
 const measures = [
   {
     number: 1,
-    tempo: 52,
-    beat: 3,
+    tempo: 120,
+    beat: 4,
   },
   {
     number: 2,
-    tempo: 52,
-    beat: 2,
+    tempo: 60,
+    beat: 3,
   },
   {
     number: 3,
-    tempo: 52,
-    beat: 2,
-  },
-  {
-    number: 4,
-    tempo: 52,
-    beat: 2,
+    tempo: 150,
+    beat: 5,
   },
 ];
 

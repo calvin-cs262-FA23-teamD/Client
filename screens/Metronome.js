@@ -29,7 +29,7 @@ import { COLORS } from '../styles/colors';
 const soundList = [
   { key: '1', value: 'Default' },
   // Clap contributed by Abigail's friend Angela (removed)
-  //{ key: '2', value: 'Clap' },
+  // { key: '2', value: 'Clap' },
   { key: '2', value: 'Drum' },
   { key: '3', value: 'Piano' },
   { key: '4', value: 'Shotgun' },
@@ -53,12 +53,12 @@ export default function MetronomeScreen({ navigation }) {
   const [measure, setMeasure] = useState(-1); // current measure
 
   /* variables to make timer work */
-  this.expected;
-  this.drift = 0;
-  this.date;
-  this.interval = (60 / BPM) * 1000;
+  let expected;
+  let drift = 0;
+  let actual;
+  const interval = (60 / BPM) * 1000;
 
-  this.beatSound;
+  let beatSound;
 
   /* Toggles pause and play */
   const PausePlay = () => {
@@ -66,17 +66,17 @@ export default function MetronomeScreen({ navigation }) {
     setPausePlayIcon((PausePlayIcon) => (PausePlayIcon === 'caretright' ? 'pause' : 'caretright'));
 
     setMeasure(-1);
-    this.drift = 0;
+    drift = 0;
   };
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
   async function playSound() {
     /* Play sound, accenting the down beat */
-    this.beatSound = buttonStates[measure % beat];
+    beatSound = buttonStates[measure % beat];
     // When adding in silence, replace the last "selectSoundFile"
     // eslint-disable-next-line no-nested-ternary, max-len
-    const soundFile = (this.beatSound === 1) ? accentSoundFile : (
-      this.beatSound === 2) ? selectedSoundFile : selectedSoundFile;
+    const soundFile = (beatSound === 1) ? accentSoundFile : (
+      beatSound === 2) ? selectedSoundFile : selectedSoundFile;
 
     const { sound } = await Audio.Sound.createAsync(soundFile);
     setSound(sound);
@@ -84,12 +84,12 @@ export default function MetronomeScreen({ navigation }) {
 
     /* increment measure and calculate drift */
     setMeasure((measure) => (measure + 1));
-    this.actual = Date.now();
-    this.drift = (this.actual - this.expected);
+    actual = Date.now();
+    drift = (actual - expected);
 
     // Temporarally commented out to make eslint happy
     console.log(measure);
-    console.log('drift ', this.drift);
+    console.log('drift ', drift);
   }
 
   /* start metronome by incrementing measure */
@@ -105,8 +105,8 @@ export default function MetronomeScreen({ navigation }) {
   /* call playSound every interval, taking into account the drift */
   useEffect(() => {
     if (isPlaying && measure >= 0) {
-      this.expected = Date.now() + this.interval - this.drift;
-      setTimeout(playSound, this.interval - this.drift);
+      expected = Date.now() + interval - drift;
+      setTimeout(playSound, interval - drift);
     }
     return sound
       ? () => {
@@ -118,10 +118,10 @@ export default function MetronomeScreen({ navigation }) {
   /* update the beat sound (paired) */
   useEffect(() => {
     switch (selectedSound) {
-      /*case 'Clap':
+      /* case 'Clap':
         setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
         setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-        break;*/
+        break; */
       case 'Drum':
         setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
         setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));

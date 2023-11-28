@@ -63,10 +63,10 @@ function MeasureBox({
       onPress={onPress}
       style={[styles.measureBox, { backgroundColor: MeasureBoxColor }]}
     >
-      <View style={[{ flexDirection: 'column', flex: 1, width: 150 }]}>
+      <View style={[{ flexDirection: 'row', flex: 1, width: 150 }]}>
         {/* measure number */}
         <View style={[{
-          flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingHorizontal: 15,
+          alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
         }]}
         >
           <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
@@ -75,16 +75,16 @@ function MeasureBox({
         </View>
 
         {/* Beats per measure */}
-        <View style={[{ flex: 2, alignItems: 'center', justifyContent: 'center' }]}>
+        <View style={[{ alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
           <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
         </View>
 
         {/* Beats per minute */}
         <View style={{
-          flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 15,
+          alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
         }}
         >
-          <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
+          <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo} BPM </Text>
         </View>
 
       </View>
@@ -144,9 +144,9 @@ export default function TrackbuilderScreen({ navigation }) {
   };
 
   /* insert a new measure into the list of measures */
-  const [newMeasureNum, setNewMeasureNum] = useState('');
-  const [newTempo, setNewTempo] = useState('');
-  const [newBeat, setNewBeat] = useState('');
+  const [newMeasureNum, setNewMeasureNum] = useState(1);
+  const [newTempo, setNewTempo] = useState(60);
+  const [newBeat, setNewBeat] = useState(4);
   const addMeasure = () => {
     if (newTempo !== '' && newBeat !== '' && newMeasureNum !== '') {
       const newMeasure = {
@@ -321,14 +321,15 @@ export default function TrackbuilderScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 2 }}>
+        <View style={{ flex: 10 }}>
           <FlatList
             ref={flatListRef}
             data={measures}
             renderItem={renderMeasure}
             keyExtractor={(measure) => measure.number}
             extraData={selectedMeasure}
-            horizontal
+            vertical
+            showsVerticalScrollIndicator
           />
         </View>
 

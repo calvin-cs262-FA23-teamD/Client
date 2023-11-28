@@ -29,7 +29,7 @@ import { COLORS } from '../styles/colors';
 const soundList = [
   { key: '1', value: 'Default' },
   // Clap contributed by Abigail's friend Angela (removed)
-  //{ key: '2', value: 'Clap' },
+  // { key: '2', value: 'Clap' },
   { key: '2', value: 'Drum' },
   { key: '3', value: 'Piano' },
   { key: '4', value: 'Shotgun' },
@@ -53,12 +53,12 @@ export default function MetronomeScreen({ navigation }) {
   const [measure, setMeasure] = useState(-1); // current measure
 
   /* variables to make timer work */
-  var expected;
-  var drift = 0;
-  var date;
-  var interval = (60 / BPM) * 1000;
+  let expected;
+  let drift = 0;
+  let actual;
+  const interval = (60 / BPM) * 1000;
 
-  var beatSound;
+  let beatSound;
 
   /* Toggles pause and play */
   const PausePlay = () => {
@@ -118,10 +118,10 @@ export default function MetronomeScreen({ navigation }) {
   /* update the beat sound (paired) */
   useEffect(() => {
     switch (selectedSound) {
-      /*case 'Clap':
+      /* case 'Clap':
         setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
         setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-        break;*/
+        break; */
       case 'Drum':
         setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
         setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));

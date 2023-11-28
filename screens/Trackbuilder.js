@@ -20,6 +20,11 @@ import { useState, useEffect, useRef } from 'react';
 
 import { AntDesign } from '@expo/vector-icons';
 
+/* import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 /* Import component files */
 import { Audio } from 'expo-av';
 import { Modal } from '../components/MeasureModal.tsx';
@@ -35,23 +40,18 @@ import { COLORS } from '../styles/colors';
 const measures = [
   {
     number: 1,
-    tempo: 52,
-    beat: 3,
+    tempo: 120,
+    beat: 4,
   },
   {
     number: 2,
-    tempo: 52,
-    beat: 2,
+    tempo: 60,
+    beat: 3,
   },
   {
     number: 3,
-    tempo: 52,
-    beat: 2,
-  },
-  {
-    number: 4,
-    tempo: 52,
-    beat: 2,
+    tempo: 150,
+    beat: 5,
   },
 ];
 
@@ -64,10 +64,10 @@ function MeasureBox({
       onPress={onPress}
       style={[styles.measureBox, { backgroundColor: MeasureBoxColor }]}
     >
-      <View style={[{ flexDirection: 'column', flex: 1, width: 150 }]}>
+      <View style={[{ flexDirection: 'row', flex: 1, width: 150 }]}>
         {/* measure number */}
         <View style={[{
-          flex: 1, alignItems: 'flex-start', justifyContent: 'center', paddingHorizontal: 15,
+          alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
         }]}
         >
           <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
@@ -76,16 +76,16 @@ function MeasureBox({
         </View>
 
         {/* Beats per measure */}
-        <View style={[{ flex: 2, alignItems: 'center', justifyContent: 'center' }]}>
+        <View style={[{ alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
           <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
         </View>
 
         {/* Beats per minute */}
         <View style={{
-          flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 15,
+          alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
         }}
         >
-          <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo}</Text>
+          <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo} BPM </Text>
         </View>
 
       </View>
@@ -197,15 +197,15 @@ export default function TrackbuilderScreen({ navigation }) {
   const [tempoList, setTempoList] = useState([]); // list of tempos for each beat
 
   /* variables to make timer work */
-  this.expected;
-  this.drift = 0;
+  var expected;
+  var drift = 0;
 
   /* Toggles pause and play */
   const PausePlay = () => {
     setIsPlaying((isPlaying) => !isPlaying);
     setPausePlayIcon((PausePlayIcon) => (PausePlayIcon === 'caretright' ? 'pause' : 'caretright'));
     setCount(-1);
-    this.drift = 0;
+    drift = 0;
   };
 
   /* Plays sound. The function is async playing an audio file is asynchronous. */
@@ -220,8 +220,8 @@ export default function TrackbuilderScreen({ navigation }) {
 
       // increment to next count and calculate drift
       setCount((count) => (count + 1));
-      this.actual = Date.now();
-      this.drift = (this.actual - this.expected);
+      actual = Date.now();
+      drift = (actual - expected);
 
       // Temporaraly commented out to make eslist happy
       // console.log(count);
@@ -249,8 +249,8 @@ export default function TrackbuilderScreen({ navigation }) {
       // console.log(count);
       // console.log(tempoList[count]);
 
-      this.expected = Date.now() + ((60 / tempoList[count]) * 1000) - this.drift;
-      setTimeout(playSound, ((60 / tempoList[count]) * 1000) - this.drift);
+      expected = Date.now() + ((60 / tempoList[count]) * 1000) - drift;
+      setTimeout(playSound, ((60 / tempoList[count]) * 1000) - drift);
     }
     return sound
       ? () => {
@@ -304,172 +304,175 @@ export default function TrackbuilderScreen({ navigation }) {
   }
 
   return (
-    <View style={stylesMain.container}>
+    //<GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={stylesMain.container}>
 
-      <View style={stylesMain.header}>
-        <Text style={stylesMain.title}>Create Click Track</Text>
-      </View>
-
-      <View style={[stylesMain.body, {}]}>
-        <View style={{ flex: 3, width: '100%', justifyContent: 'center' }}>
-          <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
+        <View style={stylesMain.header}>
+          <Text style={stylesMain.title}>Create Click Track</Text>
         </View>
 
-        <View style={{ paddingBottom: 10, alignItems: 'flex-end' }}>
-          <TouchableOpacity style={stylesMain.buttons} onPress={handleModal}>
-            <Text style={[stylesMain.text]}>Add </Text>
+        <View style={[stylesMain.body, {}]}>
+          <View style={{ flex: 3, width: '100%', justifyContent: 'center' }}>
+            <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
+          </View>
+
+          <View style={{ paddingBottom: 10, alignItems: 'flex-end' }}>
+            <TouchableOpacity style={stylesMain.buttons} onPress={handleModal}>
+              <Text style={[stylesMain.text]}>Add </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ flex: 10 }}>
+            <FlatList
+              ref={flatListRef}
+              data={measures}
+              renderItem={renderMeasure}
+              keyExtractor={(measure) => measure.number}
+              extraData={selectedMeasure}
+              vertical
+              showsVerticalScrollIndicator
+            />
+          </View>
+
+          <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
+            <View style={{ alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2 }}>
+              <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={deleteMeasure}>
+                <Text style={[stylesMain.text]}>Delete </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{
+              alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2, width: '100%',
+            }}
+            >
+              <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('LogIn')}>
+                <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save Track </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        <View style={stylesMain.footer}>
+          <TouchableOpacity
+            style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+            onPress={() => {
+              if (isPlaying) {
+                PausePlay();
+              }
+              navigation.navigate('Metronome');
+            }}
+          >
+            <Text style={[stylesMain.text, {}]}>Metronome </Text>
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 2 }}>
-          <FlatList
-            ref={flatListRef}
-            data={measures}
-            renderItem={renderMeasure}
-            keyExtractor={(measure) => measure.number}
-            extraData={selectedMeasure}
-            horizontal
-          />
-        </View>
+        <Modal isVisible={isModalVisible}>
+          <Modal.Container>
+            <Modal.Body>
+              <View style={{ height: 250 }}>
+                <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
+                </View>
 
-        <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
-          <View style={{ alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2 }}>
-            <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={deleteMeasure}>
-              <Text style={[stylesMain.text]}>Delete </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{
-            alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2, width: '100%',
-          }}
-          >
-            <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('LogIn')}>
-              <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save Track </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+                <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={stylesMain.text}>Measure Num: </Text>
+                    <TextInput
+                      onChangeText={(text) => setNewMeasureNum(text)}
+                      value={newMeasureNum}
+                      defaultValue="60"
+
+                      keyboardType="numeric"
+                      cursorColor={COLORS.orange}
+
+                      style={{ width: 50 }}
+                      backgroundColor={COLORS.buttonBackground}
+                      borderBottomWidth={2}
+                      borderBottomColor={COLORS.offWhite}
+
+                      color={COLORS.orange}
+                      fontSize={20}
+                      fontWeight="bold"
+                      textAlign="center"
+                    />
+                  </View>
+
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={stylesMain.text}>Tempo: </Text>
+                    <TextInput
+                      onChangeText={(text) => setNewTempo(text)}
+                      value={newTempo}
+                      defaultValue="60"
+
+                      keyboardType="numeric"
+                      cursorColor={COLORS.orange}
+
+                      style={{ width: 50 }}
+                      backgroundColor={COLORS.buttonBackground}
+                      borderBottomWidth={2}
+                      borderBottomColor={COLORS.offWhite}
+
+                      color={COLORS.orange}
+                      fontSize={20}
+                      fontWeight="bold"
+                      textAlign="center"
+                    />
+                  </View>
+
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={stylesMain.text}>Beat: </Text>
+                    <TextInput
+                      onChangeText={(text) => setNewBeat(text)}
+                      value={newBeat}
+                      defaultValue="4"
+
+                      keyboardType="numeric"
+                      cursorColor={COLORS.orange}
+
+                      style={{ width: 50 }}
+                      backgroundColor={COLORS.buttonBackground}
+                      borderBottomWidth={2}
+                      borderBottomColor={COLORS.offWhite}
+
+                      color={COLORS.orange}
+                      fontSize={20}
+                      fontWeight="bold"
+                      textAlign="center"
+                    />
+                  </View>
+                </View>
+                <View style={{
+                  flex: 2,
+                  paddingBottom: 12,
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  flexDirection: 'row',
+                }}
+                >
+                  <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                    <TouchableOpacity
+                      style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+                      onPress={() => setIsModalVisible(() => !isModalVisible)}
+                    >
+                      <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                    <TouchableOpacity
+                      style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
+                      onPress={handleModal}
+                    >
+                      <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                </View>
+              </View>
+            </Modal.Body>
+            {/* </View> */}
+          </Modal.Container>
+        </Modal>
       </View>
-
-      <View style={stylesMain.footer}>
-        <TouchableOpacity
-          style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
-          onPress={() => {
-            if (isPlaying) {
-              PausePlay();
-            }
-            navigation.navigate('Metronome');
-          }}
-        >
-          <Text style={[stylesMain.text, {}]}>Metronome </Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal isVisible={isModalVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <View style={{ height: 250 }}>
-              <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
-              </View>
-
-              <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Measure Num: </Text>
-                  <TextInput
-                    onChangeText={(text) => setNewMeasureNum(text)}
-                    value={newMeasureNum}
-                    defaultValue="60"
-
-                    keyboardType="numeric"
-                    cursorColor={COLORS.orange}
-
-                    style={{ width: 50 }}
-                    backgroundColor={COLORS.buttonBackground}
-                    borderBottomWidth={2}
-                    borderBottomColor={COLORS.offWhite}
-
-                    color={COLORS.orange}
-                    fontSize={20}
-                    fontWeight="bold"
-                    textAlign="center"
-                  />
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Tempo: </Text>
-                  <TextInput
-                    onChangeText={(text) => setNewTempo(text)}
-                    value={newTempo}
-                    defaultValue="60"
-
-                    keyboardType="numeric"
-                    cursorColor={COLORS.orange}
-
-                    style={{ width: 50 }}
-                    backgroundColor={COLORS.buttonBackground}
-                    borderBottomWidth={2}
-                    borderBottomColor={COLORS.offWhite}
-
-                    color={COLORS.orange}
-                    fontSize={20}
-                    fontWeight="bold"
-                    textAlign="center"
-                  />
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={stylesMain.text}>Beat: </Text>
-                  <TextInput
-                    onChangeText={(text) => setNewBeat(text)}
-                    value={newBeat}
-                    defaultValue="4"
-
-                    keyboardType="numeric"
-                    cursorColor={COLORS.orange}
-
-                    style={{ width: 50 }}
-                    backgroundColor={COLORS.buttonBackground}
-                    borderBottomWidth={2}
-                    borderBottomColor={COLORS.offWhite}
-
-                    color={COLORS.orange}
-                    fontSize={20}
-                    fontWeight="bold"
-                    textAlign="center"
-                  />
-                </View>
-              </View>
-              <View style={{
-                flex: 2,
-                paddingBottom: 12,
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                flexDirection: 'row',
-              }}
-              >
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-                  <TouchableOpacity
-                    style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
-                    onPress={() => setIsModalVisible(() => !isModalVisible)}
-                  >
-                    <AntDesign name="arrowleft" size={24} color={COLORS.background} />
-                  </TouchableOpacity>
-                </View>
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-                  <TouchableOpacity
-                    style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
-                    onPress={handleModal}
-                  >
-                    <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>
-                  </TouchableOpacity>
-                </View>
-
-              </View>
-            </View>
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-    </View>
+    //</GestureHandlerRootView>
   );
 }
 

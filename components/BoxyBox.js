@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable object-curly-newline */
 /* eslint-disable import/named */
 /* eslint-disable react/react-in-jsx-scope */
@@ -19,7 +20,6 @@ import { COLORS } from '../styles/colors';
 export default function BoxyBox({
   w, h, value, setValue, max = 65, min = 55,
 }) {
-
   // for continuous incrementing/decrementing
   const [incrementing, setIncrementing] = useState(false);
   const [decrementing, setDecrementing] = useState(false);
@@ -48,7 +48,7 @@ export default function BoxyBox({
     };
 
     if (incrementing) {
-      //interval = setInterval(handleIncrement, 100);
+      // interval = setInterval(handleIncrement, 100);
       // new way to handle, calls clearInterval after every inc/dec (new)
       interval = setInterval(() => {
         handleIncrement();
@@ -57,7 +57,7 @@ export default function BoxyBox({
     }
 
     if (decrementing) {
-      //interval = setInterval(handleDecrement, 100);
+      // interval = setInterval(handleDecrement, 100);
       // new way to handle, calls clearInterval after every inc/dec (new)
       interval = setInterval(() => {
         handleDecrement();

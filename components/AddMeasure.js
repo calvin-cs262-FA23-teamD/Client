@@ -1,6 +1,6 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-max-props-per-line */
-/* eslint-disable linebreak-style */
 /* eslint-disable react/prop-types */
 /* Import react components */
 import * as React from 'react';

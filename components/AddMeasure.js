@@ -32,17 +32,20 @@ export default function AddMeasure({
   );
 
   return (
-    <View style={{ height: 600, width: '100%' }}>
-      <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ height: 550, width: '100%' }}>
+      <View style={{
+        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
+      }}
+      >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
       </View>
       <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 15 }}>
           <Text style={stylesMain.text}>Measure Num: </Text>
           <TextInput
             onChangeText={(text) => setNewMeasureNum(text)}
             value={newMeasureNum}
-            defaultValue="60"
+            defaultValue={newMeasureNum.toString()}
             keyboardType="numeric"
             cursorColor={COLORS.orange}
             style={{ width: 50 }}
@@ -66,9 +69,9 @@ export default function AddMeasure({
       <View style={{
         flex: 2,
         paddingBottom: 12,
-        alignItems: 'center',
         justifyContent: 'flex-end',
         flexDirection: 'row',
+        alignItems: 'flex-end',
       }}
       >
         <View style={{ flex: 1, alignItems: 'flex-start' }}>

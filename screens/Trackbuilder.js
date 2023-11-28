@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-props-no-multi-spaces */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable import/named */
@@ -79,7 +80,9 @@ function MeasureBox({
           alignItems: 'stretch', justifyContent: 'space-evenly', paddingHorizontal: 15,
         }}
         >
-          <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>{measure.tempo} BPM </Text>
+          <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
+            {measure.tempo} BPM
+          </Text>
         </View>
 
       </View>
@@ -100,10 +103,12 @@ export default function TrackbuilderScreen({ navigation }) {
   const selectMeasure = (item) => {
     if (selectedMeasure === item.number) {
       setSelectedMeasure(null);
+      setNewMeasureNum(measures.length + 1);
       // setSelectedBeat(null);
       // setSelectedTempo(null);
     } else {
       setSelectedMeasure(item.number);
+      setNewMeasureNum(item.number + 1);
       // setSelectedBeat(item.beat);
       // setSelectedTempo(item.tempo);
     }
@@ -139,21 +144,25 @@ export default function TrackbuilderScreen({ navigation }) {
   };
 
   /* insert a new measure into the list of measures */
-  const [newMeasureNum, setNewMeasureNum] = useState(1);
+  const [newMeasureNum, setNewMeasureNum] = useState(measures.length + 1);
   const [newTempo, setNewTempo] = useState(60);
   const [newBeat, setNewBeat] = useState(4);
   const addMeasure = () => {
     if (newTempo !== '' && newBeat !== '' && newMeasureNum !== '') {
+      console.log(newMeasureNum);
+      console.log((newMeasureNum < 1) ? 1 : newMeasureNum);
+      const newMeasureNumCorr = (newMeasureNum < 1) ? 1 : newMeasureNum;
       const newMeasure = {
-        number: newMeasureNum,
+        number: newMeasureNumCorr,
         tempo: newTempo,
         beat: newBeat,
       };
       // add in measure and update 'number' property
-      measures.splice(newMeasureNum - 1, 0, newMeasure);
+      measures.splice(newMeasureNumCorr - 1, 0, newMeasure);
       for (let i = 0; i < measures.length; i++) {
         measures[i].number = i + 1;
       }
+      setNewMeasureNum(measures.length);
     }
   };
 

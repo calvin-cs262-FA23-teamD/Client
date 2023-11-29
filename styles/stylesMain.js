@@ -78,7 +78,7 @@ export const stylesMain = StyleSheet.create({
   },
 
   buttonText: {
-    color: 'white', // Set the text color to white
+    color: COLORS.background, // Set the text color to white
     textAlign: 'center',
   },
   // end for log in and sign up screens

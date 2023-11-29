@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 // import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
+// for back button (new)
+import { AntDesign } from '@expo/vector-icons';
+
 /* Import style code */
 import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
@@ -57,6 +60,8 @@ function LogInScreen({ navigation }) {
             onChangeText={(text) => setUsername(text)}
             value={username}
             defaultValue="username"
+            //placeholder="username"
+            //placeholderTextColor='#aaa'
 
             cursorColor={COLORS.orange}
 
@@ -87,6 +92,9 @@ function LogInScreen({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             value={password}
             defaultValue="password"
+            //placeholder="password"
+            //placeholderTextColor='#aaa'
+            secureTextEntry
 
             cursorColor={COLORS.orange}
 
@@ -119,6 +127,16 @@ function LogInScreen({ navigation }) {
       </View>
 
       <View style={stylesMain.footer} />
+
+      {/* Copied from AddMeasure.js */}
+      <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <TouchableOpacity
+          style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+          onPress={() => navigation.navigate('Trackbuilder')}
+        >
+          <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

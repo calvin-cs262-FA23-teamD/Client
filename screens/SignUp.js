@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
 } from 'react-native';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+//import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 /* Import style code */
 // eslint-disable-next-line import/named
@@ -23,19 +23,10 @@ function SignUpScreen({ navigation }) {
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [email, setEmail] = useState('');
+  //const [email, setEmail] = useState('');
 
-  const handleSignUp = async () => {
-    // Store the new user credentials in AsyncStorage
-    // await AsyncStorage.setItem('username', newUsername);
-    // await AsyncStorage.setItem('password', newPassword);
+  /*const handleSignUp = async () => {
 
-    /* Add code here making sure that newPassword
-         * and confirmNewPassword are the same,
-         * else fail
-         *
-         *
-         */
 
     if (!newUsername || !newPassword || !confirmNewPassword) {
       alert('Please enter a valid username and password combination.');
@@ -47,15 +38,40 @@ function SignUpScreen({ navigation }) {
     }
 
     if ((newPassword === confirmNewPassword) && newUsername) {
-      /* We're not using AsyncStorage anymore
-      // Store the new user credentials in AsyncStorage
-      await AsyncStorage.setItem('username', newUsername);
-      await AsyncStorage.setItem('password', newPassword);*/
+
 
       // Successful sign up, navigate to the next screen
       navigation.navigate('LogIn');
     }
 
+  };*/
+
+
+  // what about the if/else logic that is commented out above?
+  const handleSignUp = async () => {
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net/createUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: newUsername, password: newPassword }),
+      });
+
+      const data = await response.json();
+
+      if (!newUsername || !newPassword || !confirmNewPassword) {
+        alert('Please enter a valid username and password combination.');
+      } else if (!(newPassword === confirmNewPassword)) {
+        // Invalid credentials, show an error message
+        alert('Your passwords do not match. Please try again.');
+      } else // success
+      {
+        navigation.navigate('LogIn');
+      }
+    } catch (error) {
+      console.error('Error creating account:', error);
+    }
   };
 
   return (
@@ -74,14 +90,11 @@ function SignUpScreen({ navigation }) {
           defaultValue="new-username"
           //placeholder="new-username"
           //placeholderTextColor='#aaa'
-
           cursorColor={COLORS.orange}
-
           style={{ width: 200 }}
           backgroundColor={COLORS.background}
           borderBottomWidth={2}
           borderBottomColor={COLORS.offWhite}
-
           color={COLORS.orange}
           fontSize={20}
           fontWeight="bold"
@@ -99,14 +112,11 @@ function SignUpScreen({ navigation }) {
           //placeholder=""
           //placeholderTextColor='#aaa'
           secureTextEntry
-
           cursorColor={COLORS.orange}
-
           style={{ width: 200 }}
           backgroundColor={COLORS.background}
           borderBottomWidth={2}
           borderBottomColor={COLORS.offWhite}
-
           color={COLORS.orange}
           fontSize={20}
           fontWeight="bold"
@@ -124,14 +134,11 @@ function SignUpScreen({ navigation }) {
           //placeholder=""
           //placeholderTextColor='#aaa'
           secureTextEntry
-
           cursorColor={COLORS.orange}
-
           style={{ width: 200 }}
           backgroundColor={COLORS.background}
           borderBottomWidth={2}
           borderBottomColor={COLORS.offWhite}
-
           color={COLORS.orange}
           fontSize={20}
           fontWeight="bold"

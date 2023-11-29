@@ -21,7 +21,7 @@ function LogInScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   // eslint-disable-next-line no-unused-vars
-  const handleLogin = async () => {
+  /*const handleLogin = async () => {
     // Add login logic here
     // Check username and password, navigate to the next screen on success, show an error on failure
     // Retrieve user credentials from AsyncStorage
@@ -35,6 +35,39 @@ function LogInScreen({ navigation }) {
     //     // Invalid credentials, show an error message
     //     alert('Invalid credentials. Please try again.');
     // }
+  };*/
+
+  // why is this not working????
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      // Check if username is present in the records
+      const record = data.find((theUser) => theUser.username === username);
+
+      // if username exists, does password match?
+      if (record) {
+        if (record.password === password) {
+          navigation.navigate('Trackbuilder');
+        } else {
+          alert('Invalid credentials. Please try again.');
+        }
+      } else {
+        // no username found
+        alert('There is no user with that username. Please try again.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Uh oh, something went wrong.');
+    }
   };
 
   return (
@@ -45,14 +78,6 @@ function LogInScreen({ navigation }) {
       </View>
 
       <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', gap: 12 }]}>
-        {/* <TextInput
-                marginTop={100}
-                placeholder="Username"
-                placeholderTextColor='#aaa'
-                onChangeText={text => setUsername(text)}
-                value={username}
-                textAlign='center'
-            /> */}
 
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
           <Text style={stylesMain.text}>Username: </Text>
@@ -76,15 +101,6 @@ function LogInScreen({ navigation }) {
             textAlign="center"
           />
         </View>
-        {/*
-            <TextInput
-                placeholder="Password"
-                placeholderTextColor='#aaa'
-                onChangeText={text => setPassword(text)}
-                value={password}
-                textAlign='center'
-                secureTextEntry
-            /> */}
 
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
           <Text style={stylesMain.text}>Password: </Text>

@@ -135,8 +135,8 @@ export default function MetronomeScreen({ navigation }) {
         setAccentSoundFile(require('../assets/sounds/shotgun/Shotgun2.mp3'));
         break;
       case 'Snap':
-        setSelectedSoundFile(require('../assets/sounds/snap/snap-click.mp3'));
-        setAccentSoundFile(require('../assets/sounds/snap/snap-accent.mp3'));
+        setSelectedSoundFile(require('../assets/sounds/snap/snap-click-2.0.mp3'));
+        setAccentSoundFile(require('../assets/sounds/snap/snap-accent-2.0.mp3'));
         break;
       default:
         setSelectedSoundFile(require('../assets/sounds/metronome/metronomesound.mp3')); // Default

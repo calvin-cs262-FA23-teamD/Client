@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 // import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
+// for back button (new)
+import { AntDesign } from '@expo/vector-icons';
+
 /* Import style code */
 import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
@@ -21,9 +24,7 @@ function LogInScreen({ navigation }) {
   const handleLogin = async () => {
     // Add login logic here
     // Check username and password, navigate to the next screen on success, show an error on failure
-    // Retrieve user credentials from AsyncStorage
-    // const storedUsername = await AsyncStorage.getItem('username');
-    // const storedPassword = await AsyncStorage.getItem('password');
+
 
     // if (username === storedUsername && password === storedPassword) {
     //     // Successful login, navigate to the next screen
@@ -34,6 +35,39 @@ function LogInScreen({ navigation }) {
     // }
   };
 
+  // why is this not working???? keep this commented out for now
+  /*const handleLogin = async () => {
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net/readtheUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      // Check if username is present in the records
+      const record = data.find((theUser) => theUser.username === username);
+
+      // if username exists, does password match?
+      if (record) {
+        if (record.password === password) {
+          navigation.navigate('Trackbuilder');
+        } else {
+          alert('Invalid credentials. Please try again.');
+        }
+      } else {
+        // no username found
+        alert('There is no user with that username. Please try again.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Uh oh, something went wrong.');
+    }
+  };*/
+
   return (
     <View style={stylesMain.container}>
 
@@ -42,14 +76,6 @@ function LogInScreen({ navigation }) {
       </View>
 
       <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', gap: 12 }]}>
-        {/* <TextInput
-                marginTop={100}
-                placeholder="Username"
-                placeholderTextColor='#aaa'
-                onChangeText={text => setUsername(text)}
-                value={username}
-                textAlign='center'
-            /> */}
 
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
           <Text style={stylesMain.text}>Username: </Text>
@@ -57,6 +83,8 @@ function LogInScreen({ navigation }) {
             onChangeText={(text) => setUsername(text)}
             value={username}
             defaultValue="username"
+            //placeholder="username"
+            //placeholderTextColor='#aaa'
 
             cursorColor={COLORS.orange}
 
@@ -71,15 +99,6 @@ function LogInScreen({ navigation }) {
             textAlign="center"
           />
         </View>
-        {/*
-            <TextInput
-                placeholder="Password"
-                placeholderTextColor='#aaa'
-                onChangeText={text => setPassword(text)}
-                value={password}
-                textAlign='center'
-                secureTextEntry
-            /> */}
 
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
           <Text style={stylesMain.text}>Password: </Text>
@@ -87,6 +106,9 @@ function LogInScreen({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             value={password}
             defaultValue="password"
+            //placeholder="password"
+            //placeholderTextColor='#aaa'
+            secureTextEntry
 
             cursorColor={COLORS.orange}
 
@@ -104,7 +126,7 @@ function LogInScreen({ navigation }) {
 
         <TouchableOpacity
           style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
-          // onPress={handleLogin}
+          //onPress={handleLogin}
           onPress={() => navigation.navigate('Trackbuilder')}
         >
           <Text style={stylesMain.buttonText}>LOG IN</Text>
@@ -119,6 +141,16 @@ function LogInScreen({ navigation }) {
       </View>
 
       <View style={stylesMain.footer} />
+
+      {/* Copied from AddMeasure.js */}
+      <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <TouchableOpacity
+          style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+          onPress={() => navigation.navigate('Trackbuilder')}
+        >
+          <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

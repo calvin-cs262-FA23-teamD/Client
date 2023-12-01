@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Metronome" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="NButtons" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Metronome" component={MetronomeScreen} />
         <Stack.Screen name="Trackbuilder" component={TrackbuilderScreen} />
         {/* Add new screens to the stack */}

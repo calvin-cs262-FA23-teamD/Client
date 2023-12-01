@@ -56,7 +56,7 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
-  const userID = 20;
+  const userID = 23;
   const deleteUser = async (userId) => {
     try {
       const response = await fetch(`https://beatleservice.azurewebsites.net/delUser/${userId}`, {

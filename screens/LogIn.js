@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 // import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
+import { AntDesign } from '@expo/vector-icons';
+
 /* Import style code */
 import { stylesMain } from '../styles/stylesMain';
 import { COLORS } from '../styles/colors';
@@ -67,14 +69,6 @@ function LogInScreen({ navigation }) {
       </View>
 
       <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', gap: 12 }]}>
-        {/* <TextInput
-                marginTop={100}
-                placeholder="Username"
-                placeholderTextColor='#aaa'
-                onChangeText={text => setUsername(text)}
-                value={username}
-                textAlign='center'
-            /> */}
 
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
           <Text style={stylesMain.text}>Username: </Text>
@@ -82,6 +76,8 @@ function LogInScreen({ navigation }) {
             onChangeText={(text) => setUsername(text)}
             value={username}
             defaultValue="username"
+            // placeholder="username"
+            // placeholderTextColor='#aaa'
 
             cursorColor={COLORS.orange}
 
@@ -96,15 +92,6 @@ function LogInScreen({ navigation }) {
             textAlign="center"
           />
         </View>
-        {/*
-            <TextInput
-                placeholder="Password"
-                placeholderTextColor='#aaa'
-                onChangeText={text => setPassword(text)}
-                value={password}
-                textAlign='center'
-                secureTextEntry
-            /> */}
 
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
           <Text style={stylesMain.text}>Password: </Text>
@@ -112,6 +99,9 @@ function LogInScreen({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             value={password}
             defaultValue="password"
+            // placeholder="password"
+            // placeholderTextColor='#aaa'
+            secureTextEntry
 
             cursorColor={COLORS.orange}
 
@@ -144,6 +134,16 @@ function LogInScreen({ navigation }) {
       </View>
 
       <View style={stylesMain.footer} />
+
+      {/* Copied from AddMeasure.js */}
+      <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <TouchableOpacity
+          style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+          onPress={() => navigation.navigate('Trackbuilder')}
+        >
+          <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

@@ -16,8 +16,7 @@ export const stylesMain = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    flex: 1,
-    padding: 20,
+    flex: 1.5,
   },
 
   body: {
@@ -37,7 +36,7 @@ export const stylesMain = StyleSheet.create({
   title: {
     color: COLORS.offWhite,
     fontWeight: 'bold',
-    fontSize: 24,
+    fontSize: 26,
     marginTop: -5,
   },
 
@@ -56,8 +55,8 @@ export const stylesMain = StyleSheet.create({
   },
 
   subView: {
-    justifyContent: 'space-between',
-    rowGap: 7,
+    justifyContent: 'flex-start',
+    rowGap: 10,
     width: '100%',
     alignItems: 'center',
   },

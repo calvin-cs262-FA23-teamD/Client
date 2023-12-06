@@ -32,7 +32,7 @@ export default function AddMeasure({
   );
 
   return (
-    <View style={{ height: 550, width: '100%' }}>
+    <View style={{ height: 500, width: '100%' }}>
       <View style={{
         flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
       }}

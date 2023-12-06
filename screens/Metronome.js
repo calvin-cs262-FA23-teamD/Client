@@ -12,7 +12,6 @@
 import * as React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
-import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
@@ -20,22 +19,12 @@ import { Audio } from 'expo-av';
 /* Import component files */
 import PausePlayButton from '../components/PausePlayButton';
 import Counters from '../components/Counters';
+import { Modal } from '../components/Modal.tsx';
+import SoundModal, { switchSound } from '../components/SoundSelection';
 
 /* Import style code */
-import { stylesMain } from '../styles/stylesMain';
-import { COLORS } from '../styles/colors';
 
-/* Default sound and list of possible selectedSounds */
-const soundList = [
-  { key: '1', value: 'Default' },
-  // Clap contributed by Abigail's friend Angela (removed)
-  // { key: '2', value: 'Clap' },
-  { key: '2', value: 'Drum' },
-  { key: '3', value: 'Piano' },
-  { key: '4', value: 'Shotgun' },
-  // Snap contributed by Abigail's friend Noah
-  { key: '5', value: 'Snap' },
-];
+import { stylesMain } from '../styles/stylesMain';
 
 /* Main function */
 export default function MetronomeScreen({ navigation }) {
@@ -117,73 +106,56 @@ export default function MetronomeScreen({ navigation }) {
 
   /* update the beat sound (paired) */
   useEffect(() => {
-    switch (selectedSound) {
-      /* case 'Clap':
-        setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
-        setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-        break; */
-      case 'Drum':
-        setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
-        setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));
-        break;
-      case 'Piano':
-        setSelectedSoundFile(require('../assets/sounds/piano/pianoD.mp3'));
-        setAccentSoundFile(require('../assets/sounds/piano/pianoG.mp3'));
-        break;
-      case 'Shotgun':
-        setSelectedSoundFile(require('../assets/sounds/shotgun/Shotgun.mp3'));
-        setAccentSoundFile(require('../assets/sounds/shotgun/Shotgun2.mp3'));
-        break;
-      case 'Snap':
-        setSelectedSoundFile(require('../assets/sounds/snap/snap-click.mp3'));
-        setAccentSoundFile(require('../assets/sounds/snap/snap-accent.mp3'));
-        break;
-      default:
-        setSelectedSoundFile(require('../assets/sounds/metronome/metronomesound.mp3')); // Default
-        setAccentSoundFile(require('../assets/sounds/metronome/metronomeaccent.mp3'));
-    }
+    switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile);
   }, [selectedSound]);
 
   const [buttonStates, setButtonStates] = useState(
     Array.from({ length: beat }, () => 0), // Set the default state to display numbers
   );
 
+  /* handle the popup screen for chaning the sound */
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleModal = () => {
+    setIsModalVisible(() => !isModalVisible);
+  };
+
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
 
-      <View style={stylesMain.header}>
+      <View style={[stylesMain.header, {}]}>
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
-      <View style={[stylesMain.body, { alignItems: 'center', marginTop: -20 }]}>
+      <View style={[stylesMain.body, {}]}>
+        <View style={{ flex: 1.5, justifyContent: 'center' }}>
+          <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
+        </View>
 
-        <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
+        <View style={{ flex: 6, justifyContent: 'space-between' }}>
+          <Counters
+            width={300}
+            beat={beat} setBeat={setBeat}
+            BPM={BPM} setBPM={setBPM}
+            buttonStates={buttonStates} setButtonStates={setButtonStates}
+          />
 
-        <Counters
-          width={300}
-          beat={beat} setBeat={setBeat}
-          BPM={BPM} setBPM={setBPM}
-          buttonStates={buttonStates} setButtonStates={setButtonStates}
-        />
-
-        <View style={[stylesMain.subView]}>
-          <View style={stylesMain.boxed}>
-            <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Sound</Text>
-            <SelectList
-              setSelected={(val) => setSelectedSound(val)}
-              data={soundList}
-              save="value"
-              boxStyles={{ backgroundColor: COLORS.orange, width: 300 }}
-              dropdownTextStyles={{ color: COLORS.orange }}
-              placeholder="Default"
-              search={false}
-              maxHeight={100}
-            />
+          <View style={[stylesMain.subView, { paddingBottom: 40 }]}>
+            <View style={stylesMain.boxed}>
+              <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Sound:</Text>
+              <TouchableOpacity
+                style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+                onPress={handleModal}
+              >
+                <Text style={stylesMain.text}>
+                  {selectedSound}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
-        <View style={stylesMain.footer}>
+        <View style={[stylesMain.footer, {}]}>
           <TouchableOpacity
             style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
             onPress={() => {
@@ -197,6 +169,21 @@ export default function MetronomeScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <Modal.Container>
+          <Modal.Body>
+            <SoundModal
+              selectedSound={selectedSound}
+              setSelectedSound={setSelectedSound}
+              isModalVisible={isModalVisible}
+              setIsModalVisible={setIsModalVisible}
+              handleModal={handleModal}
+            />
+          </Modal.Body>
+          {/* </View> */}
+        </Modal.Container>
+      </Modal>
     </View>
   );
 }

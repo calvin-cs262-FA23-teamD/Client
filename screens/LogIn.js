@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/named */
 /* eslint-disable react/jsx-props-no-multi-spaces */
@@ -68,80 +69,94 @@ function LogInScreen({ navigation }) {
         <Text style={stylesMain.title}>Log In</Text>
       </View>
 
-      <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', gap: 12 }]}>
+      <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start' }]}>
+        <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
-        <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
-          <Text style={stylesMain.text}>Username: </Text>
-          <TextInput
-            onChangeText={(text) => setUsername(text)}
-            value={username}
-            defaultValue="username"
-            // placeholder="username"
-            // placeholderTextColor='#aaa'
+        <View style={{ flex: 6 }}>
+          <View style={[stylesMain.subView, {}]}>
+            <Text style={stylesMain.text}>Username: </Text>
+            <TextInput
+              onChangeText={(text) => setUsername(text)}
+              value={username}
+              defaultValue="username"
+              // placeholder="username"
+              // placeholderTextColor='#aaa'
 
-            cursorColor={COLORS.orange}
+              cursorColor={COLORS.orange}
 
-            style={{ width: 200 }}
-            backgroundColor={COLORS.background}
-            borderBottomWidth={2}
-            borderBottomColor={COLORS.offWhite}
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
 
-            color={COLORS.orange}
-            fontSize={20}
-            fontWeight="bold"
-            textAlign="center"
-          />
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+
+            <Text style={stylesMain.text}>Password: </Text>
+            <TextInput
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              defaultValue="password"
+              // placeholder="password"
+              // placeholderTextColor='#aaa'
+              secureTextEntry
+
+              cursorColor={COLORS.orange}
+
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
+
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+            <View style={{ paddingTop: 10, rowGap: 5 }}>
+              <TouchableOpacity
+                style={[
+                  stylesMain.buttons,
+                  {
+                    width: 300,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    backgroundColor: COLORS.orange,
+                  }]}
+                onPress={handleLogin}
+              // onPress={() => navigation.navigate('Trackbuilder')}
+              >
+                <Text style={[stylesMain.text, { color: COLORS.background }]}>Log In</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[stylesMain.buttons,
+                  {
+                    width: 300,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    backgroundColor: COLORS.orange,
+                  }]}
+                onPress={() => navigation.navigate('SignUp')}
+              >
+                <Text style={[stylesMain.text, { color: COLORS.background }]}>
+                  Create an Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-
-        <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
-          <Text style={stylesMain.text}>Password: </Text>
-          <TextInput
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            defaultValue="password"
-            // placeholder="password"
-            // placeholderTextColor='#aaa'
-            secureTextEntry
-
-            cursorColor={COLORS.orange}
-
-            style={{ width: 200 }}
-            backgroundColor={COLORS.background}
-            borderBottomWidth={2}
-            borderBottomColor={COLORS.offWhite}
-
-            color={COLORS.orange}
-            fontSize={20}
-            fontWeight="bold"
-            textAlign="center"
-          />
-        </View>
-
-        <TouchableOpacity
-          style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
-          onPress={handleLogin}
-          // onPress={() => navigation.navigate('Trackbuilder')}
-        >
-          <Text style={stylesMain.buttonText}>LOG IN</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[stylesMain.orangeButton, stylesMain.buttonText]}
-          onPress={() => navigation.navigate('SignUp')}
-        >
-          <Text style={stylesMain.buttonText}>CREATE AN ACCOUNT</Text>
-        </TouchableOpacity>
       </View>
 
-      <View style={stylesMain.footer} />
-
-      {/* Copied from AddMeasure.js */}
-      <View style={{ flex: 1, alignItems: 'flex-start' }}>
+      <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
-          style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+          style={[stylesMain.buttons, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
           onPress={() => navigation.navigate('Trackbuilder')}
         >
-          <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+          <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />
         </TouchableOpacity>
       </View>
     </View>

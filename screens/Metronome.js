@@ -46,6 +46,8 @@ export default function MetronomeScreen({ navigation }) {
   const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
   const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
   const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+  // add silence
+  const [silentSoundFile, setSilentSoundFile] = useState(require('../assets/sounds/silent/silence.mp3'));
   const [sound, setSound] = useState(); // current loaded sound
 
   const [BPM, setBPM] = useState(60); // beats per minute
@@ -73,10 +75,10 @@ export default function MetronomeScreen({ navigation }) {
   async function playSound() {
     /* Play sound, accenting the down beat */
     beatSound = buttonStates[measure % beat];
-    // When adding in silence, replace the last "selectSoundFile"
+    // When adding in silence, replace the first "selectedSoundFile" (done 12/6)
     // eslint-disable-next-line no-nested-ternary, max-len
     const soundFile = (beatSound === 1) ? accentSoundFile : (
-      beatSound === 2) ? selectedSoundFile : selectedSoundFile;
+      beatSound === 2) ? silentSoundFile : selectedSoundFile;
 
     const { sound } = await Audio.Sound.createAsync(soundFile);
     setSound(sound);
@@ -118,10 +120,6 @@ export default function MetronomeScreen({ navigation }) {
   /* update the beat sound (paired) */
   useEffect(() => {
     switch (selectedSound) {
-      /* case 'Clap':
-        setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
-        setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-        break; */
       case 'Drum':
         setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
         setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));

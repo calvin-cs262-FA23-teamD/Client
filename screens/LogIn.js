@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/named */
 /* eslint-disable react/jsx-props-no-multi-spaces */
@@ -8,7 +9,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
 } from 'react-native';
-// import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -47,9 +47,9 @@ function LogInScreen({ navigation }) {
       if (username === data[i].username) {
         if (password === data[i].password) {
           console.log('userfound!');
-          navigation.navigate('Trackbuilder');
           userID = data[i].id;
           console.log(userID);
+          navigation.navigate('Trackbuilder', { id: userID });
           return;
         }
       }
@@ -64,84 +64,109 @@ function LogInScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
 
-      <View style={stylesMain.header}>
-        <Text style={stylesMain.title}>Log In</Text>
+      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+        <View style={[stylesMain.subView, { flex: 1 }]} />
+        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
+          <Text style={stylesMain.title}>Log In</Text>
+        </View>
+        <View style={[stylesMain.subView, { flex: 1 }]}>
+          <TouchableOpacity
+            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+            onPress={console.log('pressed info')}
+          >
+            <AntDesign name="question" size={24} color={COLORS.offWhite} />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start', gap: 12 }]}>
+      <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start' }]}>
+        <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
-        <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
-          <Text style={stylesMain.text}>Username: </Text>
-          <TextInput
-            onChangeText={(text) => setUsername(text)}
-            value={username}
-            defaultValue="username"
-            // placeholder="username"
-            // placeholderTextColor='#aaa'
+        <View style={{ flex: 6 }}>
+          <View style={[stylesMain.subView, {}]}>
+            <Text style={stylesMain.text}>Username: </Text>
+            <TextInput
+              onChangeText={(text) => setUsername(text)}
+              value={username}
+              defaultValue="username"
+              // placeholder="username"
+              // placeholderTextColor='#aaa'
 
-            cursorColor={COLORS.orange}
+              cursorColor={COLORS.orange}
 
-            style={{ width: 200 }}
-            backgroundColor={COLORS.background}
-            borderBottomWidth={2}
-            borderBottomColor={COLORS.offWhite}
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
 
-            color={COLORS.orange}
-            fontSize={20}
-            fontWeight="bold"
-            textAlign="center"
-          />
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+
+            <Text style={stylesMain.text}>Password: </Text>
+            <TextInput
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              defaultValue="password"
+              // placeholder="password"
+              // placeholderTextColor='#aaa'
+              secureTextEntry
+
+              cursorColor={COLORS.orange}
+
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
+
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+            <View style={{ paddingTop: 10, rowGap: 5 }}>
+              <TouchableOpacity
+                style={[
+                  stylesMain.flatButton,
+                  {
+                    width: 300,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    backgroundColor: COLORS.orange,
+                  }]}
+                onPress={handleLogin}
+              // onPress={() => navigation.navigate('Trackbuilder')}
+              >
+                <Text style={[stylesMain.text, { color: COLORS.background }]}>Log In</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[stylesMain.flatButton,
+                  {
+                    width: 300,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    backgroundColor: COLORS.orange,
+                  }]}
+                onPress={() => navigation.navigate('SignUp')}
+              >
+                <Text style={[stylesMain.text, { color: COLORS.background }]}>
+                  Create an Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-
-        <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
-          <Text style={stylesMain.text}>Password: </Text>
-          <TextInput
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            defaultValue="password"
-            // placeholder="password"
-            // placeholderTextColor='#aaa'
-            secureTextEntry
-
-            cursorColor={COLORS.orange}
-
-            style={{ width: 200 }}
-            backgroundColor={COLORS.background}
-            borderBottomWidth={2}
-            borderBottomColor={COLORS.offWhite}
-
-            color={COLORS.orange}
-            fontSize={20}
-            fontWeight="bold"
-            textAlign="center"
-          />
-        </View>
-
-        <TouchableOpacity
-          style={[stylesMain.orangeButton, stylesMain.buttonText]} // Apply the orange color style
-          onPress={handleLogin}
-          // onPress={() => navigation.navigate('Trackbuilder')}
-        >
-          <Text style={stylesMain.buttonText}>LOG IN</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[stylesMain.orangeButton, stylesMain.buttonText]}
-          onPress={() => navigation.navigate('SignUp')}
-        >
-          <Text style={stylesMain.buttonText}>CREATE AN ACCOUNT</Text>
-        </TouchableOpacity>
       </View>
 
-      <View style={stylesMain.footer} />
-
-      {/* Copied from AddMeasure.js */}
-      <View style={{ flex: 1, alignItems: 'flex-start' }}>
+      <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
-          style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
-          onPress={() => navigation.navigate('Trackbuilder')}
+          style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+          onPress={() => navigation.navigate('Trackbuilder', { id: userID })}
         >
-          <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+          <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />
         </TouchableOpacity>
       </View>
     </View>

@@ -5,7 +5,7 @@
 /* eslint-disable react/prop-types */
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TextInput } from 'react-native';
 
 // import from react
 import React, { useState, useEffect } from 'react';
@@ -96,6 +96,17 @@ export default function BoxyBox({
       setValue(value - 1);
     }
   };
+  // this function will reset the current value to what the user enters
+  const updateValue = (newValue) => {
+    if (newValue >= max) {
+      setValue(max);
+    } else if (newValue <= min) {
+      console.log('error, value too low');
+      setValue(min);
+    } else {
+      setValue(Math.floor(newValue));
+    }
+  };
 
   return (
     <View style={[stylesMain.boxyBoxes, {
@@ -119,7 +130,20 @@ export default function BoxyBox({
         </View>
 
         <View style={stylesMain.valueText}>
-          <Text style={{ color: COLORS.offWhite, fontSize: w / 6 }}>{value.toString()}</Text>
+          {/* BUG!!! if you enter too low a value, it will update correctly,
+          but the text will not display the right value */}
+          <TextInput
+            onChangeText={(text) => updateValue(text)}
+            value={value}
+            defaultValue={value.toString()}
+            keyboardType="numeric"
+            cursorColor={COLORS.orange}
+            style={{ width: w / 3 }}
+            backgroundColor={COLORS.buttonBackground}
+            color={COLORS.offWhite}
+            fontSize={w / 6}
+            textAlign="center"
+          />
         </View>
 
         <View style={stylesMain.plusMinusButtons}>

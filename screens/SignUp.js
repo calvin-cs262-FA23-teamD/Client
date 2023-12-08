@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable no-else-return */
 /* eslint-disable no-useless-return */
 /* eslint-disable no-plusplus */
@@ -102,92 +103,104 @@ function SignUpScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
 
-      <View style={[stylesMain.header, { marginTop: 50 }]}>
-        <Text style={stylesMain.title}>Create New Account</Text>
+      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+        <View style={[stylesMain.subView, { flex: 1 }]} />
+        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
+          <Text style={stylesMain.title}>Sign Up</Text>
+        </View>
+        <View style={[stylesMain.subView, { flex: 1 }]}>
+          <TouchableOpacity
+            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+            onPress={console.log('pressed info')}
+          >
+            <AntDesign name="question" size={24} color={COLORS.offWhite} />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* formatting copied from LogIn.js [new-username] */}
-      <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
-        <Text style={stylesMain.text}>Username: </Text>
-        <TextInput
-          onChangeText={(text) => setNewUsername(text)}
-          value={newUsername}
-          defaultValue="new-username"
-          // placeholder="new-username"
-          // placeholderTextColor='#aaa'
-          cursorColor={COLORS.orange}
-          style={{ width: 200 }}
-          backgroundColor={COLORS.background}
-          borderBottomWidth={2}
-          borderBottomColor={COLORS.offWhite}
-          color={COLORS.orange}
-          fontSize={20}
-          fontWeight="bold"
-          textAlign="center"
-        />
+      <View style={[stylesMain.body, {}]}>
+        <View style={{ flex: 1.5, justifyContent: 'center' }} />
+
+        <View style={{ flex: 6 }}>
+          <View style={[stylesMain.subView, {}]}>
+            <Text style={stylesMain.text}>Username: </Text>
+            <TextInput
+              onChangeText={(text) => setNewUsername(text)}
+              value={newUsername}
+              defaultValue="new-username"
+              // placeholder="new-username"
+              // placeholderTextColor='#aaa'
+              cursorColor={COLORS.orange}
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+
+            {/* formatting copied from LogIn.js [new-password] */}
+
+            <Text style={stylesMain.text}>Password: </Text>
+            <TextInput
+              onChangeText={(text) => setNewPassword(text)}
+              value={newPassword}
+              defaultValue="NULL"
+              // placeholder=""
+              // placeholderTextColor='#aaa'
+              secureTextEntry
+              cursorColor={COLORS.orange}
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+
+            <Text style={stylesMain.text}>Confirm Password: </Text>
+            <TextInput
+              onChangeText={(text) => setConfirmNewPassword(text)}
+              value={setConfirmNewPassword}
+              defaultValue=""
+              // placeholder=""
+              // placeholderTextColor='#aaa'
+              secureTextEntry
+              cursorColor={COLORS.orange}
+              style={{ width: 200 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
+              color={COLORS.orange}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
+
+            <View style={{ paddingTop: 10, rowGap: 5 }}>
+              <TouchableOpacity
+                style={[stylesMain.flatButton, { alignSelf: 'center', marginBottom: 10 }]}
+                onPress={handleSignUp}
+              >
+                <Text style={[stylesMain.text, { color: COLORS.background }]}>
+                  Create an Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
 
-      {/* formatting copied from LogIn.js [new-password] */}
-      <View style={{ flexDirection: 'column', alignItems: 'center', paddingTop: 15 }}>
-        <Text style={stylesMain.text}>Password: </Text>
-        <TextInput
-          onChangeText={(text) => setNewPassword(text)}
-          value={newPassword}
-          defaultValue="NULL"
-          // placeholder=""
-          // placeholderTextColor='#aaa'
-          secureTextEntry
-          cursorColor={COLORS.orange}
-          style={{ width: 200 }}
-          backgroundColor={COLORS.background}
-          borderBottomWidth={2}
-          borderBottomColor={COLORS.offWhite}
-          color={COLORS.orange}
-          fontSize={20}
-          fontWeight="bold"
-          textAlign="center"
-        />
-      </View>
-
-      {/* formatting copied from LogIn.js [confirm-new-password] */}
-      <View style={{
-        flexDirection: 'column', alignItems: 'center', paddingTop: 15, paddingBottom: 20,
-      }}
-      >
-        <Text style={stylesMain.text}>Confirm Password: </Text>
-        <TextInput
-          onChangeText={(text) => setConfirmNewPassword(text)}
-          value={setConfirmNewPassword}
-          defaultValue=""
-          // placeholder=""
-          // placeholderTextColor='#aaa'
-          secureTextEntry
-          cursorColor={COLORS.orange}
-          style={{ width: 200 }}
-          backgroundColor={COLORS.background}
-          borderBottomWidth={2}
-          borderBottomColor={COLORS.offWhite}
-          color={COLORS.orange}
-          fontSize={20}
-          fontWeight="bold"
-          textAlign="center"
-        />
-      </View>
-
-      <TouchableOpacity
-        style={[stylesMain.orangeButton, stylesMain.buttonText]}
-        onPress={handleSignUp}
-      >
-        <Text style={stylesMain.buttonText}>CREATE AN ACCOUNT</Text>
-      </TouchableOpacity>
-
-      {/* Copied from AddMeasure.js */}
-      <View style={{ flex: 1, alignItems: 'flex-start', marginTop: 300 }}>
+      <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
-          style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+          style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
           onPress={() => navigation.navigate('LogIn')}
         >
-          <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+          <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />
         </TouchableOpacity>
       </View>
     </View>

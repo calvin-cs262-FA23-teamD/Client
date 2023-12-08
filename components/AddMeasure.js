@@ -32,15 +32,23 @@ export default function AddMeasure({
   );
 
   return (
-    <View style={{ height: 550, width: '100%' }}>
+    <View style={{ height: 500, width: '100%' }}>
       <View style={{
-        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
+        flex: 0.5, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
       }}
       >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
       </View>
-      <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-        <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 15 }}>
+
+      <View style={{ flex: 4, marginTop: -10, justifyContent: 'flex-start' }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            paddingBottom: 0,
+          }}
+        >
           <Text style={stylesMain.text}>Measure Num: </Text>
           <TextInput
             onChangeText={(text) => setNewMeasureNum(text)}
@@ -58,7 +66,6 @@ export default function AddMeasure({
             textAlign="center"
           />
         </View>
-
         <Counters
           width={200}
           beat={newBeat} setBeat={setNewBeat}
@@ -66,8 +73,9 @@ export default function AddMeasure({
           buttonStates={buttonStates} setButtonStates={setButtonStates}
         />
       </View>
+
       <View style={{
-        flex: 2,
+        flex: 0.5,
         paddingBottom: 12,
         justifyContent: 'flex-end',
         flexDirection: 'row',
@@ -76,15 +84,15 @@ export default function AddMeasure({
       >
         <View style={{ flex: 1, alignItems: 'flex-start' }}>
           <TouchableOpacity
-            style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+            style={[stylesMain.backButton, { backgroundColor: COLORS.orange, width: 50 }]}
             onPress={() => setIsModalVisible(() => !isModalVisible)}
           >
             <AntDesign name="arrowleft" size={24} color={COLORS.background} />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <View style={{ flex: 1, alignItems: 'flex-end' }}>
           <TouchableOpacity
-            style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
+            style={[stylesMain.smallButton, { backgroundColor: COLORS.orange }]}
             onPress={handleModal}
           >
             <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>

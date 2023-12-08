@@ -22,6 +22,7 @@ import { useRoute } from '@react-navigation/native';
 
 /* Import component files */
 import { Audio } from 'expo-av';
+import { AntDesign } from '@expo/vector-icons';
 import { Modal } from '../components/Modal.tsx';
 
 /* Import component files */
@@ -325,8 +326,19 @@ export default function TrackbuilderScreen({ navigation }) {
 
   return (
     <View style={stylesMain.container}>
-      <View style={[stylesMain.header, {}]}>
-        <Text style={stylesMain.title}>Trackbuilder</Text>
+      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+        <View style={[stylesMain.subView, { flex: 1 }]} />
+        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
+          <Text style={stylesMain.title}>Trackbuilder</Text>
+        </View>
+        <View style={[stylesMain.subView, { flex: 1 }]}>
+          <TouchableOpacity
+            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+            onPress={console.log('pressed info')}
+          >
+            <AntDesign name="question" size={24} color={COLORS.offWhite} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={[stylesMain.body, {}]}>

@@ -119,7 +119,7 @@ function LogInScreen({ navigation }) {
             <View style={{ paddingTop: 10, rowGap: 5 }}>
               <TouchableOpacity
                 style={[
-                  stylesMain.buttons,
+                  stylesMain.flatButton,
                   {
                     width: 300,
                     alignSelf: 'center',
@@ -133,7 +133,7 @@ function LogInScreen({ navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[stylesMain.buttons,
+                style={[stylesMain.flatButton,
                   {
                     width: 300,
                     alignSelf: 'center',
@@ -153,7 +153,7 @@ function LogInScreen({ navigation }) {
 
       <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
-          style={[stylesMain.buttons, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+          style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
           onPress={() => navigation.navigate('Trackbuilder')}
         >
           <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />

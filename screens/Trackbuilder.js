@@ -15,7 +15,7 @@
 /* Import react components */
 import * as React from 'react';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput
+  StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
 } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 
@@ -26,6 +26,9 @@ import { Modal } from '../components/Modal.tsx';
 /* Import component files */
 import PausePlayButton from '../components/PausePlayButton';
 import AddMeasure from '../components/AddMeasure.js';
+import SoundModal, { switchSound } from '../components/SoundSelection';
+import SoundButton from '../components/SoundButton';
+import SavedTracks from '../components/SavedTracks.js';
 
 /* Import style files */
 import { stylesMain } from '../styles/stylesMain.js';
@@ -135,12 +138,24 @@ export default function TrackbuilderScreen({ navigation }) {
   */
 
   /* handle the popup screen for adding a new measure */
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const handleModal = () => {
-    if (isModalVisible) {
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const handleAddModal = () => {
+    if (isAddModalVisible) {
       addMeasure();
     }
-    setIsModalVisible(() => !isModalVisible);
+    setIsAddModalVisible(() => !isAddModalVisible);
+  };
+
+  /* handle the popup screen for chaning the sound */
+  const [isSoundModalVisible, setIsSoundModalVisible] = useState(false);
+  const handleSoundModal = () => {
+    setIsSoundModalVisible(() => !isSoundModalVisible);
+  };
+
+  /* handle the popup screen for selecting a new track */
+  const [isSavedTrackVisible, setIsSavedTrackVisible] = useState(false);
+  const handleSavedTrackModal = () => {
+    setIsSavedTrackVisible(() => !isSavedTrackVisible);
   };
 
   /* insert a new measure into the list of measures */
@@ -199,6 +214,7 @@ export default function TrackbuilderScreen({ navigation }) {
   const [beatList, setBeatList] = useState([]); // list of all the accent values of each beat
   const [tempoList, setTempoList] = useState([]); // list of tempos for each beat
 
+  // eslint-disable-next-line no-unused-vars
   const [title, setTitle] = useState('New Track');
 
   /* variables to make timer work */
@@ -267,31 +283,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
   /* update the beat sound (paired) */
   useEffect(() => {
-    switch (selectedSound) {
-      case 'Clap':
-        setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
-        setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-        break;
-      case 'Drum':
-        setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
-        setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));
-        break;
-      case 'Piano':
-        setSelectedSoundFile(require('../assets/sounds/piano/pianoD.mp3'));
-        setAccentSoundFile(require('../assets/sounds/piano/pianoG.mp3'));
-        break;
-      case 'Shotgun':
-        setSelectedSoundFile(require('../assets/sounds/shotgun/Shotgun.mp3'));
-        setAccentSoundFile(require('../assets/sounds/shotgun/Shotgun2.mp3'));
-        break;
-      case 'Snap':
-        setSelectedSoundFile(require('../assets/sounds/snap/snap-click.mp3'));
-        setAccentSoundFile(require('../assets/sounds/snap/snap-accent.mp3'));
-        break;
-      default:
-        setSelectedSoundFile(require('../assets/sounds/metronome/metronomesound.mp3')); // Default
-        setAccentSoundFile(require('../assets/sounds/metronome/metronomeaccent.mp3'));
-    }
+    switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile);
   }, [selectedSound]);
 
   /* This function generates the secquence of beats and whether the are accents of down beats */
@@ -311,7 +303,6 @@ export default function TrackbuilderScreen({ navigation }) {
 
   return (
     <View style={stylesMain.container}>
-
       <View style={[stylesMain.header, {}]}>
         <Text style={stylesMain.title}>Trackbuilder</Text>
       </View>
@@ -333,13 +324,25 @@ export default function TrackbuilderScreen({ navigation }) {
 
               style={{ width: 200 }}
 
-
               color={COLORS.offWhite}
               fontSize={20}
               fontWeight="bold"
               textAlign="center"
             /> */}
-            <Text style={stylesMain.text}>New Track</Text>
+            <TextInput
+              onChangeText={(text) => setTitle(text)}
+              value={title}
+              defaultValue={title}
+              cursorColor={COLORS.orange}
+              style={{ width: 300 }}
+              backgroundColor={COLORS.background}
+              borderBottomWidth={2}
+              borderBottomColor={COLORS.offWhite}
+              color={COLORS.offWhite}
+              fontSize={20}
+              fontWeight="bold"
+              textAlign="center"
+            />
           </View>
           <View style={{ maxHeight: 300 }}>
             <FlatList
@@ -356,31 +359,39 @@ export default function TrackbuilderScreen({ navigation }) {
           <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
             <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
               <View style={{ flex: 2, alignItems: 'flex-start' }}>
-                <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={deleteMeasure}>
+                <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={deleteMeasure}>
                   <Text style={[stylesMain.text]}> Delete </Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 2, alignItems: 'flex-end' }}>
-                <TouchableOpacity style={[stylesMain.buttons, { flexDirection: 'row' }]} onPress={handleModal}>
+                <TouchableOpacity style={[stylesMain.smallButton, { flexDirection: 'row' }]} onPress={handleAddModal}>
                   <Text style={[stylesMain.text]}> Add </Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{
-              alignItems: 'flex-end', justifyContent: 'flex-start', flex: 2, width: '100%',
-            }}
-            >
-              <TouchableOpacity style={[stylesMain.buttons, {}]} onPress={() => navigation.navigate('LogIn')}>
-                <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save</Text>
-              </TouchableOpacity>
+            <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
+              <View style={{ flex: 2, alignItems: 'flex-start' }}>
+                <TouchableOpacity
+                  style={[stylesMain.smallButton, {}]}
+                  onPress={handleSavedTrackModal}
+                >
+                  <Text style={[stylesMain.text, { color: COLORS.orange }]}>My Tracks</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 2, alignItems: 'flex-end' }}>
+                <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={() => navigation.navigate('LogIn')}>
+                  <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save Track</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+            <SoundButton onPress={handleSoundModal} w={300} selectedSound={selectedSound} />
           </View>
         </View>
       </View>
 
       <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
-          style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+          style={[stylesMain.flatButton, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
           onPress={() => {
             if (isPlaying) {
               PausePlay();
@@ -388,11 +399,11 @@ export default function TrackbuilderScreen({ navigation }) {
             navigation.navigate('Metronome');
           }}
         >
-          <Text style={[stylesMain.text, {}]}>Metronome </Text>
+          <Text style={[stylesMain.text, { color: COLORS.background }]}>Metronome </Text>
         </TouchableOpacity>
       </View>
 
-      <Modal isVisible={isModalVisible}>
+      <Modal isVisible={isAddModalVisible}>
         <Modal.Container>
           <Modal.Body>
             <AddMeasure
@@ -402,14 +413,42 @@ export default function TrackbuilderScreen({ navigation }) {
               setNewTempo={setNewTempo}
               newBeat={newBeat}
               setNewBeat={setNewBeat}
-              isModalVisible={isModalVisible}
-              setIsModalVisible={setIsModalVisible}
-              handleModal={handleModal}
+              isModalVisible={isAddModalVisible}
+              setIsModalVisible={setIsAddModalVisible}
+              handleModal={handleAddModal}
             />
           </Modal.Body>
           {/* </View> */}
         </Modal.Container>
       </Modal>
+
+      <Modal isVisible={isSoundModalVisible}>
+        <Modal.Container>
+          <Modal.Body>
+            <SoundModal
+              selectedSound={selectedSound}
+              setSelectedSound={setSelectedSound}
+              isModalVisible={isSoundModalVisible}
+              setIsModalVisible={setIsSoundModalVisible}
+              handleModal={handleSoundModal}
+            />
+          </Modal.Body>
+          {/* </View> */}
+        </Modal.Container>
+      </Modal>
+
+      <Modal isVisible={isSavedTrackVisible}>
+        <Modal.Container>
+          <Modal.Body>
+            <SavedTracks
+              isModalVisible={isSavedTrackVisible}
+              setIsModalVisible={setIsSavedTrackVisible}
+            />
+          </Modal.Body>
+          {/* </View> */}
+        </Modal.Container>
+      </Modal>
+
     </View>
   );
 }

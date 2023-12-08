@@ -21,10 +21,12 @@ import PausePlayButton from '../components/PausePlayButton';
 import Counters from '../components/Counters';
 import { Modal } from '../components/Modal.tsx';
 import SoundModal, { switchSound } from '../components/SoundSelection';
+import SoundButton from '../components/SoundButton';
 
 /* Import style code */
 
 import { stylesMain } from '../styles/stylesMain';
+import { COLORS } from '../styles/colors';
 
 /* Main function */
 export default function MetronomeScreen({ navigation }) {
@@ -114,16 +116,16 @@ export default function MetronomeScreen({ navigation }) {
   );
 
   /* handle the popup screen for chaning the sound */
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSoundModalVisible, setIsSoundModalVisible] = useState(false);
   const handleModal = () => {
-    setIsModalVisible(() => !isModalVisible);
+    setIsSoundModalVisible(() => !isSoundModalVisible);
   };
 
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
 
-      <View style={[stylesMain.header, {}]}>
+      <View style={[stylesMain.header, { }]}>
         <Text style={stylesMain.title}>Beatle</Text>
       </View>
 
@@ -140,44 +142,32 @@ export default function MetronomeScreen({ navigation }) {
             buttonStates={buttonStates} setButtonStates={setButtonStates}
           />
 
-          <View style={[stylesMain.subView, { paddingBottom: 40 }]}>
-            <View style={stylesMain.boxed}>
-              <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Sound:</Text>
-              <TouchableOpacity
-                style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
-                onPress={handleModal}
-              >
-                <Text style={stylesMain.text}>
-                  {selectedSound}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View style={[stylesMain.footer, {}]}>
-          <TouchableOpacity
-            style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
-            onPress={() => {
-              if (isPlaying) {
-                PausePlay();
-              }
-              navigation.navigate('Trackbuilder');
-            }}
-          >
-            <Text style={[stylesMain.text, {}]}>Trackbuilder </Text>
-          </TouchableOpacity>
+          <SoundButton onPress={handleModal} w={300} selectedSound={selectedSound} />
         </View>
       </View>
 
-      <Modal isVisible={isModalVisible}>
+      <View style={[stylesMain.footer, {}]}>
+        <TouchableOpacity
+          style={[stylesMain.flatButton, { alignSelf: 'center', marginBottom: 10 }]}
+          onPress={() => {
+            if (isPlaying) {
+              PausePlay();
+            }
+            navigation.navigate('Trackbuilder');
+          }}
+        >
+          <Text style={[stylesMain.text, { color: COLORS.background }]}>Trackbuilder </Text>
+        </TouchableOpacity>
+      </View>
+
+      <Modal isVisible={isSoundModalVisible}>
         <Modal.Container>
           <Modal.Body>
             <SoundModal
               selectedSound={selectedSound}
               setSelectedSound={setSelectedSound}
-              isModalVisible={isModalVisible}
-              setIsModalVisible={setIsModalVisible}
+              isModalVisible={isSoundModalVisible}
+              setIsModalVisible={setIsSoundModalVisible}
               handleModal={handleModal}
             />
           </Modal.Body>

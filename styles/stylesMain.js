@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/named */
 import { StyleSheet } from 'react-native';
@@ -10,6 +11,7 @@ export const stylesMain = StyleSheet.create({
     backgroundColor: COLORS.background,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
 
   header: {
@@ -109,8 +111,18 @@ export const stylesMain = StyleSheet.create({
   },
 
   // this is the main type of button in the trackbuilder
-  buttons: {
-    backgroundColor: '#1f2e2e',
+  flatButton: {
+    borderRadius: 20,
+    marginHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    width: 300,
+    height: 50,
+    backgroundColor: COLORS.orange,
+  },
+
+  smallButton: {
     borderRadius: 20,
     marginHorizontal: 20,
     alignItems: 'center',
@@ -118,7 +130,20 @@ export const stylesMain = StyleSheet.create({
     padding: 5,
     width: 150,
     height: 50,
+    backgroundColor: COLORS.buttonBackground,
   },
+
+  backButton: {
+    borderRadius: 20,
+    marginHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    width: 50,
+    height: 50,
+    backgroundColor: COLORS.orange,
+  },
+
   // BoxyBox (used for tempo and beat counters)
   boxyBoxes: {
     borderRadius: 25,

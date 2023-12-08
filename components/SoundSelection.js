@@ -4,7 +4,12 @@
 /* eslint-disable import/prefer-default-export */
 
 import * as React from 'react';
-import { Text, View, TouchableOpacity, FlatList } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; // dropdown list for selecting sound
 
 /* Import style code */
@@ -77,7 +82,8 @@ export function SoundSelection({ setSelectedSound, w }) {
 export default function SoundModal({
   selectedSound, setSelectedSound,
   isModalVisible, setIsModalVisible,
-  handleModal 
+  // eslint-disable-next-line no-unused-vars
+  handleModal,
 }) {
   const selectSound = (item) => {
     if (selectedSound !== item.value) {
@@ -91,7 +97,7 @@ export default function SoundModal({
 
     return (
       <TouchableOpacity
-        style={[stylesMain.buttons,
+        style={[stylesMain.flatButton,
           {
             backgroundColor: SoundButtonColor,
             width: 300,
@@ -101,7 +107,7 @@ export default function SoundModal({
         ]}
         onPress={() => selectSound(item)}
       >
-        <Text style={[stylesMain.text, {color: textColor}]}>{item.value}</Text>
+        <Text style={[stylesMain.text, { color: textColor }]}>{item.value}</Text>
       </TouchableOpacity>
     );
   };
@@ -117,7 +123,7 @@ export default function SoundModal({
       <View style={{ flex: 5, padding: 10, justifyContent: 'center' }}>
 
         <FlatList
-          //ref={flatListRef}
+          // ref={flatListRef}
           data={soundList}
           renderItem={renderSoundButton}
           keyExtractor={(sound) => sound.key}
@@ -137,12 +143,35 @@ export default function SoundModal({
       >
         <View style={{ flex: 1, alignItems: 'flex-start' }}>
           <TouchableOpacity
-            style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+            style={[stylesMain.flatButton, { backgroundColor: COLORS.orange, width: 50 }]}
             onPress={() => setIsModalVisible(() => !isModalVisible)}
           >
             <AntDesign name="arrowleft" size={24} color={COLORS.background} />
           </TouchableOpacity>
         </View>
+      </View>
+    </View>
+  );
+}
+
+export function SoundButton({ onPress, w, selectedSound }) {
+  return (
+    <View style={[stylesMain.subView, { paddingBottom: 40 }]}>
+      <View style={stylesMain.boxed}>
+        <Text style={[stylesMain.text, { alignSelf: 'center', marginBottom: -5 }]}>Sound:</Text>
+        <TouchableOpacity
+          style={[stylesMain.flatButton, {
+            alignSelf: 'center',
+            marginBottom: 10,
+            backgroundColor: COLORS.buttonBackground,
+            width: w,
+          }]}
+          onPress={onPress}
+        >
+          <Text style={stylesMain.text}>
+            {selectedSound}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

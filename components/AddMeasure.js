@@ -39,6 +39,7 @@ export default function AddMeasure({
       >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
       </View>
+
       <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
         <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 15 }}>
           <Text style={stylesMain.text}>Measure Num: </Text>
@@ -66,6 +67,7 @@ export default function AddMeasure({
           buttonStates={buttonStates} setButtonStates={setButtonStates}
         />
       </View>
+
       <View style={{
         flex: 2,
         paddingBottom: 12,
@@ -76,15 +78,15 @@ export default function AddMeasure({
       >
         <View style={{ flex: 1, alignItems: 'flex-start' }}>
           <TouchableOpacity
-            style={[stylesMain.buttons, { backgroundColor: COLORS.orange, width: 50 }]}
+            style={[stylesMain.backButton, { backgroundColor: COLORS.orange, width: 50 }]}
             onPress={() => setIsModalVisible(() => !isModalVisible)}
           >
             <AntDesign name="arrowleft" size={24} color={COLORS.background} />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <View style={{ flex: 1, alignItems: 'flex-end' }}>
           <TouchableOpacity
-            style={[stylesMain.buttons, { backgroundColor: COLORS.orange }]}
+            style={[stylesMain.smallButton, { backgroundColor: COLORS.orange }]}
             onPress={handleModal}
           >
             <Text style={[stylesMain.text, { color: COLORS.background }]}>Add</Text>

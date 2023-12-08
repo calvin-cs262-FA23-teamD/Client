@@ -110,7 +110,6 @@ function SignUpScreen({ navigation }) {
       <View style={[stylesMain.body, {}]}>
         <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
-
         <View style={{ flex: 6 }}>
           <View style={[stylesMain.subView, {}]}>
             <Text style={stylesMain.text}>Username: </Text>
@@ -173,7 +172,7 @@ function SignUpScreen({ navigation }) {
 
             <View style={{ paddingTop: 10, rowGap: 5 }}>
               <TouchableOpacity
-                style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10, backgroundColor: COLORS.orange }]}
+                style={[stylesMain.flatButton, { alignSelf: 'center', marginBottom: 10 }]}
                 onPress={handleSignUp}
               >
                 <Text style={[stylesMain.text, { color: COLORS.background }]}>
@@ -187,7 +186,7 @@ function SignUpScreen({ navigation }) {
 
       <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
-          style={[stylesMain.buttons, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+          style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
           onPress={() => navigation.navigate('LogIn')}
         >
           <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />

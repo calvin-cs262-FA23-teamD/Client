@@ -12,9 +12,11 @@
 import * as React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
 
 /* Import sound ability */
 import { Audio } from 'expo-av';
+import { AntDesign } from '@expo/vector-icons';
 
 /* Import component files */
 import PausePlayButton from '../components/PausePlayButton';
@@ -30,6 +32,9 @@ import { COLORS } from '../styles/colors';
 
 /* Main function */
 export default function MetronomeScreen({ navigation }) {
+  const route = useRoute();
+  const id = route.params?.id;
+
   /* Hooks */
   const [isPlaying, setIsPlaying] = useState(false);
   const [pausePlayIcon, setPausePlayIcon] = useState('caretright');
@@ -37,6 +42,8 @@ export default function MetronomeScreen({ navigation }) {
   const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
   const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
   const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+  // add silence
+  const [silentSoundFile, setSilentSoundFile] = useState(require('../assets/sounds/silent/silence.mp3'));
   const [sound, setSound] = useState(); // current loaded sound
 
   const [BPM, setBPM] = useState(60); // beats per minute
@@ -64,10 +71,10 @@ export default function MetronomeScreen({ navigation }) {
   async function playSound() {
     /* Play sound, accenting the down beat */
     beatSound = buttonStates[measure % beat];
-    // When adding in silence, replace the last "selectSoundFile"
+    // When adding in silence, replace the first "selectedSoundFile" (done 12/6)
     // eslint-disable-next-line no-nested-ternary, max-len
     const soundFile = (beatSound === 1) ? accentSoundFile : (
-      beatSound === 2) ? selectedSoundFile : selectedSoundFile;
+      beatSound === 2) ? silentSoundFile : selectedSoundFile;
 
     const { sound } = await Audio.Sound.createAsync(soundFile);
     setSound(sound);
@@ -108,7 +115,7 @@ export default function MetronomeScreen({ navigation }) {
 
   /* update the beat sound (paired) */
   useEffect(() => {
-    switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile);
+    switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile, setSilentSoundFile);
   }, [selectedSound]);
 
   const [buttonStates, setButtonStates] = useState(
@@ -125,8 +132,19 @@ export default function MetronomeScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
 
-      <View style={[stylesMain.header, { }]}>
-        <Text style={stylesMain.title}>Beatle</Text>
+      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+        <View style={[stylesMain.subView, { flex: 1 }]} />
+        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
+          <Text style={stylesMain.title}>Beatle</Text>
+        </View>
+        <View style={[stylesMain.subView, { flex: 1 }]}>
+          <TouchableOpacity
+            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+            onPress={console.log('pressed info')}
+          >
+            <AntDesign name="question" size={24} color={COLORS.offWhite} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={[stylesMain.body, {}]}>
@@ -153,7 +171,7 @@ export default function MetronomeScreen({ navigation }) {
             if (isPlaying) {
               PausePlay();
             }
-            navigation.navigate('Trackbuilder');
+            navigation.navigate('Trackbuilder', { id });
           }}
         >
           <Text style={[stylesMain.text, { color: COLORS.background }]}>Trackbuilder </Text>

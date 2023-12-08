@@ -29,31 +29,37 @@ const soundList = [
   { key: '5', value: 'Snap' },
 ];
 
-export async function switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile) {
+export async function switchSound(
+  selectedSound,
+  setSelectedSoundFile,
+  setAccentSoundFile,
+  setSilentSoundFile,
+) {
   switch (selectedSound) {
-    /* case 'Clap':
-      setSelectedSoundFile(require('../assets/sounds/clap/clap-click.mp3'));
-      setAccentSoundFile(require('../assets/sounds/clap/clap-accent.mp3'));
-      break; */
     case 'Drum':
       setSelectedSoundFile(require('../assets/sounds/drum/floor_tom_louder.mp3'));
       setAccentSoundFile(require('../assets/sounds/drum/snare_drum_louder.mp3'));
+      setSilentSoundFile(require('../assets/sounds/silent/silence.mp3'));
       break;
     case 'Piano':
       setSelectedSoundFile(require('../assets/sounds/piano/pianoD.mp3'));
       setAccentSoundFile(require('../assets/sounds/piano/pianoG.mp3'));
+      setSilentSoundFile(require('../assets/sounds/silent/silence.mp3'));
       break;
     case 'Shotgun':
       setSelectedSoundFile(require('../assets/sounds/shotgun/Shotgun.mp3'));
       setAccentSoundFile(require('../assets/sounds/shotgun/Shotgun2.mp3'));
+      setSilentSoundFile(require('../assets/sounds/silent/silence.mp3'));
       break;
     case 'Snap':
-      setSelectedSoundFile(require('../assets/sounds/snap/snap-click.mp3'));
-      setAccentSoundFile(require('../assets/sounds/snap/snap-accent.mp3'));
+      setSelectedSoundFile(require('../assets/sounds/snap/snap-click-2.0.mp3'));
+      setAccentSoundFile(require('../assets/sounds/snap/snap-accent-2.0.mp3'));
+      setSilentSoundFile(require('../assets/sounds/silent/silence.mp3'));
       break;
     default:
       setSelectedSoundFile(require('../assets/sounds/metronome/metronomesound.mp3')); // Default
       setAccentSoundFile(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+      setSilentSoundFile(require('../assets/sounds/silent/silence.mp3'));
   }
 }
 

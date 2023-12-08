@@ -34,14 +34,21 @@ export default function AddMeasure({
   return (
     <View style={{ height: 500, width: '100%' }}>
       <View style={{
-        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
+        flex: 0.5, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
       }}
       >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Add Measure</Text>
       </View>
 
-      <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-        <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 15 }}>
+      <View style={{ flex: 4, marginTop: -10, justifyContent: 'flex-start' }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            paddingBottom: 0,
+          }}
+        >
           <Text style={stylesMain.text}>Measure Num: </Text>
           <TextInput
             onChangeText={(text) => setNewMeasureNum(text)}
@@ -59,7 +66,6 @@ export default function AddMeasure({
             textAlign="center"
           />
         </View>
-
         <Counters
           width={200}
           beat={newBeat} setBeat={setNewBeat}
@@ -69,7 +75,7 @@ export default function AddMeasure({
       </View>
 
       <View style={{
-        flex: 2,
+        flex: 0.5,
         paddingBottom: 12,
         justifyContent: 'flex-end',
         flexDirection: 'row',

@@ -4,4 +4,5 @@ export const COLORS = {
   offWhite: '#f0f5f5',
   orange: '#ff6900',
   buttonBackground: '#1f2e2e',
+  darkOrange: '#a23600',
 };

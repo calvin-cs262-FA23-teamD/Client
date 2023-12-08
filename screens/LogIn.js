@@ -9,7 +9,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
 } from 'react-native';
-// import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -48,9 +47,9 @@ function LogInScreen({ navigation }) {
       if (username === data[i].username) {
         if (password === data[i].password) {
           console.log('userfound!');
-          navigation.navigate('Trackbuilder');
           userID = data[i].id;
           console.log(userID);
+          navigation.navigate('Trackbuilder', { id: userID });
           return;
         }
       }
@@ -154,7 +153,7 @@ function LogInScreen({ navigation }) {
       <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
           style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-          onPress={() => navigation.navigate('Trackbuilder')}
+          onPress={() => navigation.navigate('Trackbuilder', { id: userID })}
         >
           <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />
         </TouchableOpacity>

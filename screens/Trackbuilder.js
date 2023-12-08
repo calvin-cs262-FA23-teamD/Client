@@ -18,6 +18,7 @@ import {
   StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
 } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
+import { useRoute } from '@react-navigation/native';
 
 /* Import component files */
 import { Audio } from 'expo-av';
@@ -94,6 +95,8 @@ function MeasureBox({
 }
 
 export default function TrackbuilderScreen({ navigation }) {
+  const route = useRoute();
+  const id = route.params?.id;
   /* The following code controls the flatlist display of the tracklist,
   *  as well as the display of its current values.
   *
@@ -118,8 +121,8 @@ export default function TrackbuilderScreen({ navigation }) {
   };
   /* displaying a measure from the flatlist */
   const renderMeasure = ({ item }) => {
-    const MeasureBoxColor = item.number === selectedMeasure ? '#a23600' : '#ff6900';
-    const color = item.number === selectedMeasure ? '#f0f5f5' : '#0a0e0f';
+    const MeasureBoxColor = item.number === selectedMeasure ? COLORS.darkOrange : COLORS.orange;
+    const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
 
     return (
       <MeasureBox
@@ -152,10 +155,27 @@ export default function TrackbuilderScreen({ navigation }) {
     setIsSoundModalVisible(() => !isSoundModalVisible);
   };
 
-  /* handle the popup screen for selecting a new track */
+  /* handle the popup screen for login and selecting a track
+  *  if user is logged in, open Saved Tracked Modal
+  *  if user is not logged in, navigate to login
+  */
   const [isSavedTrackVisible, setIsSavedTrackVisible] = useState(false);
-  const handleSavedTrackModal = () => {
-    setIsSavedTrackVisible(() => !isSavedTrackVisible);
+  const handleLogInSavedTrackModal = () => {
+    if (id) {
+      console.log('daved tracks');
+      setIsSavedTrackVisible(() => !isSavedTrackVisible);
+      console.log('daved tracks');
+    } else {
+      navigation.navigate('LogIn');
+    }
+  };
+
+  const SaveTrack = () => {
+    if (!id) {
+      navigation.navigate('LogIn');
+    }
+    // TODO add in save track code
+    console.log('save track');
   };
 
   /* insert a new measure into the list of measures */
@@ -207,6 +227,8 @@ export default function TrackbuilderScreen({ navigation }) {
   const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
   const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
   const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
+  // eslint-disable-next-line no-unused-vars
+  const [silentSoundFile, setSilentSoundFile] = useState(require('../assets/sounds/silent/silence.mp3'));
   const [sound, setSound] = useState(); // current loaded sound
 
   const [count, setCount] = useState(-1); // current beat
@@ -283,7 +305,7 @@ export default function TrackbuilderScreen({ navigation }) {
 
   /* update the beat sound (paired) */
   useEffect(() => {
-    switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile);
+    switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile, setSilentSoundFile);
   }, [selectedSound]);
 
   /* This function generates the secquence of beats and whether the are accents of down beats */
@@ -314,21 +336,6 @@ export default function TrackbuilderScreen({ navigation }) {
 
         <View style={{ flex: 6 }}>
           <View style={{ alignItems: 'center', paddingBottom: 5 }}>
-            {/* <TextInput
-              onChangeText={(text) => setTitle(text)}
-              value={title}
-              defaultValue="New Track"
-              // placeholderTextColor='#aaa'
-
-              cursorColor={COLORS.orange}
-
-              style={{ width: 200 }}
-
-              color={COLORS.offWhite}
-              fontSize={20}
-              fontWeight="bold"
-              textAlign="center"
-            /> */}
             <TextInput
               onChangeText={(text) => setTitle(text)}
               value={title}
@@ -336,8 +343,8 @@ export default function TrackbuilderScreen({ navigation }) {
               cursorColor={COLORS.orange}
               style={{ width: 300 }}
               backgroundColor={COLORS.background}
-              borderBottomWidth={2}
-              borderBottomColor={COLORS.offWhite}
+              // borderBottomWidth={2}'
+              // borderBottomColor={COLORS.orange}
               color={COLORS.offWhite}
               fontSize={20}
               fontWeight="bold"
@@ -373,13 +380,13 @@ export default function TrackbuilderScreen({ navigation }) {
               <View style={{ flex: 2, alignItems: 'flex-start' }}>
                 <TouchableOpacity
                   style={[stylesMain.smallButton, {}]}
-                  onPress={handleSavedTrackModal}
+                  onPress={handleLogInSavedTrackModal}
                 >
-                  <Text style={[stylesMain.text, { color: COLORS.orange }]}>My Tracks</Text>
+                  <Text style={[stylesMain.text, { color: COLORS.orange }]}>{id ? 'My Tracks' : 'Log In'}</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 2, alignItems: 'flex-end' }}>
-                <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={() => navigation.navigate('LogIn')}>
+                <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={SaveTrack}>
                   <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save Track</Text>
                 </TouchableOpacity>
               </View>
@@ -396,7 +403,7 @@ export default function TrackbuilderScreen({ navigation }) {
             if (isPlaying) {
               PausePlay();
             }
-            navigation.navigate('Metronome');
+            navigation.navigate('Metronome', { id });
           }}
         >
           <Text style={[stylesMain.text, { color: COLORS.background }]}>Metronome </Text>

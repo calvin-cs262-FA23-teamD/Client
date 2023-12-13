@@ -109,12 +109,6 @@ function SignUpScreen({ navigation }) {
           <Text style={stylesMain.title}>Sign Up</Text>
         </View>
         <View style={[stylesMain.subView, { flex: 1 }]}>
-          <TouchableOpacity
-            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-            onPress={console.log('pressed info')}
-          >
-            <AntDesign name="question" size={24} color={COLORS.offWhite} />
-          </TouchableOpacity>
         </View>
       </View>
 

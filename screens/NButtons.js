@@ -19,7 +19,7 @@ export default function ButtonsScreen({ navigation }) {
   const [data, setData] = useState([]);
   const getUsers = async () => {
     try {
-      const response = await fetch('https://beatleservice.azurewebsites.net/allUsers');
+      const response = await fetch('https://beatleservice.azurewebsites.net/clickTracksFromUser/1');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -34,13 +34,18 @@ export default function ButtonsScreen({ navigation }) {
     password: 'password',
   };
 
+  const newTrack = {
+    userID: 0,
+    name: 'song',
+    date: '1772-01-01',
+  }
+
   const createUser = async (newUserData) => {
     try {
-      const response = await fetch('https://beatleservice.azurewebsites.net/makeUser', {
+      const response = await fetch('https://beatleservice.azurewebsites.net/makeClickTrack', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Add any additional headers as needed
         },
         body: JSON.stringify(newUserData),
       });
@@ -56,10 +61,31 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
-  const userID = 23;
+  const createClickTrack = async (newTrackData) => {
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net/makeClickTrack', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTrackData),
+      });
+
+      const json = await response.json();
+
+      // Handle the response or update the UI as needed
+      console.log('Track created:', json);
+    } catch (error) {
+      console.error('Error creating user:', error);
+
+      // Handle the error or update the UI as needed
+    }
+  };
+
+  const userID = 5;
   const deleteUser = async (userId) => {
     try {
-      const response = await fetch(`https://beatleservice.azurewebsites.net/delUser/${userId}`, {
+      const response = await fetch(`https://beatleservice.azurewebsites.net/delClickTrack/${userId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -72,10 +98,32 @@ export default function ButtonsScreen({ navigation }) {
         console.error('Failed to delete user:', response.status, response.statusText);
       }
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error in createUser:', error.message);
       // Handle the error or update the UI as needed
     }
   };
+
+  const trackID = 6;
+  const deleteTrack = async (trackId) => {
+    try {
+      const response = await fetch(`https://beatleservice.azurewebsites.net/delClickTrack/${trackId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any additional headers as needed
+        },
+      });
+      if (response.ok) {
+        console.log('User deleted successfully');
+      } else {
+        console.error('Failed to delete track:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error in deleteTrack:', error.message);
+      // Handle the error or update the UI as needed
+    }
+  };
+
 
   useEffect(() => {
     getUsers();
@@ -100,18 +148,18 @@ export default function ButtonsScreen({ navigation }) {
             keyExtractor={({ id }) => id.toString()}
             renderItem={(item) => (
               <View style={stylesMain.container}>
-                <TouchableOpacity onPress={() => navigation.navigate('Details', item.item)}>
-                  <Text style={stylesMain.title}>{item.item.id}</Text>
+                <TouchableOpacity onPress={() => console.log(item.item.id)}>
+                  <Text style={stylesMain.title}>{item.item.userid}</Text>
                 </TouchableOpacity>
               </View>
             )}
           />
         )}
         <View styles={{ padding: 50 }}>
-          <TouchableOpacity onPress={() => createUser(newUser)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => create(newTrack)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>hello</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteUser(userID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => deleteTrack(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>goodbye</Text>
           </TouchableOpacity>
         </View>

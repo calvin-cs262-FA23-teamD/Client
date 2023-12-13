@@ -35,7 +35,8 @@ function LogInScreen({ navigation }) {
     }
   };
 
-  let userID;
+  let userID;userID
+  let validID = 0;
 
   // eslint-disable-next-line no-unused-vars
   const handleLogin = async () => {
@@ -46,10 +47,9 @@ function LogInScreen({ navigation }) {
     for (let i = 0; i < data.length; i++) {
       if (username === data[i].username) {
         if (password === data[i].password) {
-          console.log('userfound!');
           userID = data[i].id;
-          console.log(userID);
-          navigation.navigate('Trackbuilder', { id: userID });
+          console.log('User: ', userID);
+          navigation.navigate('Trackbuilder', { id: userID});
           return;
         }
       }
@@ -70,12 +70,6 @@ function LogInScreen({ navigation }) {
           <Text style={stylesMain.title}>Log In</Text>
         </View>
         <View style={[stylesMain.subView, { flex: 1 }]}>
-          <TouchableOpacity
-            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-            onPress={console.log('pressed info')}
-          >
-            <AntDesign name="question" size={24} color={COLORS.offWhite} />
-          </TouchableOpacity>
         </View>
       </View>
 

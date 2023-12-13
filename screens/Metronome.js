@@ -24,6 +24,7 @@ import Counters from '../components/Counters';
 import { Modal } from '../components/Modal.tsx';
 import SoundModal, { switchSound } from '../components/SoundSelection';
 import SoundButton from '../components/SoundButton';
+import MetronomeWriting from '../components/MetronomeWriting';
 
 /* Import style code */
 
@@ -128,6 +129,12 @@ export default function MetronomeScreen({ navigation }) {
     setIsSoundModalVisible(() => !isSoundModalVisible);
   };
 
+  /* handle the popup screen for chaning the technical writing */
+  const [isMetronomeWritingVisible, setIsMetronomeWritingVisible] = useState(false);
+  const handleMetrnomeWriting = () => {
+    setIsMetronomeWritingVisible(() => !isMetronomeWritingVisible);
+  };
+
   /* Main app layout */
   return (
     <View style={stylesMain.container}>
@@ -140,7 +147,7 @@ export default function MetronomeScreen({ navigation }) {
         <View style={[stylesMain.subView, { flex: 1 }]}>
           <TouchableOpacity
             style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-            onPress={console.log('pressed info')}
+            onPress={handleMetrnomeWriting}
           >
             <AntDesign name="question" size={24} color={COLORS.offWhite} />
           </TouchableOpacity>
@@ -192,6 +199,19 @@ export default function MetronomeScreen({ navigation }) {
           {/* </View> */}
         </Modal.Container>
       </Modal>
+
+      <Modal isVisible={isMetronomeWritingVisible}>
+        <Modal.Container>
+          <Modal.Body>
+            <MetronomeWriting
+              isModalVisible={isMetronomeWritingVisible}
+              setIsModalVisible={setIsMetronomeWritingVisible}
+            />
+          </Modal.Body>
+          {/* </View> */}
+        </Modal.Container>
+      </Modal>
+
     </View>
   );
 }

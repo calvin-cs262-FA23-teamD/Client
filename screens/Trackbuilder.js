@@ -35,6 +35,7 @@ import SavedTracks from '../components/SavedTracks.js';
 /* Import style files */
 import { stylesMain } from '../styles/stylesMain.js';
 import { COLORS } from '../styles/colors';
+import TrackbuilderWriting from '../components/TrackbuilderWriting.js';
 
 /* hard coded click track */
 const measures = [
@@ -97,7 +98,7 @@ function MeasureBox({
 
 export default function TrackbuilderScreen({ navigation }) {
   const route = useRoute();
-  const id = route.params?.id;
+  let id = route.params?.id;
   /* The following code controls the flatlist display of the tracklist,
   *  as well as the display of its current values.
   *
@@ -131,7 +132,6 @@ export default function TrackbuilderScreen({ navigation }) {
         onPress={() => selectMeasure(item)}
         MeasureBoxColor={MeasureBoxColor}
         textColor={color}
-        styles={styles.measure}
       />
     );
   };
@@ -156,16 +156,37 @@ export default function TrackbuilderScreen({ navigation }) {
     setIsSoundModalVisible(() => !isSoundModalVisible);
   };
 
+  /* handle the popup screen for chaning the technical writing */
+  const [isTrackbuilderWritingVisible, setIsTrackbuilderWritingVisible] = useState(false);
+  const handleTrackbuilderWriting = () => {
+    setIsTrackbuilderWritingVisible(() => !isTrackbuilderWritingVisible);
+  };
+
+  const [loginText, setLoginText] = useState('Log In');
+  const handleLogIn = () => {
+    if (id) {
+      id = null;
+      console.log('user:', id);
+      setLoginText('Log In');
+    } else {
+      navigation.navigate('LogIn');
+    }
+    console.log('when I press login the user is:', id);
+  };
+
+  useEffect(() => {
+    console.log('the user was changed. It is now: ', id);
+    id ? setLoginText('Log Out') : setLoginText('Log In');
+  }, [id]);
+
   /* handle the popup screen for login and selecting a track
   *  if user is logged in, open Saved Tracked Modal
   *  if user is not logged in, navigate to login
   */
   const [isSavedTrackVisible, setIsSavedTrackVisible] = useState(false);
-  const handleLogInSavedTrackModal = () => {
+  const handleSavedTrackModal = () => {
     if (id) {
-      console.log('daved tracks');
       setIsSavedTrackVisible(() => !isSavedTrackVisible);
-      console.log('daved tracks');
     } else {
       navigation.navigate('LogIn');
     }
@@ -327,14 +348,21 @@ export default function TrackbuilderScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
       <View style={[stylesMain.header, { flexDirection: 'row' }]}>
-        <View style={[stylesMain.subView, { flex: 1 }]} />
+        <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end' }]}>
+          <TouchableOpacity
+            style={[stylesMain.smallButton, { backgroundColor: COLORS.background }]}
+            onPress={handleLogIn}
+          >
+            <Text style={[stylesMain.text, { color: COLORS.orange }]}>{loginText}</Text>
+          </TouchableOpacity>
+        </View>
         <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
           <Text style={stylesMain.title}>Trackbuilder</Text>
         </View>
         <View style={[stylesMain.subView, { flex: 1 }]}>
           <TouchableOpacity
             style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-            onPress={console.log('pressed info')}
+            onPress={handleTrackbuilderWriting}
           >
             <AntDesign name="question" size={24} color={COLORS.offWhite} />
           </TouchableOpacity>
@@ -363,7 +391,7 @@ export default function TrackbuilderScreen({ navigation }) {
               textAlign="center"
             />
           </View>
-          <View style={{ maxHeight: 300 }}>
+          <View style={{ maxHeight: 250 }}>
             <FlatList
               ref={flatListRef}
               data={measures}
@@ -392,14 +420,14 @@ export default function TrackbuilderScreen({ navigation }) {
               <View style={{ flex: 2, alignItems: 'flex-start' }}>
                 <TouchableOpacity
                   style={[stylesMain.smallButton, {}]}
-                  onPress={handleLogInSavedTrackModal}
+                  onPress={handleSavedTrackModal}
                 >
-                  <Text style={[stylesMain.text, { color: COLORS.orange }]}>{id ? 'My Tracks' : 'Log In'}</Text>
+                  <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>My Tracks</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 2, alignItems: 'flex-end' }}>
                 <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={SaveTrack}>
-                  <Text style={[stylesMain.text, { color: COLORS.orange }]}>Save Track</Text>
+                  <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>Save Track</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -462,6 +490,18 @@ export default function TrackbuilderScreen({ navigation }) {
             <SavedTracks
               isModalVisible={isSavedTrackVisible}
               setIsModalVisible={setIsSavedTrackVisible}
+            />
+          </Modal.Body>
+          {/* </View> */}
+        </Modal.Container>
+      </Modal>
+
+      <Modal isVisible={isTrackbuilderWritingVisible}>
+        <Modal.Container>
+          <Modal.Body>
+            <TrackbuilderWriting
+              isModalVisible={isTrackbuilderWritingVisible}
+              setIsModalVisible={setIsTrackbuilderWritingVisible}
             />
           </Modal.Body>
           {/* </View> */}

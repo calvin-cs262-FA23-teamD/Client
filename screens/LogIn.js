@@ -137,12 +137,12 @@ function LogInScreen({ navigation }) {
 
               <TouchableOpacity
                 style={[stylesMain.flatButton,
-                {
-                  width: 300,
-                  alignSelf: 'center',
-                  marginBottom: 10,
-                  backgroundColor: COLORS.orange,
-                }]}
+                  {
+                    width: 300,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    backgroundColor: COLORS.orange,
+                  }]}
                 onPress={() => navigation.navigate('SignUp')}
               >
                 <Text style={[stylesMain.text, { color: COLORS.background }]}>

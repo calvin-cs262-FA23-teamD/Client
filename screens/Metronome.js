@@ -5,8 +5,8 @@
  * -Deleting track resets measure to 2, not 1
  * -Calvin's laugh (optional)
  * -(DONE) warning messages on log in
- * 
- * 
+ *
+ *
  * Things to do in general:
  * -Save track should save track
  */
@@ -24,7 +24,9 @@
 
 import * as React from 'react';
 // import KeyboardAvoidingView and ScrollView (A)
-import { Text, View, KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Text, View, KeyboardAvoidingView, ScrollView, TouchableOpacity,
+} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 
@@ -152,13 +154,13 @@ export default function MetronomeScreen({ navigation }) {
   /* Main app layout */
   return (
     <KeyboardAvoidingView
-      //behavior={isIOS ? "padding" : "height"}
+      // behavior={isIOS ? "padding" : "height"}
       enabled
       style={{ flex: 1 }}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
-        scrollEnabled={true}
+        scrollEnabled
       >
         <View style={stylesMain.container}>
 
@@ -169,7 +171,8 @@ export default function MetronomeScreen({ navigation }) {
             </View>
             <View style={[stylesMain.subView, { flex: 1 }]}>
               <TouchableOpacity
-                style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+                style={[stylesMain.backButton,
+                  { backgroundColor: COLORS.buttonBackground, width: 50 }]}
                 onPress={handleMetrnomeWriting}
               >
                 <AntDesign name="question" size={24} color={COLORS.offWhite} />

@@ -349,13 +349,13 @@ export default function TrackbuilderScreen({ navigation }) {
   // add a keyboard avoiding view and a scroll view, but currently getting warning (A)
   return (
     <KeyboardAvoidingView
-      //behavior={isIOS ? "padding" : "height"}
+      // behavior={isIOS ? "padding" : "height"}
       enabled
       style={{ flex: 1 }}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
-        scrollEnabled={true}
+        scrollEnabled
       >
         <View style={stylesMain.container}>
           <View style={[stylesMain.header, { flexDirection: 'row' }]}>
@@ -372,7 +372,8 @@ export default function TrackbuilderScreen({ navigation }) {
             </View>
             <View style={[stylesMain.subView, { flex: 1 }]}>
               <TouchableOpacity
-                style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+                style={[stylesMain.backButton,
+                  { backgroundColor: COLORS.buttonBackground, width: 50 }]}
                 onPress={handleTrackbuilderWriting}
               >
                 <AntDesign name="question" size={24} color={COLORS.offWhite} />
@@ -403,7 +404,8 @@ export default function TrackbuilderScreen({ navigation }) {
                 />
               </View>
               <View style={{ maxHeight: 250 }}>
-                {/* warning may be caused by use of FlatList within ScrollView, potential solution to use SectionList instead */}
+                {/* warning may be caused by use of FlatList within ScrollView,
+                potential solution to use SectionList instead */}
                 <FlatList
                   ref={flatListRef}
                   data={measures}

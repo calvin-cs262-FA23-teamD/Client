@@ -29,37 +29,37 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
-  const newUser = {
-    username: 'fre',
-    password: 'password',
-  };
+  // const newUser = {
+  //   username: 'fre',
+  //   password: 'password',
+  // };
 
   const newTrack = {
     userID: 0,
     name: 'song',
     date: '1772-01-01',
-  }
-
-  const createUser = async (newUserData) => {
-    try {
-      const response = await fetch('https://beatleservice.azurewebsites.net/makeClickTrack', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newUserData),
-      });
-
-      const json = await response.json();
-
-      // Handle the response or update the UI as needed
-      console.log('User created:', json);
-    } catch (error) {
-      console.error('Error creating user:', error);
-
-      // Handle the error or update the UI as needed
-    }
   };
+
+  // const createUser = async (newUserData) => {
+  //   try {
+  //     const response = await fetch('https://beatleservice.azurewebsites.net/makeClickTrack', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(newUserData),
+  //     });
+
+  //     const json = await response.json();
+
+  //     // Handle the response or update the UI as needed
+  //     console.log('User created:', json);
+  //   } catch (error) {
+  //     console.error('Error creating user:', error);
+
+  //     // Handle the error or update the UI as needed
+  //   }
+  // };
 
   const createClickTrack = async (newTrackData) => {
     try {
@@ -82,26 +82,26 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
-  const userID = 5;
-  const deleteUser = async (userId) => {
-    try {
-      const response = await fetch(`https://beatleservice.azurewebsites.net/delClickTrack/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any additional headers as needed
-        },
-      });
-      if (response.ok) {
-        console.log('User deleted successfully');
-      } else {
-        console.error('Failed to delete user:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('Error in createUser:', error.message);
-      // Handle the error or update the UI as needed
-    }
-  };
+  // const userID = 5;
+  // const deleteUser = async (userId) => {
+  //   try {
+  //     const response = await fetch(`https://beatleservice.azurewebsites.net/delClickTrack/${userId}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // Add any additional headers as needed
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       console.log('User deleted successfully');
+  //     } else {
+  //       console.error('Failed to delete user:', response.status, response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error in createUser:', error.message);
+  //     // Handle the error or update the UI as needed
+  //   }
+  // };
 
   const trackID = 6;
   const deleteTrack = async (trackId) => {
@@ -123,7 +123,6 @@ export default function ButtonsScreen({ navigation }) {
       // Handle the error or update the UI as needed
     }
   };
-
 
   useEffect(() => {
     getUsers();
@@ -156,7 +155,7 @@ export default function ButtonsScreen({ navigation }) {
           />
         )}
         <View styles={{ padding: 50 }}>
-          <TouchableOpacity onPress={() => create(newTrack)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => createClickTrack(newTrack)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>hello</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => deleteTrack(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>

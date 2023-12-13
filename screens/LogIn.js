@@ -35,8 +35,7 @@ function LogInScreen({ navigation }) {
     }
   };
 
-  let userID;userID
-  let validID = 0;
+  let userID;
 
   // eslint-disable-next-line no-unused-vars
   const handleLogin = async () => {
@@ -49,7 +48,7 @@ function LogInScreen({ navigation }) {
         if (password === data[i].password) {
           userID = data[i].id;
           console.log('User: ', userID);
-          navigation.navigate('Trackbuilder', { id: userID});
+          navigation.navigate('Trackbuilder', { id: userID });
           return;
         }
       }
@@ -69,8 +68,7 @@ function LogInScreen({ navigation }) {
         <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
           <Text style={stylesMain.title}>Log In</Text>
         </View>
-        <View style={[stylesMain.subView, { flex: 1 }]}>
-        </View>
+        <View style={[stylesMain.subView, { flex: 1 }]} />
       </View>
 
       <View style={[stylesMain.body, { alignContent: 'flex-start', justifyContent: 'flex-start' }]}>

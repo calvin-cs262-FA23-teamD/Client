@@ -26,7 +26,6 @@ import SoundModal, { switchSound } from '../components/SoundSelection';
 import SoundButton from '../components/SoundButton';
 import MetronomeWriting from '../components/MetronomeWriting';
 
-
 /* Import style code */
 
 import { stylesMain } from '../styles/stylesMain';
@@ -212,7 +211,6 @@ export default function MetronomeScreen({ navigation }) {
           {/* </View> */}
         </Modal.Container>
       </Modal>
-
 
     </View>
   );

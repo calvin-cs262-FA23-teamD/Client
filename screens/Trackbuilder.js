@@ -31,13 +31,11 @@ import AddMeasure from '../components/AddMeasure.js';
 import SoundModal, { switchSound } from '../components/SoundSelection';
 import SoundButton from '../components/SoundButton';
 import SavedTracks from '../components/SavedTracks.js';
-import MetronomeScreen from './Metronome.js';
 
 /* Import style files */
 import { stylesMain } from '../styles/stylesMain.js';
 import { COLORS } from '../styles/colors';
 import TrackbuilderWriting from '../components/TrackbuilderWriting.js';
-import MetronomeWriting from '../components/MetronomeWriting.js';
 
 /* hard coded click track */
 const measures = [
@@ -173,14 +171,13 @@ export default function TrackbuilderScreen({ navigation }) {
     } else {
       navigation.navigate('LogIn');
     }
-    console.log('when I press login the user is:',  id);
+    console.log('when I press login the user is:', id);
   };
 
   useEffect(() => {
     console.log('the user was changed. It is now: ', id);
-    id ? setLoginText('Log Out'): setLoginText('Log In');
-  }, [id])
-
+    id ? setLoginText('Log Out') : setLoginText('Log In');
+  }, [id]);
 
   /* handle the popup screen for login and selecting a track
   *  if user is logged in, open Saved Tracked Modal
@@ -351,7 +348,7 @@ export default function TrackbuilderScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
       <View style={[stylesMain.header, { flexDirection: 'row' }]}>
-        <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end'}]}>
+        <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end' }]}>
           <TouchableOpacity
             style={[stylesMain.smallButton, { backgroundColor: COLORS.background }]}
             onPress={handleLogIn}
@@ -359,7 +356,7 @@ export default function TrackbuilderScreen({ navigation }) {
             <Text style={[stylesMain.text, { color: COLORS.orange }]}>{loginText}</Text>
           </TouchableOpacity>
         </View>
-        <View style={[stylesMain.header, { flex: 3, height: '100%'}]}>
+        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
           <Text style={stylesMain.title}>Trackbuilder</Text>
         </View>
         <View style={[stylesMain.subView, { flex: 1 }]}>
@@ -425,7 +422,7 @@ export default function TrackbuilderScreen({ navigation }) {
                   style={[stylesMain.smallButton, {}]}
                   onPress={handleSavedTrackModal}
                 >
-                  <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>{'My Tracks'}</Text>
+                  <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>My Tracks</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ flex: 2, alignItems: 'flex-end' }}>

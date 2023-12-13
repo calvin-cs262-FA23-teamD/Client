@@ -108,8 +108,7 @@ function SignUpScreen({ navigation }) {
         <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
           <Text style={stylesMain.title}>Sign Up</Text>
         </View>
-        <View style={[stylesMain.subView, { flex: 1 }]}>
-        </View>
+        <View style={[stylesMain.subView, { flex: 1 }]} />
       </View>
 
       <View style={[stylesMain.body, {}]}>

@@ -1,3 +1,16 @@
+/* Things to do (Abigail):
+ * -Keeps going up/down after you release
+ * -(DONE, sort of [see comments]) Keyboard squishes screen when it opens
+ * -(DONE) Sign up goes back to trackbuilder, not log in
+ * -Deleting track resets measure to 2, not 1
+ * -Calvin's laugh (optional)
+ * -(DONE) warning messages on log in
+ * 
+ * 
+ * Things to do in general:
+ * -Save track should save track
+ */
+
 /* eslint-disable linebreak-style */
 /* eslint-disable react/jsx-max-props-per-line */
 /* eslint-disable import/no-named-as-default-member */
@@ -10,7 +23,8 @@
 /* Metronome.js */
 
 import * as React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+// import KeyboardAvoidingView and ScrollView (A)
+import { Text, View, KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 
@@ -137,81 +151,92 @@ export default function MetronomeScreen({ navigation }) {
 
   /* Main app layout */
   return (
-    <View style={stylesMain.container}>
+    <KeyboardAvoidingView
+      //behavior={isIOS ? "padding" : "height"}
+      enabled
+      style={{ flex: 1 }}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        scrollEnabled={true}
+      >
+        <View style={stylesMain.container}>
 
-      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
-        <View style={[stylesMain.subView, { flex: 1 }]} />
-        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
-          <Text style={stylesMain.title}>Beatle</Text>
+          <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+            <View style={[stylesMain.subView, { flex: 1 }]} />
+            <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
+              <Text style={stylesMain.title}>Beatle</Text>
+            </View>
+            <View style={[stylesMain.subView, { flex: 1 }]}>
+              <TouchableOpacity
+                style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+                onPress={handleMetrnomeWriting}
+              >
+                <AntDesign name="question" size={24} color={COLORS.offWhite} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={[stylesMain.body, {}]}>
+            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+              <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
+            </View>
+
+            <View style={{ flex: 6, justifyContent: 'space-between' }}>
+              <Counters
+                width={300}
+                beat={beat} setBeat={setBeat}
+                BPM={BPM} setBPM={setBPM}
+                buttonStates={buttonStates} setButtonStates={setButtonStates}
+              />
+
+              <SoundButton onPress={handleModal} w={300} selectedSound={selectedSound} />
+            </View>
+          </View>
+
+          <View style={[stylesMain.footer, {}]}>
+            <TouchableOpacity
+              style={[stylesMain.flatButton, { alignSelf: 'center', marginBottom: 10 }]}
+              onPress={() => {
+                if (isPlaying) {
+                  PausePlay();
+                }
+                navigation.navigate('Trackbuilder', { id });
+              }}
+            >
+              <Text style={[stylesMain.text, { color: COLORS.background }]}>Trackbuilder </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Modal isVisible={isSoundModalVisible}>
+            <Modal.Container>
+              <Modal.Body>
+                <SoundModal
+                  selectedSound={selectedSound}
+                  setSelectedSound={setSelectedSound}
+                  isModalVisible={isSoundModalVisible}
+                  setIsModalVisible={setIsSoundModalVisible}
+                  handleModal={handleModal}
+                />
+              </Modal.Body>
+              {/* </View> */}
+            </Modal.Container>
+          </Modal>
+
+          <Modal isVisible={isMetronomeWritingVisible}>
+            <Modal.Container>
+              <Modal.Body>
+                <MetronomeWriting
+                  isModalVisible={isMetronomeWritingVisible}
+                  setIsModalVisible={setIsMetronomeWritingVisible}
+                />
+              </Modal.Body>
+              {/* </View> */}
+            </Modal.Container>
+          </Modal>
+
         </View>
-        <View style={[stylesMain.subView, { flex: 1 }]}>
-          <TouchableOpacity
-            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-            onPress={handleMetrnomeWriting}
-          >
-            <AntDesign name="question" size={24} color={COLORS.offWhite} />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={[stylesMain.body, {}]}>
-        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-          <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
-        </View>
-
-        <View style={{ flex: 6, justifyContent: 'space-between' }}>
-          <Counters
-            width={300}
-            beat={beat} setBeat={setBeat}
-            BPM={BPM} setBPM={setBPM}
-            buttonStates={buttonStates} setButtonStates={setButtonStates}
-          />
-
-          <SoundButton onPress={handleModal} w={300} selectedSound={selectedSound} />
-        </View>
-      </View>
-
-      <View style={[stylesMain.footer, {}]}>
-        <TouchableOpacity
-          style={[stylesMain.flatButton, { alignSelf: 'center', marginBottom: 10 }]}
-          onPress={() => {
-            if (isPlaying) {
-              PausePlay();
-            }
-            navigation.navigate('Trackbuilder', { id });
-          }}
-        >
-          <Text style={[stylesMain.text, { color: COLORS.background }]}>Trackbuilder </Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal isVisible={isSoundModalVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <SoundModal
-              selectedSound={selectedSound}
-              setSelectedSound={setSelectedSound}
-              isModalVisible={isSoundModalVisible}
-              setIsModalVisible={setIsSoundModalVisible}
-              handleModal={handleModal}
-            />
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-
-      <Modal isVisible={isMetronomeWritingVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <MetronomeWriting
-              isModalVisible={isMetronomeWritingVisible}
-              setIsModalVisible={setIsMetronomeWritingVisible}
-            />
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

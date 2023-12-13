@@ -41,7 +41,6 @@ function LogInScreen({ navigation }) {
   const handleLogin = async () => {
     // Add login logic here
     // Check username and password, navigate to the next screen on success, show an error on failure
-    // Retrieve user credentials from AsyncStorage
 
     for (let i = 0; i < data.length; i++) {
       if (username === data[i].username) {
@@ -53,6 +52,8 @@ function LogInScreen({ navigation }) {
         }
       }
     }
+    // add back alert (A)
+    alert('Invalid username-password combination');
     console.log('user not found');
   };
 
@@ -136,12 +137,12 @@ function LogInScreen({ navigation }) {
 
               <TouchableOpacity
                 style={[stylesMain.flatButton,
-                  {
-                    width: 300,
-                    alignSelf: 'center',
-                    marginBottom: 10,
-                    backgroundColor: COLORS.orange,
-                  }]}
+                {
+                  width: 300,
+                  alignSelf: 'center',
+                  marginBottom: 10,
+                  backgroundColor: COLORS.orange,
+                }]}
                 onPress={() => navigation.navigate('SignUp')}
               >
                 <Text style={[stylesMain.text, { color: COLORS.background }]}>

@@ -80,7 +80,8 @@ function SignUpScreen({ navigation }) {
           password: newPassword,
         };
         createUser(newUser);
-        navigation.navigate('Trackbuilder');
+        // Doesn't actually log in, so default navigate to LogIn (can change this later if sign up also logs in automatically) (A)
+        navigation.navigate('LogIn');
       } else {
         // invalid password, show an error message
         alert('Your passwords do not match. Please try again.');

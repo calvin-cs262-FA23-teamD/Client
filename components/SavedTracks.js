@@ -63,7 +63,7 @@ export default function SavedTracks({
       >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Saved Tracks</Text>
       </View>
-      <View style={{ flex: 16, padding: 0, justifyContent: 'center' }}>
+      <View style={{ flex: 10, padding: 0, justifyContent: 'center' }}>
         {isLoading ? (
           <ActivityIndicator />
         ) : (
@@ -95,21 +95,25 @@ export default function SavedTracks({
         )}
       </View>
 
-      <View style={{
+        <View style={{
         flex: 2,
         paddingBottom: 12,
         justifyContent: 'flex-end',
         flexDirection: 'row',
         alignItems: 'flex-end',
+        backgroundColor: 'green'
       }}
       >
-        <View style={{ flex: 1, alignItems: 'flex-start' }}>
-          <TouchableOpacity
-            style={[stylesMain.backButton, { backgroundColor: COLORS.orange, width: 50 }]}
-            onPress={() => setIsModalVisible(() => !isModalVisible)}
-          >
-            <AntDesign name="arrowleft" size={24} color={COLORS.background} />
-          </TouchableOpacity>
+        <View style={{ flex: 1, alignItems: 'flex-start', backgroundColor: 'blue' }}>
+        <TouchableOpacity
+              style={[stylesMain.backButton, { backgroundColor: COLORS.orange, width: 50 }]}
+              onPress={() => setIsModalVisible(() => !isModalVisible)}
+            >
+              <AntDesign name="arrowleft" size={24} color={COLORS.background} />
+            </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+          
         </View>
       </View>
 

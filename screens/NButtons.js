@@ -162,7 +162,7 @@ export default function ButtonsScreen({ navigation }) {
   //   }
   // };
 
-  const trackID = 3;
+  const trackID = 55;
   const deleteTrack = async (trackId) => {
     try {
       const response = await fetch(`https://beatleservice.azurewebsites.net/delClickTrack/${trackId}`, {
@@ -173,7 +173,7 @@ export default function ButtonsScreen({ navigation }) {
         },
       });
       if (response.ok) {
-        console.log('User deleted successfully');
+        console.log('Track', trackID,  'deleted successfully');
       } else {
         console.error('Failed to delete track:', response.status, response.statusText);
       }
@@ -203,8 +203,10 @@ export default function ButtonsScreen({ navigation }) {
       // Handle the error or update the UI as needed
     }
   };
+
+  // change to getTracks or getMeasures to change what is displayed
   useEffect(() => {
-    getMeasures();
+    getTracks();
     console.log(data);
   }, []);
 
@@ -218,6 +220,7 @@ export default function ButtonsScreen({ navigation }) {
 
       <View style={[stylesMain.body, { alignItems: 'center' }]}>
         {/* {generateButtons(numberOfButtons)} */}
+
 
         {isLoading ? (
           <ActivityIndicator />
@@ -236,10 +239,10 @@ export default function ButtonsScreen({ navigation }) {
         )}
         <Text style={stylesMain.title}>{data.id}</Text>
         <View styles={{ padding: 50 }}>
-          <TouchableOpacity onPress={() => createMeasure(newMeasure)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => createTrack(newMeasure)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>hello</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteMeasure(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => deleteTrack(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>goodbye</Text>
           </TouchableOpacity>
         </View>

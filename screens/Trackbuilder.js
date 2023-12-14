@@ -499,7 +499,8 @@ export default function TrackbuilderScreen({ navigation }) {
         };
       })
 
-      measures = trackMeasures;
+      // ******** fix this
+      //measures = trackMeasures;
       console.log(trackMeasures);
     } catch (error) {
       console.error(error);

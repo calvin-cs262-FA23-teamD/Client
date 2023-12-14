@@ -15,7 +15,8 @@
 /* Import react components */
 import * as React from 'react';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput,
+  // add KeyboardAvoidingView and ScrollView (A)
+  StyleSheet, Text, View, KeyboardAvoidingView, ScrollView, FlatList, TouchableOpacity, TextInput,
 } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { useRoute } from '@react-navigation/native';
@@ -345,170 +346,185 @@ export default function TrackbuilderScreen({ navigation }) {
     setTempoList(newTempoList);
   }
 
+  // add a keyboard avoiding view and a scroll view, but currently getting warning (A)
   return (
-    <View style={stylesMain.container}>
-      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
-        <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end' }]}>
-          <TouchableOpacity
-            style={[stylesMain.smallButton, { backgroundColor: COLORS.background }]}
-            onPress={handleLogIn}
-          >
-            <Text style={[stylesMain.text, { color: COLORS.orange }]}>{loginText}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
-          <Text style={stylesMain.title}>Trackbuilder</Text>
-        </View>
-        <View style={[stylesMain.subView, { flex: 1 }]}>
-          <TouchableOpacity
-            style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-            onPress={handleTrackbuilderWriting}
-          >
-            <AntDesign name="question" size={24} color={COLORS.offWhite} />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={[stylesMain.body, {}]}>
-        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-          <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
-        </View>
-
-        <View style={{ flex: 6 }}>
-          <View style={{ alignItems: 'center', paddingBottom: 5 }}>
-            <TextInput
-              onChangeText={(text) => setTitle(text)}
-              value={title}
-              defaultValue={title}
-              cursorColor={COLORS.orange}
-              style={{ width: 300 }}
-              backgroundColor={COLORS.background}
-              // borderBottomWidth={2}'
-              // borderBottomColor={COLORS.orange}
-              color={COLORS.offWhite}
-              fontSize={20}
-              fontWeight="bold"
-              textAlign="center"
-            />
-          </View>
-          <View style={{ maxHeight: 250 }}>
-            <FlatList
-              ref={flatListRef}
-              data={measures}
-              renderItem={renderMeasure}
-              keyExtractor={(measure) => measure.number}
-              extraData={selectedMeasure}
-              vertical
-              showsVerticalScrollIndicator
-            />
+    <KeyboardAvoidingView
+      // behavior={isIOS ? "padding" : "height"}
+      enabled
+      style={{ flex: 1 }}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        scrollEnabled
+      >
+        <View style={stylesMain.container}>
+          <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+            <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end' }]}>
+              <TouchableOpacity
+                style={[stylesMain.smallButton, { backgroundColor: COLORS.background }]}
+                onPress={handleLogIn}
+              >
+                <Text style={[stylesMain.text, { color: COLORS.orange }]}>{loginText}</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
+              <Text style={stylesMain.title}>Trackbuilder</Text>
+            </View>
+            <View style={[stylesMain.subView, { flex: 1 }]}>
+              <TouchableOpacity
+                style={[stylesMain.backButton,
+                  { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+                onPress={handleTrackbuilderWriting}
+              >
+                <AntDesign name="question" size={24} color={COLORS.offWhite} />
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
-            <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
-              <View style={{ flex: 2, alignItems: 'flex-start' }}>
-                <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={deleteMeasure}>
-                  <Text style={[stylesMain.text]}> Delete </Text>
-                </TouchableOpacity>
+          <View style={[stylesMain.body, {}]}>
+            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+              <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
+            </View>
+
+            <View style={{ flex: 6 }}>
+              <View style={{ alignItems: 'center', paddingBottom: 5 }}>
+                <TextInput
+                  onChangeText={(text) => setTitle(text)}
+                  value={title}
+                  defaultValue={title}
+                  cursorColor={COLORS.orange}
+                  style={{ width: 300 }}
+                  backgroundColor={COLORS.background}
+                  // borderBottomWidth={2}'
+                  // borderBottomColor={COLORS.orange}
+                  color={COLORS.offWhite}
+                  fontSize={20}
+                  fontWeight="bold"
+                  textAlign="center"
+                />
               </View>
-              <View style={{ flex: 2, alignItems: 'flex-end' }}>
-                <TouchableOpacity style={[stylesMain.smallButton, { flexDirection: 'row' }]} onPress={handleAddModal}>
-                  <Text style={[stylesMain.text]}> Add </Text>
-                </TouchableOpacity>
+              <View style={{ maxHeight: 250 }}>
+                {/* warning may be caused by use of FlatList within ScrollView,
+                potential solution to use SectionList instead */}
+                <FlatList
+                  ref={flatListRef}
+                  data={measures}
+                  renderItem={renderMeasure}
+                  keyExtractor={(measure) => measure.number}
+                  extraData={selectedMeasure}
+                  vertical
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+
+              <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
+                <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
+                  <View style={{ flex: 2, alignItems: 'flex-start' }}>
+                    <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={deleteMeasure}>
+                      <Text style={[stylesMain.text]}> Delete </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ flex: 2, alignItems: 'flex-end' }}>
+                    <TouchableOpacity style={[stylesMain.smallButton, { flexDirection: 'row' }]} onPress={handleAddModal}>
+                      <Text style={[stylesMain.text]}> Add </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
+                  <View style={{ flex: 2, alignItems: 'flex-start' }}>
+                    <TouchableOpacity
+                      style={[stylesMain.smallButton, {}]}
+                      onPress={handleSavedTrackModal}
+                    >
+                      <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>My Tracks</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ flex: 2, alignItems: 'flex-end' }}>
+                    <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={SaveTrack}>
+                      <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>Save Track</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <SoundButton onPress={handleSoundModal} w={300} selectedSound={selectedSound} />
               </View>
             </View>
-            <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
-              <View style={{ flex: 2, alignItems: 'flex-start' }}>
-                <TouchableOpacity
-                  style={[stylesMain.smallButton, {}]}
-                  onPress={handleSavedTrackModal}
-                >
-                  <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>My Tracks</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 2, alignItems: 'flex-end' }}>
-                <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={SaveTrack}>
-                  <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>Save Track</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <SoundButton onPress={handleSoundModal} w={300} selectedSound={selectedSound} />
           </View>
+
+          <View style={[stylesMain.footer, {}]}>
+            <TouchableOpacity
+              style={[stylesMain.flatButton, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
+              onPress={() => {
+                if (isPlaying) {
+                  PausePlay();
+                }
+                navigation.navigate('Metronome', { id });
+              }}
+            >
+              <Text style={[stylesMain.text, { color: COLORS.background }]}>Metronome </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Modal isVisible={isAddModalVisible}>
+            <Modal.Container>
+              <Modal.Body>
+                <AddMeasure
+                  newMeasureNum={newMeasureNum}
+                  setNewMeasureNum={setNewMeasureNum}
+                  newTempo={newTempo}
+                  setNewTempo={setNewTempo}
+                  newBeat={newBeat}
+                  setNewBeat={setNewBeat}
+                  isModalVisible={isAddModalVisible}
+                  setIsModalVisible={setIsAddModalVisible}
+                  handleModal={handleAddModal}
+                />
+              </Modal.Body>
+              {/* </View> */}
+            </Modal.Container>
+          </Modal>
+
+          <Modal isVisible={isSoundModalVisible}>
+            <Modal.Container>
+              <Modal.Body>
+                <SoundModal
+                  selectedSound={selectedSound}
+                  setSelectedSound={setSelectedSound}
+                  isModalVisible={isSoundModalVisible}
+                  setIsModalVisible={setIsSoundModalVisible}
+                  handleModal={handleSoundModal}
+                />
+              </Modal.Body>
+              {/* </View> */}
+            </Modal.Container>
+          </Modal>
+
+          <Modal isVisible={isSavedTrackVisible}>
+            <Modal.Container>
+              <Modal.Body>
+                <SavedTracks
+                  isModalVisible={isSavedTrackVisible}
+                  setIsModalVisible={setIsSavedTrackVisible}
+                />
+              </Modal.Body>
+              {/* </View> */}
+            </Modal.Container>
+          </Modal>
+
+          <Modal isVisible={isTrackbuilderWritingVisible}>
+            <Modal.Container>
+              <Modal.Body>
+                <TrackbuilderWriting
+                  isModalVisible={isTrackbuilderWritingVisible}
+                  setIsModalVisible={setIsTrackbuilderWritingVisible}
+                />
+              </Modal.Body>
+              {/* </View> */}
+            </Modal.Container>
+          </Modal>
+
         </View>
-      </View>
-
-      <View style={[stylesMain.footer, {}]}>
-        <TouchableOpacity
-          style={[stylesMain.flatButton, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
-          onPress={() => {
-            if (isPlaying) {
-              PausePlay();
-            }
-            navigation.navigate('Metronome', { id });
-          }}
-        >
-          <Text style={[stylesMain.text, { color: COLORS.background }]}>Metronome </Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal isVisible={isAddModalVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <AddMeasure
-              newMeasureNum={newMeasureNum}
-              setNewMeasureNum={setNewMeasureNum}
-              newTempo={newTempo}
-              setNewTempo={setNewTempo}
-              newBeat={newBeat}
-              setNewBeat={setNewBeat}
-              isModalVisible={isAddModalVisible}
-              setIsModalVisible={setIsAddModalVisible}
-              handleModal={handleAddModal}
-            />
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-
-      <Modal isVisible={isSoundModalVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <SoundModal
-              selectedSound={selectedSound}
-              setSelectedSound={setSelectedSound}
-              isModalVisible={isSoundModalVisible}
-              setIsModalVisible={setIsSoundModalVisible}
-              handleModal={handleSoundModal}
-            />
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-
-      <Modal isVisible={isSavedTrackVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <SavedTracks
-              isModalVisible={isSavedTrackVisible}
-              setIsModalVisible={setIsSavedTrackVisible}
-            />
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-
-      <Modal isVisible={isTrackbuilderWritingVisible}>
-        <Modal.Container>
-          <Modal.Body>
-            <TrackbuilderWriting
-              isModalVisible={isTrackbuilderWritingVisible}
-              setIsModalVisible={setIsTrackbuilderWritingVisible}
-            />
-          </Modal.Body>
-          {/* </View> */}
-        </Modal.Container>
-      </Modal>
-
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -33,11 +33,6 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
-  // const newUser = {
-  //   username: 'fre',
-  //   password: 'password',
-  // };
-
   const newTrack = {
     userID: 0,
     name: 'song',

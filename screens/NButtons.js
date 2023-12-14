@@ -23,7 +23,7 @@ export default function ButtonsScreen({ navigation }) {
   const getUsers = async () => {
     try {
       const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
-      //const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      // const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
       const json = await response.json();
       setData(json);
     } catch (error) {

@@ -5,7 +5,7 @@
 /* Import react components */
 import * as React from 'react';
 import {
-  Text, View, TouchableOpacity, FlatList, ActivityIndicator
+  Text, View, TouchableOpacity, FlatList, ActivityIndicator,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 
@@ -36,7 +36,7 @@ export default function SavedTracks({
     }
   };
 
-  //identify ID and name of selected track
+  // identify ID and name of selected track
   const selectTrack = (item) => {
     if (selectedTrackID !== item.item.id) {
       setSelectedTrackID(item.item.id);
@@ -49,7 +49,6 @@ export default function SavedTracks({
     console.log(data);
     console.log(selectedTrackName);
   }, [selectedTrackID]);
-
 
   return (
     <View style={{ height: 500, width: '100%' }}>
@@ -68,17 +67,17 @@ export default function SavedTracks({
             keyExtractor={({ id }) => id.toString()}
             renderItem={(item) => (
               <View style={stylesMain.subView}>
-                <TouchableOpacity 
-                style={[stylesMain.flatButton, {
-                  alignSelf: 'center',
-                  marginBottom: 10,
-                  backgroundColor: COLORS.orange,
-                  width: 300,
-                }]}
-                onPress={() => {
-                  console.log(item.item.id);
-                  selectTrack(item);
-                }}
+                <TouchableOpacity
+                  style={[stylesMain.flatButton, {
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    backgroundColor: COLORS.orange,
+                    width: 300,
+                  }]}
+                  onPress={() => {
+                    console.log(item.item.id);
+                    selectTrack(item);
+                  }}
                 >
                   <Text style={stylesMain.text}>{item.item.name}</Text>
                 </TouchableOpacity>

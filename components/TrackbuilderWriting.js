@@ -20,15 +20,36 @@ export default function TrackbuilderWriting({
   isModalVisible, setIsModalVisible,
 }) {
   return (
-    <View style={{ height: 500, width: '100%' }}>
+    <View style={{ height: 700, width: '100%' }}>
       <View style={{
-        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
+        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 15,
       }}
       >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Trackbuilder Info</Text>
       </View>
-      <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-        <Text style={stylesMain.text}>Technical writing about trackbuilder</Text>
+      <View style={{ flex: 20, padding: 0, justifyContent: 'center' }}>
+        <Text style={[stylesMain.text, { fontSize: 16 }]}>
+          {'Clicktrack:\n'}
+          {'    The orange bars are the measures each\n       containing the measure number;\n       beats in the measure; and tempo of the\n       measure.\n'}
+          {'    Scroll to navigate through the measures\n       of the track.\n\n'}
+
+          {'Edit Track Name:\n'}
+          {'    Tap on the “New Track” text above the\n       measure bars to edit the track name.\n\n'}
+
+          {'Delete Measure:\n'}
+          {'    Tap on a measure from the track, then tap\n       “Delete” to delete the measure.\n\n'}
+
+          {'Add Measure:\n'}
+          {'    Tap “Add” to open a pop-up for making\n       a new measure.\n\n'}
+
+          {'Save Measure:\n'}
+          {'    Tap “Save Track” to save the current\n       track.\n\n'}
+
+          {'Open New Track:\n'}
+          {'    Tap “My Tracks” to open a pop-up of\n       saved track.\n'}
+          {'    Select a track and tap “Open” to open\n       track.\n\n'}
+
+        </Text>
       </View>
 
       <View style={{

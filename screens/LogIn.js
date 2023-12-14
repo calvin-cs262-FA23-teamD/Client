@@ -41,7 +41,6 @@ function LogInScreen({ navigation }) {
   const handleLogin = async () => {
     // Add login logic here
     // Check username and password, navigate to the next screen on success, show an error on failure
-    // Retrieve user credentials from AsyncStorage
 
     for (let i = 0; i < data.length; i++) {
       if (username === data[i].username) {
@@ -53,6 +52,8 @@ function LogInScreen({ navigation }) {
         }
       }
     }
+    // add back alert (A)
+    alert('Invalid username-password combination');
     console.log('user not found');
   };
 

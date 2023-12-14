@@ -53,7 +53,7 @@ export default function BoxyBox({
       interval = setInterval(() => {
         handleIncrement();
         clearIntervalIfNecessary();
-      }, 100);
+      }, 50);
     }
 
     if (decrementing) {
@@ -62,7 +62,7 @@ export default function BoxyBox({
       interval = setInterval(() => {
         handleDecrement();
         clearIntervalIfNecessary();
-      }, 100);
+      }, 50);
     }
 
     return () => {
@@ -99,8 +99,10 @@ export default function BoxyBox({
   // this function will reset the current value to what the user enters
   const updateValue = (newValue) => {
     if (newValue >= max) {
-      setValue(max);
+      // fixed the bug that allowed numbers like 2006 (A)
+      setValue(max.toString());
     } else if (newValue <= min) {
+      // there is still a bug that allows numbers too low (A)
       console.log('error, value too low');
       setValue(min);
     } else {

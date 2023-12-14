@@ -20,15 +20,29 @@ export default function MetronomeWriting({
   isModalVisible, setIsModalVisible,
 }) {
   return (
-    <View style={{ height: 500, width: '100%' }}>
+    <View style={{ height: 700, width: '100%' }}>
       <View style={{
-        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20,
+        flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 15,
       }}
       >
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Metromone Info</Text>
       </View>
-      <View style={{ flex: 4, padding: 10, justifyContent: 'center' }}>
-        <Text style={stylesMain.text}>Technical writing about metronome</Text>
+      <View style={{ flex: 15, padding: 10, justifyContent: 'center' }}>
+        <Text style={[stylesMain.text, {fontSize:16}]}>
+        {'Tempo and Beats-Per-Measure :\n'}
+        {'    Tap on number in middle to manually\n      enter in a new value.\n'}
+        {'    Use plus or minus buttons on sides\n      to increase or decrease the value.\n\n'}
+
+        {'Accent Buttons:\n'}
+        {'    The number of buttons matches the\n      current value of Beats-Per-Measure.\n'}
+        {'    Tap one of the buttons to change the\n      value.\n'}
+        {'    The order of values is: accent, normal,\n      and silent.\n\n'}
+
+        {'Sound List:\n'}
+        {'    Tap on the sound button to open a\n      pop-up of sound options.\n'}
+        {'    To change the sound, tap on one of\n      the other options.\n'}
+
+        </Text>
       </View>
 
       <View style={{

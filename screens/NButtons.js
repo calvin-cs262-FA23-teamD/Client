@@ -17,9 +17,12 @@ export default function ButtonsScreen({ navigation }) {
   // recieve information about players from database
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const getUsers = async () => {
+
+  const user = 0;
+  const getUsers = async (user) => {
     try {
-      const response = await fetch('https://beatleservice.azurewebsites.net/clickTracksFromUser/1');
+      const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${user}`);
+      //const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -125,7 +128,8 @@ export default function ButtonsScreen({ navigation }) {
   };
 
   useEffect(() => {
-    getUsers();
+    getUsers(user);
+    console.log(data);
   }, []);
 
   /* Main app layout */
@@ -154,6 +158,7 @@ export default function ButtonsScreen({ navigation }) {
             )}
           />
         )}
+        <Text style={stylesMain.title}>{data.id}</Text>
         <View styles={{ padding: 50 }}>
           <TouchableOpacity onPress={() => createClickTrack(newTrack)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>hello</Text>

@@ -1,14 +1,15 @@
 /* Things to do (Abigail):
- * -Keeps going up/down after you release
+ * -(semi-fixed) Keeps going up/down after you release (only on some devices)
  * -(DONE, sort of [see comments]) Keyboard squishes screen when it opens
  * -(DONE) Sign up goes back to trackbuilder, not log in
- * -Deleting track resets measure to 2, not 1
  * -Calvin's laugh (optional)
  * -(DONE) warning messages on log in
  *
  *
  * Things to do in general:
- * -Save track should save track
+ * -(DONE) Save track should save track
+ * -Deleting track resets measure to 2, not 1
+ * -Problems with retrieving all tracks from a user
  */
 
 /* eslint-disable linebreak-style */
@@ -172,7 +173,7 @@ export default function MetronomeScreen({ navigation }) {
             <View style={[stylesMain.subView, { flex: 1 }]}>
               <TouchableOpacity
                 style={[stylesMain.backButton,
-                  { backgroundColor: COLORS.buttonBackground, width: 50 }]}
+                { backgroundColor: COLORS.buttonBackground, width: 50 }]}
                 onPress={handleMetrnomeWriting}
               >
                 <AntDesign name="question" size={24} color={COLORS.offWhite} />

@@ -47,13 +47,13 @@ const measures = [
   },
   {
     number: 2,
-    tempo: 60,
-    beat: 3,
+    tempo: 120,
+    beat: 4,
   },
   {
     number: 3,
-    tempo: 150,
-    beat: 5,
+    tempo: 120,
+    beat: 3,
   },
 ];
 

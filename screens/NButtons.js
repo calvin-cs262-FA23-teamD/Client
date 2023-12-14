@@ -22,8 +22,34 @@ export default function ButtonsScreen({ navigation }) {
 
   const getUsers = async () => {
     try {
-      const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
-      // const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getTracks = async () => {
+    try {
+      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMeasures = async () => {
+    try {
+      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch(`https://beatleservice.azurewebsites.net/allMeasures`);
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -37,6 +63,40 @@ export default function ButtonsScreen({ navigation }) {
     userID: 0,
     name: 'song',
     date: '1772-01-01',
+  };
+
+  const newMeasure = {
+    clickTrackID: 0,
+    measurenum: 3,
+    timesig: 120,
+    tempo: 4,
+    sound: 'notUsed',
+  }
+    const createMeasure = async (newMeasure) => {
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net/makeMeasure', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newMeasure),
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        console.error('Server returned an error:', response.status, response.statusText);
+        // Handle the error or update the UI as needed
+        return;
+      }
+
+      // Handle the response or update the UI as needed
+      console.log('User created:', json);
+    } catch (error) {
+      console.error('Error creating user:', error);
+
+      // Handle the error or update the UI as needed
+    }
   };
 
   // const createUser = async (newUserData) => {
@@ -102,7 +162,7 @@ export default function ButtonsScreen({ navigation }) {
   //   }
   // };
 
-  const trackID = 6;
+  const trackID = 3;
   const deleteTrack = async (trackId) => {
     try {
       const response = await fetch(`https://beatleservice.azurewebsites.net/delClickTrack/${trackId}`, {
@@ -123,8 +183,28 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
+  const measureID = 14;
+  const deleteMeasure = async (trackId) => {
+    try {
+      const response = await fetch(`https://beatleservice.azurewebsites.net/delMeasure/${trackId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any additional headers as needed
+        },
+      });
+      if (response.ok) {
+        console.log('measure deleted successfully');
+      } else {
+        console.error('Failed to delete track:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error in deleteTrack:', error.message);
+      // Handle the error or update the UI as needed
+    }
+  };
   useEffect(() => {
-    getUsers();
+    getMeasures();
     console.log(data);
   }, []);
 
@@ -148,7 +228,7 @@ export default function ButtonsScreen({ navigation }) {
             renderItem={(item) => (
               <View style={stylesMain.container}>
                 <TouchableOpacity onPress={() => console.log(item.item.id)}>
-                  <Text style={stylesMain.title}>{item.item.userid}</Text>
+                  <Text style={stylesMain.title}>{item.item.id}</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -156,10 +236,10 @@ export default function ButtonsScreen({ navigation }) {
         )}
         <Text style={stylesMain.title}>{data.id}</Text>
         <View styles={{ padding: 50 }}>
-          <TouchableOpacity onPress={() => createClickTrack(newTrack)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => createMeasure(newMeasure)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>hello</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteTrack(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => deleteMeasure(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>goodbye</Text>
           </TouchableOpacity>
         </View>

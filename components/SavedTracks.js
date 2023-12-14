@@ -21,6 +21,7 @@ export default function SavedTracks({
   isModalVisible, setIsModalVisible,
   selectedTrackID, setSelectedTrackID,
   selectedTrackName, setSelectedTrackName,
+  id
 }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -28,7 +29,11 @@ export default function SavedTracks({
     try {
       const response = await fetch('https://beatleservice.azurewebsites.net/allClickTracks');
       const json = await response.json();
-      setData(json);
+
+      const userTracks = json.filter((item) => item.userid === id);
+      console.log(id);
+
+      setData(userTracks);
     } catch (error) {
       console.error(error);
     } finally {
@@ -46,8 +51,8 @@ export default function SavedTracks({
 
   useEffect(() => {
     getTracks();
-    console.log(data);
-    console.log(selectedTrackName);
+    //console.log(selectedTrackName);
+    console.log(selectedTrackID);
   }, [selectedTrackID]);
 
   return (
@@ -71,15 +76,18 @@ export default function SavedTracks({
                   style={[stylesMain.flatButton, {
                     alignSelf: 'center',
                     marginBottom: 10,
-                    backgroundColor: COLORS.orange,
+                    backgroundColor: item.item.id === selectedTrackID ? '#a23600' : '#ff6900',
                     width: 300,
+                    height: 75,
                   }]}
                   onPress={() => {
-                    console.log(item.item.id);
+                    //console.log(item.item.id);
                     selectTrack(item);
                   }}
                 >
-                  <Text style={stylesMain.text}>{item.item.name}</Text>
+                  <Text style={[stylesMain.text,{
+                    color: item.item.id === selectedTrackID ? '#f0f5f5' : '#0a0e0f',
+                  }]}>{item.item.name}</Text>
                 </TouchableOpacity>
               </View>
             )}

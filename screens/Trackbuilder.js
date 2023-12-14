@@ -39,21 +39,27 @@ import { COLORS } from '../styles/colors';
 import TrackbuilderWriting from '../components/TrackbuilderWriting.js';
 
 /* hard coded click track */
-const measures = [
+let measures = [
   {
-    number: 1,
+    clickTrackID: 0,
+    measurenum: 1,
     tempo: 120,
-    beat: 4,
+    timesig: 4,
+    sound: 'notUsed',
   },
   {
-    number: 2,
+    clickTrackID: 0,
+    measurenum: 2,
     tempo: 120,
-    beat: 4,
+    timesig: 3,
+    sound: 'notUsed',
   },
   {
-    number: 3,
+    clickTrackID: 0,
+    measurenum: 3,
     tempo: 120,
-    beat: 3,
+    timesig: 4,
+    sound: 'notUsed',
   },
 ];
 
@@ -80,13 +86,13 @@ function MeasureBox({
         }]}
         >
           <Text style={[stylesMain.text, { color: textColor, fontSize: 20 }]}>
-            {measure.number}
+            {measure.measurenum}
           </Text>
         </View>
 
         {/* Beats per measure */}
         <View style={[{ alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
-          <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.beat}</Text>
+          <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.timesig}</Text>
         </View>
 
         {/* Beats per minute */}
@@ -188,9 +194,16 @@ export default function TrackbuilderScreen({ navigation }) {
   const SaveTrack = () => {
     if (!id) {
       navigation.navigate('LogIn');
+      
     }
     // TODO add in save track code
     console.log('save track');
+    const newTrackData = {
+      userID: id,
+      name: selectedTrackName,
+      date: '1772-01-01',
+    };
+    createClickTrack(newTrackData);
   };
 
   /** this section of code updates the value of selected measure
@@ -200,12 +213,12 @@ export default function TrackbuilderScreen({ navigation }) {
    */
   const [selectedMeasure, setSelectedMeasure] = useState();
   const selectMeasure = (item) => {
-    if (selectedMeasure === item.number) {
+    if (selectedMeasure === item.measurenum) {
       setSelectedMeasure(null);
       setNewMeasureNum(measures.length + 1);
     } else {
-      setSelectedMeasure(item.number);
-      setNewMeasureNum(item.number + 1);
+      setSelectedMeasure(item.measurenum);
+      setNewMeasureNum(item.measurenum + 1);
     }
   };
 
@@ -220,8 +233,8 @@ export default function TrackbuilderScreen({ navigation }) {
      * @return returns the MeasureBox, which is a button containing the measure's information
     */
   const renderMeasure = ({ item }) => {
-    const MeasureBoxColor = item.number === selectedMeasure ? COLORS.darkOrange : COLORS.orange;
-    const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
+    const MeasureBoxColor = item.measurenum === selectedMeasure ? COLORS.darkOrange : COLORS.orange;
+    const color = item.measurenum === selectedMeasure ? COLORS.offWhite : COLORS.background;
 
     return (
       <MeasureBox
@@ -252,14 +265,17 @@ export default function TrackbuilderScreen({ navigation }) {
       // console.log(newMeasureNum);
       // console.log((newMeasureNum < 1) ? 1 : newMeasureNum);
       const newMeasureNumCorr = (newMeasureNum < 1) ? 1 : newMeasureNum;
-      const newMeasure = {
-        number: newMeasureNumCorr,
+      const newMeasure = 
+      {
+        clickTrackID: 0,
+        measurenum: newMeasureNumCorr,
+        timesig: newBeat,
         tempo: newTempo,
-        beat: newBeat,
+        sound: 'notUsed',
       };
       measures.splice(newMeasureNumCorr - 1, 0, newMeasure);
       for (let i = 0; i < measures.length; i++) {
-        measures[i].number = i + 1;
+        measures[i].measurenum = i + 1;
       }
       setNewMeasureNum(measures.length);
     }
@@ -277,7 +293,7 @@ export default function TrackbuilderScreen({ navigation }) {
       measures.splice(selectedMeasure - 1, 1);
       // Update the 'number' property of the remaining measures
       for (let i = 0; i < measures.length; i++) {
-        measures[i].number = i + 1;
+        measures[i].measurenum = i + 1;
       }
       flatListRef.current.forceUpdate();
     }
@@ -293,7 +309,7 @@ export default function TrackbuilderScreen({ navigation }) {
     const newTempoList = [60]; // initialized so that tempos line up with measures
     let i;
     measures.forEach((measure) => {
-      for (i = 0; i < measure.beat; i++) {
+      for (i = 0; i < measure.measurenum; i++) {
         if (i === 0) { newCountList.push(1); } else { newCountList.push(0); }
         newTempoList.push(measure.tempo);
       }
@@ -414,6 +430,87 @@ export default function TrackbuilderScreen({ navigation }) {
   const [selectedTrackID, setSelectedTrackID] = useState(0);
   const [selectedTrackName, setSelectedTrackName] = useState('New Track');
 
+  const createClickTrack = async (newTrackData) => {
+
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net/makeClickTrack', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTrackData),
+      });
+
+      const track = await response.json();
+
+      // Handle the response or update the UI as needed
+      console.log('Track created:', track);
+      let i;
+      for(i=0; i<measures.length; i++) {
+        measures[i].clickTrackID = track.id;
+        createMeasure(measures[i]);
+      }
+
+
+    } catch (error) {
+      console.error('Error creating user:', error);
+
+      // Handle the error or update the UI as needed
+    }
+  };
+
+  const createMeasure = async (newMeasure) => {
+    try {
+      const response = await fetch('https://beatleservice.azurewebsites.net/makeMeasure', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newMeasure),
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        console.error('Server returned an error:', response.status, response.statusText);
+        // Handle the error or update the UI as needed
+        return;
+      }
+
+      // Handle the response or update the UI as needed
+      console.log('User created:', json);
+    } catch (error) {
+      console.error('Error creating user:', error);
+
+      // Handle the error or update the UI as needed
+    }
+  };
+
+  const getMeasures = async () => {
+    try {
+      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch(`https://beatleservice.azurewebsites.net/allMeasures`);
+      const json = await response.json();
+
+      let trackMeasures = json.filter((item) => item.clicktrackid === selectedTrackID);
+      trackMeasures = trackMeasures.sort((a,b) => {
+        if (a.measurenum < b.measurenum) {
+          return -1
+        };
+      })
+
+      measures = trackMeasures;
+      console.log(trackMeasures);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectedTrackID);
+    getMeasures();
+  }, [selectedTrackID]);
+
   // add a keyboard avoiding view and a scroll view, but currently getting warning (A)
   return (
     <KeyboardAvoidingView
@@ -486,7 +583,7 @@ export default function TrackbuilderScreen({ navigation }) {
                   ref={flatListRef}
                   data={measures}
                   renderItem={renderMeasure}
-                  keyExtractor={(measure) => measure.number}
+                  keyExtractor={(measure) => measure.measurenum}
                   extraData={selectedMeasure}
                   vertical
                   showsVerticalScrollIndicator={false}
@@ -593,6 +690,7 @@ export default function TrackbuilderScreen({ navigation }) {
                   setSelectedTrackID={setSelectedTrackID}
                   selectedTrackName={selectedTrackName}
                   setSelectedTrackName={setSelectedTrackName}
+                  id={id}
                 />
               </Modal.Body>
             </Modal.Container>

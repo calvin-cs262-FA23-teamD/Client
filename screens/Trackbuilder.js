@@ -57,7 +57,14 @@ const measures = [
   },
 ];
 
-/* The orange squares in the flatlist, each representing a measure */
+/**  This function returns a button which represents one measure in the click track
+* @param measure: number of measure
+* @param onPress: The function called when button pressed
+* @param MeasurBoxolor: Color of the button, will change based on whether button is selected
+* @param textColor: color of text, will change based on whether button is selected
+*
+* @return the touchable opacity representing the measure
+*/
 function MeasureBox({
   measure, onPress, MeasureBoxColor, textColor,
 }) {
@@ -97,52 +104,22 @@ function MeasureBox({
   );
 }
 
+/** This function builds the main track builder screen. This is where users can create and play customizable click tracks
+ * @param navigation This contains the navigation details for going between pages
+ */
 export default function TrackbuilderScreen({ navigation }) {
+
+  // get the parameters that have been passed through navigation
   const route = useRoute();
   let id = route.params?.id;
-  /* The following code controls the flatlist display of the tracklist,
-  *  as well as the display of its current values.
+
+  /* The following section of code controls the various modals that can appear within the trackbuilder
   *
   */
 
-  /* selecting a measure from the flatlist */
-  const [selectedMeasure, setSelectedMeasure] = useState();
-  // const [selectedBeat, setSelectedBeat] = useState();
-  // const [selectedTempo, setSelectedTempo] = useState();
-  const selectMeasure = (item) => {
-    if (selectedMeasure === item.number) {
-      setSelectedMeasure(null);
-      setNewMeasureNum(measures.length + 1);
-      // setSelectedBeat(null);
-      // setSelectedTempo(null);
-    } else {
-      setSelectedMeasure(item.number);
-      setNewMeasureNum(item.number + 1);
-      // setSelectedBeat(item.beat);
-      // setSelectedTempo(item.tempo);
-    }
-  };
-  /* displaying a measure from the flatlist */
-  const renderMeasure = ({ item }) => {
-    const MeasureBoxColor = item.number === selectedMeasure ? COLORS.darkOrange : COLORS.orange;
-    const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
-
-    return (
-      <MeasureBox
-        measure={item}
-        onPress={() => selectMeasure(item)}
-        MeasureBoxColor={MeasureBoxColor}
-        textColor={color}
-      />
-    );
-  };
-
-  /* The following code controls the pop up modal and procedure for adding a
-  *  new measure into the tracklist.
-  *
-  */
-
-  /* handle the popup screen for adding a new measure */
+  /** This handles the AddModal, which is where the user can create a new measure and add it to the click track.
+   * In particular, this code sets the modal to be visible or invisible.
+   */
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const handleAddModal = () => {
     if (isAddModalVisible) {
@@ -151,39 +128,26 @@ export default function TrackbuilderScreen({ navigation }) {
     setIsAddModalVisible(() => !isAddModalVisible);
   };
 
-  /* handle the popup screen for chaning the sound */
+  /** This handles the SoundModal, which is where the user can change the sound of the click track.
+   * In particular, this code sets the modal to be visible or invisible.
+   */
   const [isSoundModalVisible, setIsSoundModalVisible] = useState(false);
   const handleSoundModal = () => {
     setIsSoundModalVisible(() => !isSoundModalVisible);
   };
 
-  /* handle the popup screen for chaning the technical writing */
+  /** This handles the TrackBuildeWriting Modal, which information about using the app is displayed.
+   * In particular, this code sets the modal to be visible or invisible.
+   */
   const [isTrackbuilderWritingVisible, setIsTrackbuilderWritingVisible] = useState(false);
   const handleTrackbuilderWriting = () => {
     setIsTrackbuilderWritingVisible(() => !isTrackbuilderWritingVisible);
   };
 
-  const [loginText, setLoginText] = useState('Log In');
-  const handleLogIn = () => {
-    if (id) {
-      id = null;
-      console.log('user:', id);
-      setLoginText('Log In');
-    } else {
-      navigation.navigate('LogIn');
-    }
-    console.log('when I press login the user is:', id);
-  };
-
-  useEffect(() => {
-    console.log('the user was changed. It is now: ', id);
-    id ? setLoginText('Log Out') : setLoginText('Log In');
-  }, [id]);
-
-  /* handle the popup screen for login and selecting a track
-  *  if user is logged in, open Saved Tracked Modal
-  *  if user is not logged in, navigate to login
-  */
+  /** This handles the SavedTracks Modal, stores and displays a user's saved tracks
+   * In particular, this code sets the modal to be visible or invisible.
+   * If the user is not logged in, it redirects them to the log in page.
+   */
   const [isSavedTrackVisible, setIsSavedTrackVisible] = useState(false);
   const handleSavedTrackModal = () => {
     if (id) {
@@ -193,6 +157,29 @@ export default function TrackbuilderScreen({ navigation }) {
     }
   };
 
+   /** This handles the user's login. If the user has logged in, it will log them out.
+   * In particular, this code sets the modal to be visible or invisible.
+   */
+   const [loginText, setLoginText] = useState('Log In');
+   const handleLogIn = () => {
+     if (id) {
+       id = null;
+       //console.log('user:', id);
+       setLoginText('Log In');
+     } else {
+       navigation.navigate('LogIn');
+     }
+    // console.log('when I press login the user is:', id);
+   };
+
+   /** This helps to correctly change the text of the login logout button
+    */
+   useEffect(() => {
+    //console.log('the user was changed. It is now: ', id);
+    id ? setLoginText('Log Out') : setLoginText('Log In');
+  }, [id]);
+
+  /** This function is supposed to save a track into the database. However, It is currently not implemented */
   const SaveTrack = () => {
     if (!id) {
       navigation.navigate('LogIn');
@@ -201,21 +188,69 @@ export default function TrackbuilderScreen({ navigation }) {
     console.log('save track');
   };
 
-  /* insert a new measure into the list of measures */
+    /** this section of code updates the value of selected measure
+   * @param item the measure that was selected and should be made the selected measure
+   * 
+   * @return updates value of selectedMeasure
+   */
+    const [selectedMeasure, setSelectedMeasure] = useState();
+    const selectMeasure = (item) => {
+      if (selectedMeasure === item.number) {
+        setSelectedMeasure(null);
+        setNewMeasureNum(measures.length + 1);
+      } else {
+        setSelectedMeasure(item.number);
+        setNewMeasureNum(item.number + 1);
+      }
+    };
+
+    /** the folling section of code handles the clicktrack content, rendering the clicktrack onto the screen,
+     * and adding or deleting measures.
+    */
+  
+    /** This section of Code renders the MeasureBox onto the screen
+     * @param item this is which measure is being rendered
+     * 
+     * @return returns the MeasureBox, which is a button containing the measure's information
+    */
+    const renderMeasure = ({ item }) => {
+      const MeasureBoxColor = item.number === selectedMeasure ? COLORS.darkOrange : COLORS.orange;
+      const color = item.number === selectedMeasure ? COLORS.offWhite : COLORS.background;
+  
+      return (
+        <MeasureBox
+          measure={item}
+          onPress={() => selectMeasure(item)}
+          MeasureBoxColor={MeasureBoxColor}
+          textColor={color}
+        />
+      );
+    };
+
+  /** This function hanles creating a new measure and adding it into the current clicktrack
+   * It relies on the values in the hooks newTempo, and newBeat to create a new measure
+   * it then inserts the measure in location newMeasureNum, and corrects the measureNums of all
+   * the other measures
+   * @param newMeasureNum the new measure number
+   * @param newTempo tempo of measure
+   * @param newBeat beat of measure
+   * @param measures the clicktrack
+   * 
+   * @return modified clicktrack
+  */
   const [newMeasureNum, setNewMeasureNum] = useState(measures.length + 1);
   const [newTempo, setNewTempo] = useState(60);
   const [newBeat, setNewBeat] = useState(4);
   const addMeasure = () => {
     if (newTempo !== '' && newBeat !== '' && newMeasureNum !== '') {
-      console.log(newMeasureNum);
-      console.log((newMeasureNum < 1) ? 1 : newMeasureNum);
+      //console.log(newMeasureNum);
+      //console.log((newMeasureNum < 1) ? 1 : newMeasureNum);
       const newMeasureNumCorr = (newMeasureNum < 1) ? 1 : newMeasureNum;
       const newMeasure = {
         number: newMeasureNumCorr,
         tempo: newTempo,
         beat: newBeat,
       };
-      // add in measure and update 'number' property
       measures.splice(newMeasureNumCorr - 1, 0, newMeasure);
       for (let i = 0; i < measures.length; i++) {
         measures[i].number = i + 1;
@@ -224,7 +259,12 @@ export default function TrackbuilderScreen({ navigation }) {
     }
   };
 
-  /* delete selected measure from list of measures */
+  /** This function deletes a selected measure and updates the clicktrack accordingly
+   * @param selectedMeasure the measure that will be deleted
+   * @param measures the clicktrack
+   * 
+   * @return the updated clicktrack
+   */
   const flatListRef = useRef(null);
   const deleteMeasure = () => {
     if (selectedMeasure != null) {
@@ -236,17 +276,34 @@ export default function TrackbuilderScreen({ navigation }) {
       flatListRef.current.forceUpdate();
     }
   };
+  
+  /** This function reads the clicktrack and generates a list of the sound and tempo of each beat 
+   * @param measures the clicktrack
+   * 
+   * @return set the values of newTempoList and newCountList
+  */
+  function setUpTrack() {
+    const newCountList = [];
+    const newTempoList = [60]; // initialized so that tempos line up with measures
+    let i;
+    measures.forEach((measure) => {
+      for (i = 0; i < measure.beat; i++) {
+        if (i === 0) { newCountList.push(1); } else { newCountList.push(0); }
+        newTempoList.push(measure.tempo);
+      }
+    });
+    setBeatList(newCountList);
+    setTempoList(newTempoList);
+  }
 
-  /* The following code implements the clicking metronome which plays
-  *  the click track back as audio.
+  /* The following code implements playing of the clicktrack
   *
   * */
-
-  /* Hooks */
+ /** These control whether the clictrack is playing */
   const [isPlaying, setIsPlaying] = useState(false);
   const [pausePlayIcon, setPausePlayIcon] = useState('caretright');
 
-  // eslint-disable-next-line no-unused-vars
+  /** these determine what sound to play */
   const [selectedSound, setSelectedSound] = React.useState('Default'); // Initialize selected state with default sound
   const [selectedSoundFile, setSelectedSoundFile] = useState(require('../assets/sounds/metronome/metronomesound.mp3')); // sound file of selected sound
   const [accentSoundFile, setAccentSoundFile] = useState(require('../assets/sounds/metronome/metronomeaccent.mp3'));
@@ -254,20 +311,21 @@ export default function TrackbuilderScreen({ navigation }) {
   const [silentSoundFile, setSilentSoundFile] = useState(require('../assets/sounds/silent/silence.mp3'));
   const [sound, setSound] = useState(); // current loaded sound
 
+  /** This keeps track of what beat the track is on */
   const [count, setCount] = useState(-1); // current beat
 
+  /** this keep track of number of beats and the tempos of each measure */
   const [beatList, setBeatList] = useState([]); // list of all the accent values of each beat
   const [tempoList, setTempoList] = useState([]); // list of tempos for each beat
 
-  // eslint-disable-next-line no-unused-vars
-  const [title, setTitle] = useState('New Track');
+  let expected;     
+  let actual;       
+  let drift = 0; 
 
-  /* variables to make timer work */
-  let expected;
-  let drift = 0;
-  let actual;
-
-  /* Toggles pause and play */
+  /** This function hangles whether the track should start or stop playing.
+   * @param isPlaying tells if the function is currently playing'
+   * @param PausePlayIcon the image displayed on the pause play button
+   */
   const PausePlay = () => {
     setIsPlaying((isPlaying) => !isPlaying);
     setPausePlayIcon((PausePlayIcon) => (PausePlayIcon === 'caretright' ? 'pause' : 'caretright'));
@@ -275,7 +333,26 @@ export default function TrackbuilderScreen({ navigation }) {
     drift = 0;
   };
 
-  /* Plays sound. The function is async playing an audio file is asynchronous. */
+    /** this code triggers the clicktrack to start playing  by incrementing count*/
+    useEffect(() => {
+      // Temporaraly commented out to make eslist happy
+      // console.log(isPlaying);
+  
+      if (isPlaying) {
+        setUpTrack();
+        setCount((count) => (count + 1));
+      }
+    }, [isPlaying]);
+
+  /** This function plays a beat by loading the sound, playing it, and incrementing the count, 
+   * which triggers the next sound
+   * @param expected when we expect the beat to occur
+   * @param actual when the beat actually occurs
+   * @param drift variation between expected beat and actual beat
+   * @param beatlist what beat are they on?
+   * @param accentSoundFile sound of accent beat
+   * @param selectedSoundFile sound of selected sound
+  */
   async function playSound() {
     if (count < beatList.length) {
       // Play sound, accenting the down beat
@@ -290,7 +367,6 @@ export default function TrackbuilderScreen({ navigation }) {
       actual = Date.now();
       drift = (actual - expected);
 
-      // Temporaraly commented out to make eslist happy
       // console.log(count);
       // console.log('drift ', drift);
     } else {
@@ -298,18 +374,12 @@ export default function TrackbuilderScreen({ navigation }) {
     }
   }
 
-  /* start metronome by incrementing count */
-  useEffect(() => {
-    // Temporaraly commented out to make eslist happy
-    // console.log(isPlaying);
-
-    if (isPlaying) {
-      setUpTrack();
-      setCount((count) => (count + 1));
-    }
-  }, [isPlaying]);
-
-  /* call playSound every interval, taking into account the drift */
+  /** this code calls the next beat to start playing by setting up the expected, and calling a timeout 
+   * @param isPlaying is the clicktrack playing
+   * @param tempoList list of tempos throughout clicktrack
+   * @param expected when the next beat should be
+   * @param drift how much the beat is off
+  */
   useEffect(() => {
     if (isPlaying && count >= 0) {
       // Temporaraly commented out to make eslist happy
@@ -326,25 +396,17 @@ export default function TrackbuilderScreen({ navigation }) {
       : undefined;
   }, [count]);
 
-  /* update the beat sound (paired) */
+  /** this code  switches the sound that the clicktrack is using when the user changes selectedSound
+   * @param selectedSound the sound pair that should be played
+  */
   useEffect(() => {
     switchSound(selectedSound, setSelectedSoundFile, setAccentSoundFile, setSilentSoundFile);
   }, [selectedSound]);
 
-  /* This function generates the secquence of beats and whether the are accents of down beats */
-  function setUpTrack() {
-    const newCountList = [];
-    const newTempoList = [60]; // initialized so that tempos line up with measures
-    let i;
-    measures.forEach((measure) => {
-      for (i = 0; i < measure.beat; i++) {
-        if (i === 0) { newCountList.push(1); } else { newCountList.push(0); }
-        newTempoList.push(measure.tempo);
-      }
-    });
-    setBeatList(newCountList);
-    setTempoList(newTempoList);
-  }
+  
+  //* These are hooks meant to help with the implementation of the database
+  const[selectedTrackID, setSelectedTrackID] = useState(0);
+  const[selectedTrackName, setSelectedTrackName] = useState('New Track');
 
   // add a keyboard avoiding view and a scroll view, but currently getting warning (A)
   return (
@@ -358,6 +420,7 @@ export default function TrackbuilderScreen({ navigation }) {
         scrollEnabled
       >
         <View style={stylesMain.container}>
+          {/* Header */}
           <View style={[stylesMain.header, { flexDirection: 'row' }]}>
             <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end' }]}>
               <TouchableOpacity
@@ -366,10 +429,12 @@ export default function TrackbuilderScreen({ navigation }) {
               >
                 <Text style={[stylesMain.text, { color: COLORS.orange }]}>{loginText}</Text>
               </TouchableOpacity>
+              {/* Page Title */}
             </View>
             <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
               <Text style={stylesMain.title}>Trackbuilder</Text>
             </View>
+            {/* Info button */}
             <View style={[stylesMain.subView, { flex: 1 }]}>
               <TouchableOpacity
                 style={[stylesMain.backButton,
@@ -381,17 +446,20 @@ export default function TrackbuilderScreen({ navigation }) {
             </View>
           </View>
 
+          {/* Main body of code */}
           <View style={[stylesMain.body, {}]}>
+            {/* Pause Play Button */}
             <View style={{ flex: 1.5, justifyContent: 'center' }}>
               <PausePlayButton onPress={PausePlay} pausePlayIcon={pausePlayIcon} width={300} />
             </View>
 
+            {/* Track Title */}
             <View style={{ flex: 6 }}>
               <View style={{ alignItems: 'center', paddingBottom: 5 }}>
                 <TextInput
-                  onChangeText={(text) => setTitle(text)}
-                  value={title}
-                  defaultValue={title}
+                  onChangeText={(text) => setSelectedTrackName(text)}
+                  value={selectedTrackName}
+                  defaultValue={selectedTrackName}
                   cursorColor={COLORS.orange}
                   style={{ width: 300 }}
                   backgroundColor={COLORS.background}
@@ -403,6 +471,8 @@ export default function TrackbuilderScreen({ navigation }) {
                   textAlign="center"
                 />
               </View>
+              
+              {/* Display of TrackList */}
               <View style={{ maxHeight: 250 }}>
                 {/* warning may be caused by use of FlatList within ScrollView,
                 potential solution to use SectionList instead */}
@@ -417,20 +487,25 @@ export default function TrackbuilderScreen({ navigation }) {
                 />
               </View>
 
+              {/* interaction buttons */}
               <View style={{ flex: 4, marginTop: 10, alignItems: 'flex-start' }}>
                 <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
+                  {/* Delete measure */}
                   <View style={{ flex: 2, alignItems: 'flex-start' }}>
                     <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={deleteMeasure}>
                       <Text style={[stylesMain.text]}> Delete </Text>
                     </TouchableOpacity>
                   </View>
+                  {/* Add Measure */}
                   <View style={{ flex: 2, alignItems: 'flex-end' }}>
                     <TouchableOpacity style={[stylesMain.smallButton, { flexDirection: 'row' }]} onPress={handleAddModal}>
                       <Text style={[stylesMain.text]}> Add </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
+
                 <View style={{ alignItems: 'flex-start', flex: 2, flexDirection: 'row' }}>
+                  {/* My Tracks */}
                   <View style={{ flex: 2, alignItems: 'flex-start' }}>
                     <TouchableOpacity
                       style={[stylesMain.smallButton, {}]}
@@ -439,17 +514,20 @@ export default function TrackbuilderScreen({ navigation }) {
                       <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>My Tracks</Text>
                     </TouchableOpacity>
                   </View>
+                  {/* Save Track */}
                   <View style={{ flex: 2, alignItems: 'flex-end' }}>
                     <TouchableOpacity style={[stylesMain.smallButton, {}]} onPress={SaveTrack}>
                       <Text style={[stylesMain.text, { color: COLORS.offWhite }]}>Save Track</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
+                {/* Sound */}
                 <SoundButton onPress={handleSoundModal} w={300} selectedSound={selectedSound} />
               </View>
             </View>
           </View>
 
+          {/* Naviate to metronome */}
           <View style={[stylesMain.footer, {}]}>
             <TouchableOpacity
               style={[stylesMain.flatButton, { width: 300, alignSelf: 'center', marginBottom: 10 }]}
@@ -464,6 +542,7 @@ export default function TrackbuilderScreen({ navigation }) {
             </TouchableOpacity>
           </View>
 
+          {/* Add Track Modal */}
           <Modal isVisible={isAddModalVisible}>
             <Modal.Container>
               <Modal.Body>
@@ -479,10 +558,10 @@ export default function TrackbuilderScreen({ navigation }) {
                   handleModal={handleAddModal}
                 />
               </Modal.Body>
-              {/* </View> */}
             </Modal.Container>
           </Modal>
 
+          {/* SoundModal */}
           <Modal isVisible={isSoundModalVisible}>
             <Modal.Container>
               <Modal.Body>
@@ -494,22 +573,26 @@ export default function TrackbuilderScreen({ navigation }) {
                   handleModal={handleSoundModal}
                 />
               </Modal.Body>
-              {/* </View> */}
             </Modal.Container>
           </Modal>
-
+            
+          {/* Saved Tracks Modal */}
           <Modal isVisible={isSavedTrackVisible}>
             <Modal.Container>
               <Modal.Body>
                 <SavedTracks
                   isModalVisible={isSavedTrackVisible}
                   setIsModalVisible={setIsSavedTrackVisible}
+                  selectedTrackID={selectedTrackID}
+                  setSelectedTrackID={setSelectedTrackID}
+                  selectedTrackName={selectedTrackName}
+                  setSelectedTrackName={setSelectedTrackName}
                 />
               </Modal.Body>
-              {/* </View> */}
             </Modal.Container>
           </Modal>
 
+          {/* Technical Writing Modal */}
           <Modal isVisible={isTrackbuilderWritingVisible}>
             <Modal.Container>
               <Modal.Body>

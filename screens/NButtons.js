@@ -18,11 +18,12 @@ export default function ButtonsScreen({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const user = 0;
-  const getUsers = async (user) => {
+  // const user = 0;
+
+  const getUsers = async () => {
     try {
-      const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${user}`);
-      //const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      // const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -128,7 +129,7 @@ export default function ButtonsScreen({ navigation }) {
   };
 
   useEffect(() => {
-    getUsers(user);
+    getUsers();
     console.log(data);
   }, []);
 

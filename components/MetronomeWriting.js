@@ -28,19 +28,19 @@ export default function MetronomeWriting({
         <Text style={[stylesMain.title, { marginTop: 0 }]}>Metromone Info</Text>
       </View>
       <View style={{ flex: 15, padding: 10, justifyContent: 'center' }}>
-        <Text style={[stylesMain.text, {fontSize:16}]}>
-        {'Tempo and Beats-Per-Measure :\n'}
-        {'    Tap on number in middle to manually\n      enter in a new value.\n'}
-        {'    Use plus or minus buttons on sides\n      to increase or decrease the value.\n\n'}
+        <Text style={[stylesMain.text, { fontSize: 16 }]}>
+          {'Tempo and Beats-Per-Measure :\n'}
+          {'    Tap on number in middle to manually\n      enter in a new value.\n'}
+          {'    Use plus or minus buttons on sides\n      to increase or decrease the value.\n\n'}
 
-        {'Accent Buttons:\n'}
-        {'    The number of buttons matches the\n      current value of Beats-Per-Measure.\n'}
-        {'    Tap one of the buttons to change the\n      value.\n'}
-        {'    The order of values is: accent, normal,\n      and silent.\n\n'}
+          {'Accent Buttons:\n'}
+          {'    The number of buttons matches the\n      current value of Beats-Per-Measure.\n'}
+          {'    Tap one of the buttons to change the\n      value.\n'}
+          {'    The order of values is: accent, normal,\n      and silent.\n\n'}
 
-        {'Sound List:\n'}
-        {'    Tap on the sound button to open a\n      pop-up of sound options.\n'}
-        {'    To change the sound, tap on one of\n      the other options.\n'}
+          {'Sound List:\n'}
+          {'    Tap on the sound button to open a\n      pop-up of sound options.\n'}
+          {'    To change the sound, tap on one of\n      the other options.\n'}
 
         </Text>
       </View>

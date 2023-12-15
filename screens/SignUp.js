@@ -193,7 +193,7 @@ function SignUpScreen({ navigation }) {
       <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
           style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-          onPress={() => navigation.navigate('LogIn')}
+          onPress={() => navigation.navigate('TrackBuilder')}
         >
           <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />
         </TouchableOpacity>

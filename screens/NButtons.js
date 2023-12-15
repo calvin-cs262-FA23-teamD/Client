@@ -22,8 +22,8 @@ export default function ButtonsScreen({ navigation }) {
 
   const getUsers = async () => {
     try {
-      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
-      const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      // const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch('https://beatleservice.azurewebsites.net/allClickTracks');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -35,8 +35,8 @@ export default function ButtonsScreen({ navigation }) {
 
   const getTracks = async () => {
     try {
-      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
-      const response = await fetch(`https://beatleservice.azurewebsites.net/allClickTracks`);
+      // const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch('https://beatleservice.azurewebsites.net/allClickTracks');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -48,8 +48,8 @@ export default function ButtonsScreen({ navigation }) {
 
   const getMeasures = async () => {
     try {
-      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
-      const response = await fetch(`https://beatleservice.azurewebsites.net/allMeasures`);
+      // const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch('https://beatleservice.azurewebsites.net/allMeasures');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -71,8 +71,8 @@ export default function ButtonsScreen({ navigation }) {
     timesig: 120,
     tempo: 4,
     sound: 'notUsed',
-  }
-    const createMeasure = async (newMeasure) => {
+  };
+  const createMeasure = async (newMeasure) => {
     try {
       const response = await fetch('https://beatleservice.azurewebsites.net/makeMeasure', {
         method: 'POST',
@@ -173,7 +173,7 @@ export default function ButtonsScreen({ navigation }) {
         },
       });
       if (response.ok) {
-        console.log('Track', trackID,  'deleted successfully');
+        console.log('Track', trackID, 'deleted successfully');
       } else {
         console.error('Failed to delete track:', response.status, response.statusText);
       }
@@ -183,7 +183,7 @@ export default function ButtonsScreen({ navigation }) {
     }
   };
 
-  const measureID = 14;
+  const measureID = 12;
   const deleteMeasure = async (trackId) => {
     try {
       const response = await fetch(`https://beatleservice.azurewebsites.net/delMeasure/${trackId}`, {
@@ -206,7 +206,7 @@ export default function ButtonsScreen({ navigation }) {
 
   // change to getTracks or getMeasures to change what is displayed
   useEffect(() => {
-    getTracks();
+    getMeasures();
     console.log(data);
   }, []);
 
@@ -220,7 +220,6 @@ export default function ButtonsScreen({ navigation }) {
 
       <View style={[stylesMain.body, { alignItems: 'center' }]}>
         {/* {generateButtons(numberOfButtons)} */}
-
 
         {isLoading ? (
           <ActivityIndicator />
@@ -242,7 +241,7 @@ export default function ButtonsScreen({ navigation }) {
           <TouchableOpacity onPress={() => createTrack(newMeasure)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>hello</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteTrack(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
+          <TouchableOpacity onPress={() => deleteMeasure(trackID)} style={[stylesMain.buttons, { width: 300, alignSelf: 'center', marginBottom: 10 }]}>
             <Text style={stylesMain.title}>goodbye</Text>
           </TouchableOpacity>
         </View>

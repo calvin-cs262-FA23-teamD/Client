@@ -39,7 +39,7 @@ import { COLORS } from '../styles/colors';
 import TrackbuilderWriting from '../components/TrackbuilderWriting.js';
 
 /* hard coded click track */
-let measures = [
+const defaultMeasures = [
   {
     clickTrackID: 0,
     measurenum: 1,
@@ -62,6 +62,7 @@ let measures = [
     sound: 'notUsed',
   },
 ];
+let measures = defaultMeasures;
 
 /**  This function returns a button which represents one measure in the click track
 * @param measure: number of measure
@@ -176,6 +177,8 @@ export default function TrackbuilderScreen({ navigation }) {
       id = null;
       // console.log('user:', id);
       setLoginText('Log In');
+      setSelectedTrackName('New Track');
+      measures = defaultMeasures;
     } else {
       navigation.navigate('LogIn');
     }
@@ -194,7 +197,6 @@ export default function TrackbuilderScreen({ navigation }) {
   const SaveTrack = () => {
     if (!id) {
       navigation.navigate('LogIn');
-      
     }
     // TODO add in save track code
     console.log('save track');
@@ -265,8 +267,7 @@ export default function TrackbuilderScreen({ navigation }) {
       // console.log(newMeasureNum);
       // console.log((newMeasureNum < 1) ? 1 : newMeasureNum);
       const newMeasureNumCorr = (newMeasureNum < 1) ? 1 : newMeasureNum;
-      const newMeasure = 
-      {
+      const newMeasure = {
         clickTrackID: 0,
         measurenum: newMeasureNumCorr,
         timesig: newBeat,
@@ -427,11 +428,10 @@ export default function TrackbuilderScreen({ navigation }) {
   }, [selectedSound]);
 
   //* These are hooks meant to help with the implementation of the database
-  const [selectedTrackID, setSelectedTrackID] = useState(0);
+  const [selectedTrackID, setSelectedTrackID] = useState(50000000);
   const [selectedTrackName, setSelectedTrackName] = useState('New Track');
 
   const createClickTrack = async (newTrackData) => {
-
     try {
       const response = await fetch('https://beatleservice.azurewebsites.net/makeClickTrack', {
         method: 'POST',
@@ -444,14 +444,11 @@ export default function TrackbuilderScreen({ navigation }) {
       const track = await response.json();
 
       // Handle the response or update the UI as needed
-      console.log('Track created:', track);
       let i;
-      for(i=0; i<measures.length; i++) {
+      for (i = 0; i < measures.length; i++) {
         measures[i].clickTrackID = track.id;
         createMeasure(measures[i]);
       }
-
-
     } catch (error) {
       console.error('Error creating user:', error);
 
@@ -488,27 +485,31 @@ export default function TrackbuilderScreen({ navigation }) {
 
   const getMeasures = async () => {
     try {
-      //const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
-      const response = await fetch(`https://beatleservice.azurewebsites.net/allMeasures`);
+      // const response = await fetch(`https://beatleservice.azurewebsites.net/aClickTrack/${0}`);
+      const response = await fetch('https://beatleservice.azurewebsites.net/allMeasures');
       const json = await response.json();
 
       let trackMeasures = json.filter((item) => item.clicktrackid === selectedTrackID);
-      trackMeasures = trackMeasures.sort((a,b) => {
+      trackMeasures = trackMeasures.sort((a, b) => {
         if (a.measurenum < b.measurenum) {
-          return -1
-        };
-      })
+          return -1;
+        }
+      });
 
       // ******** fix this
-      //measures = trackMeasures;
-      console.log(trackMeasures);
+      // let inetermediate = 0;
+      // if (intermediate === 0) {
+      //   intermediate++
+      // } else{}
+      measures = trackMeasures;
+      console.log('measures:', trackMeasures);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    console.log(selectedTrackID);
+    console.log('this is the trackID: ', selectedTrackID);
     getMeasures();
   }, [selectedTrackID]);
 
@@ -525,7 +526,7 @@ export default function TrackbuilderScreen({ navigation }) {
       >
         <View style={stylesMain.container}>
           {/* Header */}
-          <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+          <View style={[stylesMain.header, { flexDirection: 'row', paddingTop: 30 }]}>
             <View style={[stylesMain.subView, { flex: 1, alignItems: 'center', justifyContent: 'flex-end' }]}>
               <TouchableOpacity
                 style={[stylesMain.smallButton, { backgroundColor: COLORS.background }]}

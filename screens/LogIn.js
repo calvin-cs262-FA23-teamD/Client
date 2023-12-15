@@ -43,18 +43,16 @@ function LogInScreen({ navigation }) {
     // Check username and password, navigate to the next screen on success, show an error on failure
 
     for (let i = 0; i < data.length; i++) {
-      if (username === data[i].username) {
-        if (password === data[i].password) {
-          userID = data[i].id;
-          console.log('User: ', userID);
-          navigation.navigate('Trackbuilder', { id: userID });
-          return;
-        }
+      if (username === data[i].username && password === data[i].password) {
+        userID = data[i].id;
+        console.log('User: ', userID);
+        navigation.navigate('Trackbuilder', { id: userID });
+        return;
       }
+      // // add back alert (A)
+      // alert('Invalid username-password combination');
+      // console.log('user not found');
     }
-    // add back alert (A)
-    alert('Invalid username-password combination');
-    console.log('user not found');
   };
 
   useEffect(() => {

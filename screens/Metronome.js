@@ -103,8 +103,8 @@ export default function MetronomeScreen({ navigation }) {
     drift = (actual - expected);
 
     // Temporarally commented out to make eslint happy
-    console.log(measure);
-    console.log('drift ', drift);
+    // console.log(measure);
+    // console.log('drift ', drift);
   }
 
   /* start metronome by incrementing measure */

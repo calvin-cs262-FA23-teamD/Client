@@ -29,7 +29,7 @@ function LogInScreen({ navigation }) {
       const json = await response.json();
       setData(json);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,7 @@ function LogInScreen({ navigation }) {
     for (let i = 0; i < data.length; i++) {
       if (username === data[i].username && password === data[i].password) {
         userID = data[i].id;
-        console.log('User: ', userID);
+        // console.log('User: ', userID);
         navigation.navigate('Trackbuilder', { id: userID });
         return;
       }

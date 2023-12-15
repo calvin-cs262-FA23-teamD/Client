@@ -17,10 +17,11 @@ import { stylesMain } from '../styles/stylesMain.js';
 import { COLORS } from '../styles/colors';
 
 // export AddMeasure
+	// selectedTrackName removed: never used
 export default function SavedTracks({
   isModalVisible, setIsModalVisible,
   selectedTrackID, setSelectedTrackID,
-  selectedTrackName, setSelectedTrackName,
+  setSelectedTrackName,
   id,
 }) {
   const [isLoading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ export default function SavedTracks({
 
       setData(userTracks);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
       setLoading(false);
     }
@@ -58,12 +59,12 @@ export default function SavedTracks({
         },
       });
       if (response.ok) {
-        console.log('Track', trackId, 'deleted successfully');
+        // console.log('Track', trackId, 'deleted successfully');
       } else {
-        console.error('Failed to delete track:', response.status, response.statusText);
+        // console.error('Failed to delete track:', response.status, response.statusText);
       }
     } catch (error) {
-      console.error('Error in deleteTrack:', error.message);
+      // console.error('Error in deleteTrack:', error.message);
       // Handle the error or update the UI as needed
     }
   };

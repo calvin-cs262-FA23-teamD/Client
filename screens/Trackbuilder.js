@@ -93,7 +93,10 @@ function MeasureBox({
 
         {/* Beats per measure */}
         <View style={[{ alignItems: 'stretch', justifyContent: 'space-evenly' }]}>
-          <Text style={[stylesMain.text, { color: textColor, fontSize: 50 }]}>{measure.timesig}</Text>
+          <Text style={[stylesMain.text, 
+		  { color: textColor, fontSize: 50 }]}>
+		  {measure.timesig}
+		  </Text>
         </View>
 
         {/* Beats per minute */}
@@ -199,7 +202,7 @@ export default function TrackbuilderScreen({ navigation }) {
       navigation.navigate('LogIn');
     }
     // TODO add in save track code
-    console.log('save track');
+    // console.log('save track');
     const newTrackData = {
       userID: id,
       name: selectedTrackName,
@@ -450,7 +453,7 @@ export default function TrackbuilderScreen({ navigation }) {
         createMeasure(measures[i]);
       }
     } catch (error) {
-      console.error('Error creating user:', error);
+      // console.error('Error creating user:', error);
 
       // Handle the error or update the UI as needed
     }
@@ -469,15 +472,15 @@ export default function TrackbuilderScreen({ navigation }) {
       const json = await response.json();
 
       if (!response.ok) {
-        console.error('Server returned an error:', response.status, response.statusText);
+        // console.error('Server returned an error:', response.status, response.statusText);
         // Handle the error or update the UI as needed
         return;
       }
 
       // Handle the response or update the UI as needed
-      console.log('User created:', json);
+      // console.log('User created:', json);
     } catch (error) {
-      console.error('Error creating user:', error);
+      // console.error('Error creating user:', error);
 
       // Handle the error or update the UI as needed
     }
@@ -494,6 +497,9 @@ export default function TrackbuilderScreen({ navigation }) {
         if (a.measurenum < b.measurenum) {
           return -1;
         }
+		else {
+		  return 0;
+		}
       });
 
       // ******** fix this
@@ -502,14 +508,14 @@ export default function TrackbuilderScreen({ navigation }) {
       //   intermediate++
       // } else{}
       measures = trackMeasures;
-      console.log('measures:', trackMeasures);
+      // console.log('measures:', trackMeasures);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
   useEffect(() => {
-    console.log('this is the trackID: ', selectedTrackID);
+    // console.log('this is the trackID: ', selectedTrackID);
     getMeasures();
   }, [selectedTrackID]);
 

@@ -103,7 +103,7 @@ export default function BoxyBox({
       setValue(max.toString());
     } else if (newValue <= min) {
       // there is still a bug that allows numbers too low (A)
-      console.log('error, value too low');
+      // console.log('error, value too low');
       setValue(min);
     } else {
       setValue(Math.floor(newValue));

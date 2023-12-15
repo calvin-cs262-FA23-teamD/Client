@@ -37,7 +37,7 @@ function SignUpScreen({ navigation }) {
       const json = await response.json();
       setData(json);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
       setLoading(false);
     }
@@ -57,9 +57,9 @@ function SignUpScreen({ navigation }) {
       const json = await response.json();
 
       // Handle the response or update the UI as needed
-      console.log('User created:', json);
+      // console.log('User created:', json);
     } catch (error) {
-      console.error('Error creating user:', error);
+      // console.error('Error creating user:', error);
 
       // Handle the error or update the UI as needed
     }

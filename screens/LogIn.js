@@ -29,7 +29,7 @@ function LogInScreen({ navigation }) {
       const json = await response.json();
       setData(json);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
       setLoading(false);
     }
@@ -43,18 +43,16 @@ function LogInScreen({ navigation }) {
     // Check username and password, navigate to the next screen on success, show an error on failure
 
     for (let i = 0; i < data.length; i++) {
-      if (username === data[i].username) {
-        if (password === data[i].password) {
-          userID = data[i].id;
-          console.log('User: ', userID);
-          navigation.navigate('Trackbuilder', { id: userID });
-          return;
-        }
+      if (username === data[i].username && password === data[i].password) {
+        userID = data[i].id;
+        // console.log('User: ', userID);
+        navigation.navigate('Trackbuilder', { id: userID });
+        return;
       }
+      // // add back alert (A)
+      // alert('Invalid username-password combination');
+      // console.log('user not found');
     }
-    // add back alert (A)
-    alert('Invalid username-password combination');
-    console.log('user not found');
   };
 
   useEffect(() => {
@@ -64,7 +62,7 @@ function LogInScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
 
-      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+      <View style={[stylesMain.header, { flexDirection: 'row', paddingTop: 30 }]}>
         <View style={[stylesMain.subView, { flex: 1 }]} />
         <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
           <Text style={stylesMain.title}>Log In</Text>

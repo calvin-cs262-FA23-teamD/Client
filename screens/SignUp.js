@@ -37,7 +37,7 @@ function SignUpScreen({ navigation }) {
       const json = await response.json();
       setData(json);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
       setLoading(false);
     }
@@ -57,9 +57,9 @@ function SignUpScreen({ navigation }) {
       const json = await response.json();
 
       // Handle the response or update the UI as needed
-      console.log('User created:', json);
+      // console.log('User created:', json);
     } catch (error) {
-      console.error('Error creating user:', error);
+      // console.error('Error creating user:', error);
 
       // Handle the error or update the UI as needed
     }
@@ -105,7 +105,7 @@ function SignUpScreen({ navigation }) {
   return (
     <View style={stylesMain.container}>
 
-      <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+      <View style={[stylesMain.header, { flexDirection: 'row', paddingTop: 30 }]}>
         <View style={[stylesMain.subView, { flex: 1 }]} />
         <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
           <Text style={stylesMain.title}>Sign Up</Text>
@@ -193,7 +193,7 @@ function SignUpScreen({ navigation }) {
       <View style={[stylesMain.footer, {}]}>
         <TouchableOpacity
           style={[stylesMain.backButton, { backgroundColor: COLORS.buttonBackground, width: 50 }]}
-          onPress={() => navigation.navigate('LogIn')}
+          onPress={() => navigation.navigate('TrackBuilder')}
         >
           <AntDesign name="arrowleft" size={24} color={COLORS.offWhite} />
         </TouchableOpacity>

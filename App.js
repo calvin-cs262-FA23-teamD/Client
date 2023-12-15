@@ -15,7 +15,6 @@ import MetronomeScreen from './screens/Metronome';
 import TrackbuilderScreen from './screens/Trackbuilder';
 import LogInScreen from './screens/LogIn';
 import SignUpScreen from './screens/SignUp';
-import NButtonsScreen from './screens/NButtons';
 
 SplashScreen.preventAutoHideAsync();
 setTimeout(SplashScreen.hideAsync, 5000);
@@ -31,7 +30,6 @@ export default function App() {
         {/* Add new screens to the stack */}
         <Stack.Screen name="LogIn" component={LogInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="NButtons" component={NButtonsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

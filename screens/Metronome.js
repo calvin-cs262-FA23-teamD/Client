@@ -104,8 +104,8 @@ export default function MetronomeScreen({ navigation }) {
     drift = (actual - expected);
 
     // Temporarally commented out to make eslint happy
-    console.log(measure);
-    console.log('drift ', drift);
+    // console.log(measure);
+    // console.log('drift ', drift);
   }
 
   /* start metronome by incrementing measure */
@@ -165,7 +165,7 @@ export default function MetronomeScreen({ navigation }) {
       >
         <View style={stylesMain.container}>
 
-          <View style={[stylesMain.header, { flexDirection: 'row' }]}>
+          <View style={[stylesMain.header, { flexDirection: 'row', paddingTop: 30 }]}>
             <View style={[stylesMain.subView, { flex: 1 }]} />
             <View style={[stylesMain.header, { flex: 3, height: '100%' }]}>
               <Text style={stylesMain.title}>Beatle</Text>
